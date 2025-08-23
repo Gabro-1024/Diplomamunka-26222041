@@ -1,0 +1,63 @@
+Felhasznált színek: #2210FF , #FF6F61 , #FFFFFF , #333333 , #7CFC00
+
+Szükséges adatok (emberek):
+- ID
+- Vezetéknév
+- Keresztnév
+- Email cím
+- Jelszó (hashelve)
+- Város
+- Születési dátum
+- Telefonszám
+- Szerep (fesztiválozó, szervező, munkás, admin)
+
+Szükséges adatok (érdekelt_területek):
+- ID
+- Ember ID
+- Stílus(-ok) megnevezése
+
+Szükséges adatok (események):
+- ID
+- Esemény neve
+- Szlogen (opcionális)
+- Kezdő dátum
+- Végdátum
+- Hoszabb leírás
+- Szervező (ember ID)
+- Helyszín
+- Jegyek száma összesen
+
+Szükséges adatok (jegyek):
+- ID
+- QR kód képhez útvonal
+- Esemény ID
+- Tulajdonos (ember ID)
+- Fel lett-e már használva? (igen, nem)
+- Ár
+
+Szükséges adatok (login_sessions):
+- ID
+- Ember ID
+- User agent
+- Session token
+- Lejárat
+
+Szükséges adatok (vásárlások):
+- ID
+- Összeg
+- Vevő (ember ID)
+- Státusz (elutasítva, meghiúsult, végbement)
+- Dátum
+- Fizetési mód
+
+Szükséges adatok (Helyszín):
+- ID
+- Név
+- Cím
+- Indexkép
+- Kapacitás
+
+Szükséges adatok (Helyszín_képek):
+- ID
+- Helyszín ID
+- Kép útvonal
