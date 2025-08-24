@@ -1,3 +1,7 @@
+<?php
+//A cégről és a történetéről írok itt
+?>
+
 <!doctype html>
 <html lang="en">
 

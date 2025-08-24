@@ -1,3 +1,7 @@
+<?php
+//Ez az oldal jelenik meg a nm létező oldalak helyett
+?>
+
 <!doctype html>
 <html lang="en">
 
