@@ -1,3 +1,7 @@
+<?php
+//Fesztiválhelyszínek listázása
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -18,10 +22,10 @@
     <div class="container">
       <div class="header-wrapper d-flex align-items-center justify-content-between">
         <div class="logo">
-          <a href="index.html" class="logo-white">
+          <a href="index.php" class="logo-white">
             <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
           </a>
-          <a href="index.html" class="logo-dark">
+          <a href="index.php" class="logo-dark">
             <img src="../assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
           </a>
         </div>
@@ -42,46 +46,47 @@
                 <div class="d-flex flex-column gap-3">
                   <ul class="header-menu list-unstyled mb-0 d-flex flex-column gap-2">
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Home</a>
                     </li>
                     <li class="header-item">
-                      <a href="about-us.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="about-us.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">About</a>
                     </li>
                     <li class="header-item">
-                      <a href="projects.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="projects.html" aria-current="true"
+                        class="header-link active hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Projects</a>
                     </li>
                     <li class="header-item">
-                      <a href="blog.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="FAQ.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Blog</a>
                     </li>
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Services</a>
                     </li>
                     <li class="header-item">
-                      <a href="contact.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="contact.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Contact</a>
                     </li>
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Docs</a>
                     </li>
                   </ul>
                   <div class="hstack gap-3">
-                    <a href="sign-in.html"
+                    <a href=""
                       class="btn btn-outline-light fs-6 bg-white px-3 py-2 text-dark w-50 hstack justify-content-center">Sign
                       In</a>
-                    <a href="sign-up.html"
+                    <a href=""
                       class="btn btn-dark text-white fs-6 bg-dark px-3 py-2 w-50 hstack justify-content-center">Sign
                       Up</a>
                   </div>
@@ -103,7 +108,7 @@
 
     <!--  Banner Section -->
     <section class="banner-section banner-inner-section position-relative overflow-hidden d-flex align-items-end"
-      style="background-image: url(../assets/images/backgrounds/blog-detail-banner.jpg);">
+      style="background-image: url(../assets/images/backgrounds/projects-banner.jpg);">
       <div class="container">
         <div class="d-flex flex-column gap-4 pb-5 pb-xl-10 position-relative z-1">
           <div class="row align-items-center">
@@ -111,14 +116,13 @@
               <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
                 data-aos-duration="1000">
                 <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                <p class="mb-0 text-white fs-5 text-opacity-70">In a <span class="text-primary">world where
-                    standing</span> still means falling behind, we
-                  knew it was time for a bold transformation..</p>
+                <p class="mb-0 text-white fs-5 text-opacity-70">A <span class="text-primary">showcase of
+                    creativity</span>, strategy, and results explore the projects that define us.</p>
               </div>
             </div>
           </div>
           <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-            <h1 class="mb-0 fs-15 text-white lh-1">A campaign that connects</h1>
+            <h1 class="mb-0 fs-16 text-white lh-1">Projects</h1>
             <a href="javascript:void(0)" class="p-1 ps-7 bg-primary rounded-pill">
               <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
                 <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
@@ -129,59 +133,133 @@
       </div>
     </section>
 
-    <!--  Blog Detail Section -->
-    <section class="blog-detail py-5 py-lg-11 py-xl-12">
+    <!--  Project Section -->
+    <section class="project py-5 py-lg-11 py-xl-12">
       <div class="container">
-        <div class="d-flex flex-column gap-7 gap-xl-11">
-          <div class="row gap-4 gap-lg-0">
-            <div class="col-lg-4">
-              <h2 class="fs-13 mb-0" data-aos="fade-right" data-aos-delay="100" data-aos-duration="1000">Scroll to read
-              </h2>
-            </div>
-            <div class="col-lg-8">
-              <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                <p class="fs-5 mb-0">
-                  At Studiova, we're always evolving, and our latest brand redesign is a bold step forward. This
-                  transformation reflects our commitment to innovation and growth, both in how we look and how we
-                  connect with you.
-                </p>
+        <div class="row">
+          <div class="col-lg-6 mb-7">
+            <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
+              data-aos-duration="1000">
+              <div class="portfolio-img position-relative overflow-hidden">
+                <img src="../assets/images/portfolio/portfolio-img-5.jpg" alt="" class="img-fluid w-100">
+                <div class="portfolio-overlay">
+                  <a href="projects-detail.html"
+                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
+                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
+                  </a>
+                </div>
+              </div>
+              <div class="portfolio-details d-flex flex-column gap-3">
+                <h3 class="mb-0">Amber Bottle</h3>
+                <div class="hstack gap-2">
+                  <span class="badge text-dark border">Photography</span>
+                  <span class="badge text-dark border">Studio</span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="blog-detail-img" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
-            <img src="../assets/images/backgrounds/blog-detail-img.jpg" alt="blog-detail" class="img-fluid">
+          <div class="col-lg-6 mb-7">
+            <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="200"
+              data-aos-duration="1000">
+              <div class="portfolio-img position-relative overflow-hidden">
+                <img src="../assets/images/portfolio/portfolio-img-4.jpg" alt="" class="img-fluid w-100">
+                <div class="portfolio-overlay">
+                  <a href="projects-detail.html"
+                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
+                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
+                  </a>
+                </div>
+              </div>
+              <div class="portfolio-details d-flex flex-column gap-3">
+                <h3 class="mb-0">BioTrack LIMS</h3>
+                <div class="hstack gap-2">
+                  <span class="badge text-dark border">Brand identity</span>
+                  <span class="badge text-dark border">Digital design</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="row justify-content-end">
-            <div class="col-lg-8">
-              <div data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
-                <p class="fs-5 mb-0">
-                  Blogger outreach campaigns are strategic efforts by businesses to collaborate with influential
-                  bloggers, aiming to promote products, services, or content to a broader audience. This form of
-                  influencer marketing leverages the blogger's established credibility and reach within a specific
-                  niche.
-                </p>
-                <p class="fs-5 mb-6">
-                  Key Steps to Launch a Successful Blogger Outreach Campaign:
-                </p>
-                <h4>1. Define Your Goals:</h4>
-                <p class="fs-5 mb-6">
-                  Clearly outline what you aim to achieve, such as increasing brand awareness, driving website traffic,
-                  or boosting product sales.
-                </p>
-                <h4>2. Identify Relevant Bloggers:</h4>
-                <p class="fs-5 mb-6">
-                  Research and compile a list of bloggers whose audience aligns with your target demographic. Utilize
-                  tools like BuzzSumo to discover key influencers in your industry.
-                </p>
-                <h4>Engage Authentically:</h4>
-                <p class="fs-5 mb-0">
-                  Prior to outreach, engage with the bloggers' content by commenting on posts or sharing their articles.
-                  This establishes a genuine connection and familiarity.
-                </p>
-                <p class="fs-5 mb-0">
-                  Craft Personalized Outreach Messages: Develop tailored emails that acknowledge the blogger's work and
-                  propose a mutually beneficial collaboration. Avoid generic templates to increase response rates.
-                </p>
+          <div class="col-lg-6 mb-7">
+            <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="300"
+              data-aos-duration="1000">
+              <div class="portfolio-img position-relative overflow-hidden">
+                <img src="../assets/images/portfolio/portfolio-img-6.jpg" alt="" class="img-fluid w-100">
+                <div class="portfolio-overlay">
+                  <a href="projects-detail.html"
+                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
+                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
+                  </a>
+                </div>
+              </div>
+              <div class="portfolio-details d-flex flex-column gap-3">
+                <h3 class="mb-0">Digital Magazine</h3>
+                <div class="hstack gap-2">
+                  <span class="badge text-dark border">Digital design</span>
+                  <span class="badge text-dark border">Web development</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-7">
+            <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="400"
+              data-aos-duration="1000">
+              <div class="portfolio-img position-relative overflow-hidden">
+                <img src="../assets/images/portfolio/portfolio-img-3.jpg" alt="" class="img-fluid w-100">
+                <div class="portfolio-overlay">
+                  <a href="projects-detail.html"
+                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
+                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
+                  </a>
+                </div>
+              </div>
+              <div class="portfolio-details d-flex flex-column gap-3">
+                <h3 class="mb-0">Pixelforge</h3>
+                <div class="hstack gap-2">
+                  <span class="badge text-dark border">UI/UX design</span>
+                  <span class="badge text-dark border">Web development</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-7">
+            <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="500"
+              data-aos-duration="1000">
+              <div class="portfolio-img position-relative overflow-hidden">
+                <img src="../assets/images/portfolio/portfolio-img-1.jpg" alt="" class="img-fluid w-100">
+                <div class="portfolio-overlay">
+                  <a href="projects-detail.html"
+                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
+                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
+                  </a>
+                </div>
+              </div>
+              <div class="portfolio-details d-flex flex-column gap-3">
+                <h3 class="mb-0">Snapclear</h3>
+                <div class="hstack gap-2">
+                  <span class="badge text-dark border">UX Strategy</span>
+                  <span class="badge text-dark border">UI Design</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-7">
+            <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="600"
+              data-aos-duration="1000">
+              <div class="portfolio-img position-relative overflow-hidden">
+                <img src="../assets/images/portfolio/portfolio-img-2.jpg" alt="" class="img-fluid w-100">
+                <div class="portfolio-overlay">
+                  <a href="projects-detail.html"
+                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
+                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
+                  </a>
+                </div>
+              </div>
+              <div class="portfolio-details d-flex flex-column gap-3">
+                <h3 class="mb-0">Transfermax</h3>
+                <div class="hstack gap-2">
+                  <span class="badge text-dark border">Web development</span>
+                  <span class="badge text-dark border">Digital design</span>
+                </div>
               </div>
             </div>
           </div>
@@ -212,13 +290,13 @@
         </div>
         <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
           <ul class="footer-menu list-unstyled mb-0 d-flex flex-column gap-2">
-            <li><a class="link-hover fs-5 text-white" href="index.html">Home</a></li>
-            <li><a class="link-hover fs-5 text-white" href="about-us.html">About</a></li>
+            <li><a class="link-hover fs-5 text-white" href="index.php">Home</a></li>
+            <li><a class="link-hover fs-5 text-white" href="about-us.php">About</a></li>
             <li><a class="link-hover fs-5 text-white" id="services" href="#services">Services</a></li>
             <li><a class="link-hover fs-5 text-white" href="projects.html">Work</a></li>
             <li><a class="link-hover fs-5 text-white" href="terms-and-conditions.html">Terms</a></li>
             <li><a class="link-hover fs-5 text-white" href="privacy-policy.html">Privacy Policy</a></li>
-            <li><a class="link-hover fs-5 text-white" href="404.html">Error 404</a></li>
+            <li><a class="link-hover fs-5 text-white" href="404.php">Error 404</a></li>
           </ul>
         </div>
         <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">

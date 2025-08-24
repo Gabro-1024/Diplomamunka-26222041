@@ -1278,7 +1278,7 @@ describe('Tooltip', () => {
       expect(childContent.textContent).toEqual(tooltip._getTipElement().textContent)
     })
 
-    it('should add html without sanitize it', () => {
+    it('should add php without sanitize it', () => {
       fixtureEl.innerHTML = '<a href="#" rel="tooltip" title="Another tooltip"></a>'
 
       const tooltipEl = fixtureEl.querySelector('a')
@@ -1292,7 +1292,7 @@ describe('Tooltip', () => {
       expect(tooltip._getTipElement().querySelector('div').id).toEqual('childContent')
     })
 
-    it('should add html sanitized', () => {
+    it('should add php sanitized', () => {
       fixtureEl.innerHTML = '<a href="#" rel="tooltip" title="Another tooltip"></a>'
 
       const tooltipEl = fixtureEl.querySelector('a')

@@ -18,10 +18,10 @@
     <div class="container">
       <div class="header-wrapper d-flex align-items-center justify-content-between">
         <div class="logo">
-          <a href="index.html" class="logo-white">
+          <a href="index.php" class="logo-white">
             <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
           </a>
-          <a href="index.html" class="logo-dark">
+          <a href="index.php" class="logo-dark">
             <img src="../assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
           </a>
         </div>
@@ -42,7 +42,7 @@
                 <div class="d-flex flex-column gap-3">
                   <ul class="header-menu list-unstyled mb-0 d-flex flex-column gap-2">
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Home</a>
                     </li>
@@ -58,31 +58,31 @@
                           class="img-fluid animate-spin">Projects</a>
                     </li>
                     <li class="header-item">
-                      <a href="blog.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="FAQ.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Blog</a>
                     </li>
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Services</a>
                     </li>
                     <li class="header-item">
-                      <a href="contact.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="contact.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Contact</a>
                     </li>
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Docs</a>
                     </li>
                   </ul>
                   <div class="hstack gap-3">
-                    <a href="sign-in.html"
+                    <a href="sign-in.php"
                       class="btn btn-outline-light fs-6 bg-white px-3 py-2 text-dark w-50 hstack justify-content-center">Sign
                       In</a>
-                    <a href="sign-up.html"
+                    <a href="sign-up.php"
                       class="btn btn-dark text-white fs-6 bg-dark px-3 py-2 w-50 hstack justify-content-center">Sign
                       Up</a>
                   </div>
@@ -582,13 +582,13 @@
         </div>
         <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
           <ul class="footer-menu list-unstyled mb-0 d-flex flex-column gap-2">
-            <li><a class="link-hover fs-5 text-white" href="index.html">Home</a></li>
+            <li><a class="link-hover fs-5 text-white" href="index.php">Home</a></li>
             <li><a class="link-hover fs-5 text-white" href="about-us.html">About</a></li>
             <li><a class="link-hover fs-5 text-white" id="services" href="#services">Services</a></li>
             <li><a class="link-hover fs-5 text-white" href="projects.html">Work</a></li>
             <li><a class="link-hover fs-5 text-white" href="terms-and-conditions.html">Terms</a></li>
             <li><a class="link-hover fs-5 text-white" href="privacy-policy.html">Privacy Policy</a></li>
-            <li><a class="link-hover fs-5 text-white" href="404.html">Error 404</a></li>
+            <li><a class="link-hover fs-5 text-white" href="404.php">Error 404</a></li>
           </ul>
         </div>
         <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">

@@ -68,7 +68,7 @@ describe('TemplateFactory', () => {
         expect(factory.toHtml().innerHTML).toContain('href="javascript:alert(7)')
       })
 
-      it('should sanitize content only if "config.html" is enabled', () => {
+      it('should sanitize content only if "config.php" is enabled', () => {
         const factory = new TemplateFactory({
           sanitize: true,
           html: false,
@@ -165,7 +165,7 @@ describe('TemplateFactory', () => {
       expect(factory.toHtml().outerHTML).toEqual('<div></div>')
     })
 
-    it('if content is element and "config.html=false", should put content\'s textContent', () => {
+    it('if content is element and "config.php=false", should put content\'s textContent', () => {
       fixtureEl.innerHTML = '<div>foo<span>bar</span></div>'
       const contentElement = fixtureEl.querySelector('div')
 
@@ -181,7 +181,7 @@ describe('TemplateFactory', () => {
       expect(fooEl.textContent).toEqual('foobar')
     })
 
-    it('if content is element and "config.html=true", should put content\'s outerHtml as child', () => {
+    it('if content is element and "config.php=true", should put content\'s outerHtml as child', () => {
       fixtureEl.innerHTML = '<div>foo<span>bar</span></div>'
       const contentElement = fixtureEl.querySelector('div')
 

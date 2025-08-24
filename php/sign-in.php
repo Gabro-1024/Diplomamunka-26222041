@@ -22,7 +22,7 @@
       <div class="container py-3">
         <div class="sign-in card mx-auto shadow-lg">
           <div class="card-body py-8 px-lg-5">
-            <a href="index.html" class="mb-8 hstack justify-content-center">
+            <a href="index.php" class="mb-8 hstack justify-content-center">
               <img src="../assets/images/logos/logo-dark.svg" alt="logo-dark" class="img-fluid">
             </a>
             <div class="hstack gap-3">
@@ -39,9 +39,6 @@
             </div>
             <form class="d-flex flex-column gap-3">
               <div>
-                <input type="text" id="disabledTextInput" class="form-control border-bottom" placeholder="Name">
-              </div>
-              <div>
                 <input type="email" class="form-control border-bottom" id="exampleInputEmail1" placeholder="Email"
                   aria-describedby="emailHelp">
               </div>
@@ -49,14 +46,12 @@
                 <input type="password" class="form-control border-bottom" id="inputPassword" placeholder="Password">
               </div>
 
-              <a href="sign-in.html" class="btn btn-dark w-100 justify-content-center py-2 fw-medium my-7 fs-4 lh-lg">
-                Sign Up
+              <a href="index.php" class="btn btn-dark w-100 justify-content-center py-2 fw-medium my-7 fs-4 lh-lg">
+                Sign In
               </a>
             </form>
-            <p class="text-center mb-1 d-block fw-medium">By creating an account, you agree with our <a
-                class="text-dark" href="privacy-policy.html">Privacy</a> and <a class="text-dark" href="privacy-policy.html">Policy</a>.</p>
-            <p class="mb-0 fw-medium text-center">Already have an account? <a class="text-dark" href="sign-in.html">Sign
-                In</a>
+            <a class="text-center mb-1 d-block text-dark fw-medium" href="#">Forget Password?</a>
+            <p class="mb-0 fw-medium text-center">Not a member yet? <a class="text-dark" href="sign-up.php">Sign Up</a>
             </p>
           </div>
         </div>

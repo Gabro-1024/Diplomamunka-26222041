@@ -1,3 +1,7 @@
+<?php
+//Helyszín megtekintése
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -18,10 +22,10 @@
     <div class="container">
       <div class="header-wrapper d-flex align-items-center justify-content-between">
         <div class="logo">
-          <a href="index.html" class="logo-white">
+          <a href="index.php" class="logo-white">
             <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
           </a>
-          <a href="index.html" class="logo-dark">
+          <a href="index.php" class="logo-dark">
             <img src="../assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
           </a>
         </div>
@@ -42,12 +46,12 @@
                 <div class="d-flex flex-column gap-3">
                   <ul class="header-menu list-unstyled mb-0 d-flex flex-column gap-2">
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Home</a>
                     </li>
                     <li class="header-item">
-                      <a href="about-us.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="about-us.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">About</a>
                     </li>
@@ -57,31 +61,31 @@
                           class="img-fluid animate-spin">Projects</a>
                     </li>
                     <li class="header-item">
-                      <a href="blog.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="FAQ.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Blog</a>
                     </li>
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Services</a>
                     </li>
                     <li class="header-item">
-                      <a href="contact.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="contact.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Contact</a>
                     </li>
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Docs</a>
                     </li>
                   </ul>
                   <div class="hstack gap-3">
-                    <a href="sign-in.html"
+                    <a href="sign-in.php"
                       class="btn btn-outline-light fs-6 bg-white px-3 py-2 text-dark w-50 hstack justify-content-center">Sign
                       In</a>
-                    <a href="sign-up.html"
+                    <a href="sign-up.php"
                       class="btn btn-dark text-white fs-6 bg-dark px-3 py-2 w-50 hstack justify-content-center">Sign
                       Up</a>
                   </div>
@@ -103,7 +107,7 @@
 
     <!--  Banner Section -->
     <section class="banner-section banner-inner-section position-relative overflow-hidden d-flex align-items-end"
-      style="background-image: url(../assets/images/backgrounds/privacy-policy-banner.jpg);">
+      style="background-image: url(../assets/images/backgrounds/blog-detail-banner.jpg);">
       <div class="container">
         <div class="d-flex flex-column gap-4 pb-5 pb-xl-10 position-relative z-1">
           <div class="row align-items-center">
@@ -111,13 +115,14 @@
               <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
                 data-aos-duration="1000">
                 <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                <p class="mb-0 text-white fs-5 text-opacity-70">Understand the <span class="text-primary">Rules &
-                    Guidelines</span>Before Using Our Services</p>
+                <p class="mb-0 text-white fs-5 text-opacity-70">In a <span class="text-primary">world where
+                    standing</span> still means falling behind, we
+                  knew it was time for a bold transformation..</p>
               </div>
             </div>
           </div>
           <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-            <h1 class="mb-0 fs-15 text-white lh-1">Terms & Conditions</h1>
+            <h1 class="mb-0 fs-15 text-white lh-1">A campaign that connects</h1>
             <a href="javascript:void(0)" class="p-1 ps-7 bg-primary rounded-pill">
               <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
                 <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
@@ -128,76 +133,63 @@
       </div>
     </section>
 
-    <!--  Terms & Conditions Section -->
-    <section class="terms-conditions py-5 py-lg-11">
+    <!--  Blog Detail Section -->
+    <section class="blog-detail py-5 py-lg-11 py-xl-12">
       <div class="container">
-        <p class="fs-5 text-dark fw-medium">This Bootstrap Admin Templates Terms of Service <span
-            class="fw-bold">(“Agreement”)</span> is entered into by
-          and between Bootstrap Admin Templates <span class="fw-bold">(“Bootstrap Admin Templates”)</span> and the
-          entity or person placing an order for or
-          accessing the Services <span class="fw-bold">(“Customer”)</span>. This Agreement consists of the terms and
-          conditions set forth below and
-          any Order Form. The <span class="fw-bold">“Effective Date”</span> of this Agreement is the date which is the
-          earlier of (a) Customer’s
-          initial access to the Services through any online provisioning, registration or order process or (b) the
-          Effective Date of the first Order Form. This Agreement will govern Customer’s initial purchase on the
-          Effective Date as well as any future purchases made by Customer that reference this Agreement.
-          Bootstrap Admin Templates may modify this Agreement from time to time as permitted in Section 13.4
-          (Amendment).
-        </p>
-        <p class="fs-5 text-dark fw-medium">Capitalized terms shall have the meanings set forth in Section 1, or in the
-          section where they are first used
-        </p>
-        <h4 class="my-4">1. Definitions</h4>
-        <p class="fs-5 text-dark fw-medium"><span class="fw-bold">1.1 “Authorized Devices”</span> means those mobile,
-          desktop, or other devices with which the Services can be accessed and used.</p>
-        <p class="fs-5 text-dark fw-medium"><span class="fw-bold">1.2 “Content”</span> means code, content, fonts,
-          graphics, designs, documents, or materials created using the Services by Customer and its Users or imported
-          into the Services by Customer and its Users.</p>
-        <p class="fs-5 text-dark fw-medium"><span class="fw-bold">1.3 “Documentation”</span> means the technical
-          materials made available by Bootstrap Admin Templates to Customer and/or its Users in hard copy or electronic
-          form
-          describing the use and operation of the Services.</p>
-        <p class="fs-5 text-dark fw-medium"><span class="fw-bold">1.4 “Services”</span> Bootstrap Admin Templates
-          proprietary
-          web-based products and services, along with downloadable desktop and mobile apps. Each Order Form will
-          identify details of Customer’s Services subscription.</p>
-        <p class="fs-5 text-dark fw-medium"><span class="fw-bold">1.5 “Order Form”</span> means a document signed by
-          both Parties identifying the Enterprise Services to be made available by Bootstrap Admin Templates pursuant to
-          this
-          Agreement.</p>
-        <p class="fs-5 text-dark fw-medium"><span class="fw-bold">1.6 “Packages”or“Components”</span> means add-on
-          modules made available within the Services. Packages and Components may be created by Bootstrap Admin
-          Templates,
-          Customer or other third parties. Packages and Components created by Bootstrap Admin Templates are supported as
-          part
-          of the Services. Bootstrap Admin Templates will use reasonable efforts to support Customer’s use of Packages
-          and
-          Components created by third parties but disclaims all warranties as to such Packages and Components.</p>
-        <p class="fs-5 text-dark fw-medium"><span class="fw-bold">1.7 “User”</span> means an employee, contractor or
-          other individual associated with Customer who has been provisioned by Customer with access to the Services.
-        </p>
-        <p class="fs-5 text-dark fw-medium"><span class="fw-bold">1.8 “Services”</span> means Bootstrap Admin Templates
-          product, web design software, tools, along with downloadable desktop and mobile apps. Each Order Form will
-          identify details of Customer’s subscription to the Services.</p>
-
-
-        <h4 class="my-4">2. License and use rights</h4>
-        <p class="fs-5 text-dark fw-medium"><span class="fw-bold">2.1 Services </span> Bootstrap Admin Templates hereby
-          grants
-          Customer a non-exclusive, non-transferable license during the Term (as defined in Section 12) to: (a) use the
-          Services and to download and install desktop or mobile applications as applicable on the number and type of
-          Authorized Devices solely for Customer’s internal business purposes in accordance with the Documentation,
-          and/or (b) use our SaaS product, hosted systems, design software, tools, and build websites under the
-          Bootstrap Admin Templates.app domain.. The Services are delivered electronically.</p>
-        <p class="fs-5 text-dark fw-medium"><span class="fw-bold">2.2 Provisioning the Services</span>
-          Bootstrap Admin Templates will provide to Customer the necessary passwords, security protocols, policies,
-          network
-          links or connections (“Access Protocols”) to allow Customer and its Users to access the Services as described
-          herein; no other access to the website or servers from which the Services are delivered is permitted. Customer
-          will provision its Users to access and use the features and functions of the Services through the Access
-          Protocols. Customer may select one or more Users to act as administrators and control, manage and use the
-          Services on Customer’s behalf. Customer shall be responsible for all acts and omissions of its Users</p>
+        <div class="d-flex flex-column gap-7 gap-xl-11">
+          <div class="row gap-4 gap-lg-0">
+            <div class="col-lg-4">
+              <h2 class="fs-13 mb-0" data-aos="fade-right" data-aos-delay="100" data-aos-duration="1000">Scroll to read
+              </h2>
+            </div>
+            <div class="col-lg-8">
+              <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                <p class="fs-5 mb-0">
+                  At Studiova, we're always evolving, and our latest brand redesign is a bold step forward. This
+                  transformation reflects our commitment to innovation and growth, both in how we look and how we
+                  connect with you.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="blog-detail-img" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
+            <img src="../assets/images/backgrounds/blog-detail-img.jpg" alt="blog-detail" class="img-fluid">
+          </div>
+          <div class="row justify-content-end">
+            <div class="col-lg-8">
+              <div data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
+                <p class="fs-5 mb-0">
+                  Blogger outreach campaigns are strategic efforts by businesses to collaborate with influential
+                  bloggers, aiming to promote products, services, or content to a broader audience. This form of
+                  influencer marketing leverages the blogger's established credibility and reach within a specific
+                  niche.
+                </p>
+                <p class="fs-5 mb-6">
+                  Key Steps to Launch a Successful Blogger Outreach Campaign:
+                </p>
+                <h4>1. Define Your Goals:</h4>
+                <p class="fs-5 mb-6">
+                  Clearly outline what you aim to achieve, such as increasing brand awareness, driving website traffic,
+                  or boosting product sales.
+                </p>
+                <h4>2. Identify Relevant Bloggers:</h4>
+                <p class="fs-5 mb-6">
+                  Research and compile a list of bloggers whose audience aligns with your target demographic. Utilize
+                  tools like BuzzSumo to discover key influencers in your industry.
+                </p>
+                <h4>Engage Authentically:</h4>
+                <p class="fs-5 mb-0">
+                  Prior to outreach, engage with the bloggers' content by commenting on posts or sharing their articles.
+                  This establishes a genuine connection and familiarity.
+                </p>
+                <p class="fs-5 mb-0">
+                  Craft Personalized Outreach Messages: Develop tailored emails that acknowledge the blogger's work and
+                  propose a mutually beneficial collaboration. Avoid generic templates to increase response rates.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -224,13 +216,13 @@
         </div>
         <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
           <ul class="footer-menu list-unstyled mb-0 d-flex flex-column gap-2">
-            <li><a class="link-hover fs-5 text-white" href="index.html">Home</a></li>
-            <li><a class="link-hover fs-5 text-white" href="about-us.html">About</a></li>
+            <li><a class="link-hover fs-5 text-white" href="index.php">Home</a></li>
+            <li><a class="link-hover fs-5 text-white" href="about-us.php">About</a></li>
             <li><a class="link-hover fs-5 text-white" id="services" href="#services">Services</a></li>
             <li><a class="link-hover fs-5 text-white" href="projects.html">Work</a></li>
             <li><a class="link-hover fs-5 text-white" href="terms-and-conditions.html">Terms</a></li>
             <li><a class="link-hover fs-5 text-white" href="privacy-policy.html">Privacy Policy</a></li>
-            <li><a class="link-hover fs-5 text-white" href="404.html">Error 404</a></li>
+            <li><a class="link-hover fs-5 text-white" href="404.php">Error 404</a></li>
           </ul>
         </div>
         <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
@@ -249,6 +241,7 @@
   </footer>
 
   <div class="get-template hstack gap-2">
+    
     <button class="btn bg-primary p-2 round-52 rounded-circle hstack justify-content-center flex-shrink-0"
       id="scrollToTopBtn">
       <iconify-icon icon="lucide:arrow-up" class="fs-7 text-dark"></iconify-icon>

@@ -269,7 +269,7 @@ describe('SelectorEngine', () => {
 
     it('should return null if a selector from a href is a url without an anchor', () => {
       fixtureEl.innerHTML = [
-        '<a id="test" data-bs-target="#" href="foo/bar.html"></a>',
+        '<a id="test" data-bs-target="#" href="foo/bar.php"></a>',
         '<div class="target"></div>'
       ].join('')
 
@@ -280,7 +280,7 @@ describe('SelectorEngine', () => {
 
     it('should return the anchor if a selector from a href is a url', () => {
       fixtureEl.innerHTML = [
-        '<a id="test" data-bs-target="#" href="foo/bar.html#target"></a>',
+        '<a id="test" data-bs-target="#" href="foo/bar.php#target"></a>',
         '<div id="target"></div>'
       ].join('')
 

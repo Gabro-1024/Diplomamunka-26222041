@@ -18,10 +18,10 @@
     <div class="container">
       <div class="header-wrapper d-flex align-items-center justify-content-between">
         <div class="logo">
-          <a href="index.html" class="logo-white">
+          <a href="index.php" class="logo-white">
             <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
           </a>
-          <a href="index.html" class="logo-dark">
+          <a href="index.php" class="logo-dark">
             <img src="../assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
           </a>
         </div>
@@ -42,12 +42,12 @@
                 <div class="d-flex flex-column gap-3">
                   <ul class="header-menu list-unstyled mb-0 d-flex flex-column gap-2">
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Home</a>
                     </li>
                     <li class="header-item">
-                      <a href="about-us.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="about-us.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">About</a>
                     </li>
@@ -57,31 +57,32 @@
                           class="img-fluid animate-spin">Projects</a>
                     </li>
                     <li class="header-item">
-                      <a href="blog.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="FAQ.html" aria-current="true"
+                         class="header-link active hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Blog</a>
                     </li>
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Services</a>
                     </li>
                     <li class="header-item">
-                      <a href="contact.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="contact.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Contact</a>
                     </li>
                     <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
+                      <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
                           src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
                           class="img-fluid animate-spin">Docs</a>
                     </li>
                   </ul>
                   <div class="hstack gap-3">
-                    <a href="sign-in.html"
+                    <a href="sign-in.php"
                       class="btn btn-outline-light fs-6 bg-white px-3 py-2 text-dark w-50 hstack justify-content-center">Sign
                       In</a>
-                    <a href="sign-up.html"
+                    <a href="sign-up.php"
                       class="btn btn-dark text-white fs-6 bg-dark px-3 py-2 w-50 hstack justify-content-center">Sign
                       Up</a>
                   </div>
@@ -103,7 +104,7 @@
 
     <!--  Banner Section -->
     <section class="banner-section banner-inner-section position-relative overflow-hidden d-flex align-items-end"
-      style="background-image: url(../assets/images/backgrounds/privacy-policy-banner.jpg);">
+      style="background-image: url(../assets/images/backgrounds/blog-banner.jpg);">
       <div class="container">
         <div class="d-flex flex-column gap-4 pb-5 pb-xl-10 position-relative z-1">
           <div class="row align-items-center">
@@ -111,13 +112,13 @@
               <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
                 data-aos-duration="1000">
                 <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                <p class="mb-0 text-white fs-5 text-opacity-70">Understand the <span class="text-primary">Rules &
-                    Guidelines</span>Before Using Our Services</p>
+                <p class="mb-0 text-white fs-5 text-opacity-70">Excited to <span class="text-primary">begin something
+                    amazing?</span>Get in touch—we'd love to connect with you!</p>
               </div>
             </div>
           </div>
           <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-            <h1 class="mb-0 fs-16 text-white lh-1">Privacy Policy</h1>
+            <h1 class="mb-0 fs-16 text-white lh-1">Blog</h1>
             <a href="javascript:void(0)" class="p-1 ps-7 bg-primary rounded-pill">
               <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
                 <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
@@ -128,49 +129,63 @@
       </div>
     </section>
 
-    <!--  Privacy Policy Section -->
-    <section class="privacy-policy py-5 py-lg-11">
+    <!--  Blog Section -->
+    <section class="blog-section py-5 py-lg-11 py-xl-12">
       <div class="container">
-        <p class="fs-5 text-dark fw-medium">This Privacy Statement explains how personal information about our
-          (potential)
-          customers and other individuals using our services is collected, used, and disclosed by **Bootstrap Admin
-          Templates**
-          ("us", "we", "our"). This Privacy Statement describes our privacy practices in relation to the use of our
-          websites, including any customer portals or interactive websites <a class="fw-bold"
-            href="https://bootstrap-admintemplates.com/" target="_blank">(https://bootstrap-admintemplates.com/)</a>,
-          our
-          software (Bootstrap), services, solutions, tools, and related applications, services, and programs, including
-          research and marketing activities, offered by us (the "Services").
-        </p>
-        <p class="fs-5 text-dark fw-medium">By signing up for our Services and agreeing to our General Terms and
-          Conditions, you consent to the collection, usage, storage, and disclosure of your information as described in
-          this Privacy Statement.
-        </p>
-        <p class="fs-5 text-dark fw-medium">Our Services may contain links to external websites or services. The
-          privacy practices and content of such sites or services will be governed by their respective privacy policies.
-          We may update this Privacy Statement periodically. If changes occur, we will notify you by updating the date
-          at the top of the statement and providing additional notifications (such as a statement on our homepage or an
-          email notification). We encourage you to review this Privacy Statement whenever you use our Services to stay
-          informed about how we handle your information.
-        </p>
-        <h4 class="my-4">Personal Information Collection</h4>
-        <p class="fs-5 text-dark fw-medium">While using our Services, we may ask you to provide certain personally
-          identifiable information that can be used to contact or identify you. This may include basic user details
-          (such as your name, email address, telephone number, and profile picture), company information, and any other
-          data you choose to share with us.
-
-          We do not collect financial information (such as credit card details or security codes). All payments are
-          handled through a third-party provider. If applicable, please refer to their Privacy
-          Policy: <a class="fw-bold" href="https://bootstrap-admintemplates.com/"
-            target="_blank">https://bootstrap-admintemplates.com/</a>.
-        </p>
-        <h4 class="my-4">Personal Information You Provide to Us</h4>
-        <p class="fs-5 text-dark fw-medium">When using our Services, you may provide personally identifiable
-          information, such as when creating an account, requesting customer support, or interacting with our platform.
-        <p class="fs-5 text-dark fw-medium mb-0">As noted, we do not collect financial details directly. Payments are
-          processed via third-party providers. Please review their privacy policy for details: <a class="fw-bold"
-            href="https://bootstrap-admintemplates.com/" target="_blank">https://bootstrap-admintemplates.com/</a>.
-        </p>
+        <div class="row">
+          <div class="col-lg-6 mb-7">
+            <div class="resources d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
+              data-aos-duration="1000">
+              <a href="blog-detail.html"
+                class="resources-img resources-img-blog position-relative overflow-hidden d-block">
+                <img src="../assets/images/resources/resources-1.jpg" alt="resources" class="img-fluid">
+              </a>
+              <div class="resources-details">
+                <p class="mb-0">Dec 24, 2025</p>
+                <h4 class="mb-0">A campaign that connects</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-7">
+            <div class="resources d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="200"
+              data-aos-duration="1000">
+              <a href="blog-detail.html"
+                class="resources-img resources-img-blog position-relative overflow-hidden d-block">
+                <img src="../assets/images/resources/resources-2.jpg" alt="resources" class="img-fluid">
+              </a>
+              <div class="resources-details">
+                <p class="mb-0">Dec 24, 2025</p>
+                <h4 class="mb-0">An breaking boundaries our latest brand redesign</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-7">
+            <div class="resources d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="300"
+              data-aos-duration="1000">
+              <a href="blog-detail.html"
+                class="resources-img resources-img-blog position-relative overflow-hidden d-block">
+                <img src="../assets/images/resources/resources-3.jpg" alt="resources" class="img-fluid">
+              </a>
+              <div class="resources-details">
+                <p class="mb-0">Dec 24, 2025</p>
+                <h4 class="mb-0">Recognized for design</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-7">
+            <div class="resources d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="400"
+              data-aos-duration="1000">
+              <a href="blog-detail.html"
+                class="resources-img resources-img-blog position-relative overflow-hidden d-block">
+                <img src="../assets/images/services/services-img-1.jpg" alt="resources" class="img-fluid">
+              </a>
+              <div class="resources-details">
+                <p class="mb-0">Dec 24, 2025</p>
+                <h4 class="mb-0">The Modern Lens Perspectives on Culture & Trends</h4>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -197,13 +212,13 @@
         </div>
         <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
           <ul class="footer-menu list-unstyled mb-0 d-flex flex-column gap-2">
-            <li><a class="link-hover fs-5 text-white" href="index.html">Home</a></li>
-            <li><a class="link-hover fs-5 text-white" href="about-us.html">About</a></li>
+            <li><a class="link-hover fs-5 text-white" href="index.php">Home</a></li>
+            <li><a class="link-hover fs-5 text-white" href="about-us.php">About</a></li>
             <li><a class="link-hover fs-5 text-white" id="services" href="#services">Services</a></li>
             <li><a class="link-hover fs-5 text-white" href="projects.html">Work</a></li>
             <li><a class="link-hover fs-5 text-white" href="terms-and-conditions.html">Terms</a></li>
             <li><a class="link-hover fs-5 text-white" href="privacy-policy.html">Privacy Policy</a></li>
-            <li><a class="link-hover fs-5 text-white" href="404.html">Error 404</a></li>
+            <li><a class="link-hover fs-5 text-white" href="404.php">Error 404</a></li>
           </ul>
         </div>
         <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
@@ -222,6 +237,7 @@
   </footer>
 
   <div class="get-template hstack gap-2">
+    
     <button class="btn bg-primary p-2 round-52 rounded-circle hstack justify-content-center flex-shrink-0"
       id="scrollToTopBtn">
       <iconify-icon icon="lucide:arrow-up" class="fs-7 text-dark"></iconify-icon>

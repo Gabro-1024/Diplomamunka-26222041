@@ -107,7 +107,7 @@ if (BROWSERSTACK) {
     project: 'Bootstrap',
     retryLimit: 2
   }
-  plugins.push('karma-browserstack-launcher', 'karma-jasmine-html-reporter')
+  plugins.push('karma-browserstack-launcher', 'karma-jasmine-php-reporter')
   config.customLaunchers = browsers
   config.browsers = Object.keys(browsers)
   reporters.push('BrowserStack', 'kjhtml')
@@ -152,7 +152,7 @@ if (BROWSERSTACK) {
 
   if (DEBUG) {
     config.hostname = ip.address()
-    plugins.push('karma-jasmine-html-reporter')
+    plugins.push('karma-jasmine-php-reporter')
     reporters.push('kjhtml')
     config.singleRun = false
     config.autoWatch = true

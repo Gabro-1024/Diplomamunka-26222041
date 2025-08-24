@@ -123,7 +123,7 @@ define( [
 				trChild.style.height = "9px";
 
 				// Support: Android 8 Chrome 86+
-				// In our bodyBackground.html iframe,
+				// In our bodyBackground.php iframe,
 				// display for all div elements is set to "inline",
 				// which causes a problem only in Android 8 Chrome 86.
 				// Ensuring the div is `display: block`

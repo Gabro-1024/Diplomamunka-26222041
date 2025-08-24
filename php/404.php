@@ -25,7 +25,7 @@
             data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">
           <h2 class="mb-0 text-center" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">Oops! Page Not
             Found</h2>
-          <a href="index.html" class="btn mx-auto" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
+          <a href="index.php" class="btn mx-auto" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
             <span class="btn-text">Back to Home</span>
             <iconify-icon icon="lucide:arrow-up-right"
               class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>

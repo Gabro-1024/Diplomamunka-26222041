@@ -23,7 +23,7 @@ describe('Backdrop', () => {
   })
 
   describe('show', () => {
-    it('should append the backdrop html once on show and include the "show" class if it is "shown"', () => {
+    it('should append the backdrop php once on show and include the "show" class if it is "shown"', () => {
       return new Promise(resolve => {
         const instance = new Backdrop({
           isVisible: true,
@@ -45,7 +45,7 @@ describe('Backdrop', () => {
       })
     })
 
-    it('should not append the backdrop html if it is not "shown"', () => {
+    it('should not append the backdrop php if it is not "shown"', () => {
       return new Promise(resolve => {
         const instance = new Backdrop({
           isVisible: false,
@@ -61,7 +61,7 @@ describe('Backdrop', () => {
       })
     })
 
-    it('should append the backdrop html once and include the "fade" class if it is "shown" and "animated"', () => {
+    it('should append the backdrop php once and include the "fade" class if it is "shown" and "animated"', () => {
       return new Promise(resolve => {
         const instance = new Backdrop({
           isVisible: true,
@@ -84,7 +84,7 @@ describe('Backdrop', () => {
   })
 
   describe('hide', () => {
-    it('should remove the backdrop html', () => {
+    it('should remove the backdrop php', () => {
       return new Promise(resolve => {
         const instance = new Backdrop({
           isVisible: true,
