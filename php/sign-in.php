@@ -23,7 +23,7 @@
         <div class="sign-in card mx-auto shadow-lg">
           <div class="card-body py-8 px-lg-5">
             <a href="index.php" class="mb-8 hstack justify-content-center">
-              <img src="../assets/images/logos/logo-dark.svg" alt="logo-dark" class="img-fluid">
+              <img src="../assets/images/logos/logo-white.svg" alt="logo-dark" class="img-fluid">
             </a>
             <div class="hstack gap-3">
               <a href="javascript:void(0)"
