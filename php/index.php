@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Studiova</title>
+  <title>Tickets @ Gábor</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
   <link rel="stylesheet" href="../assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
   <link rel="stylesheet" href="../assets/libs/aos-master/dist/aos.css">
@@ -14,90 +14,7 @@
 <body>
 
   <!-- Header -->
-  <header class="header border-4 border-primary border-top position-fixed start-0 top-0 w-100">
-    <div class="container">
-      <div class="header-wrapper d-flex align-items-center justify-content-between">
-        <div class="logo">
-          <a href="index.html" class="logo-white">
-            <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
-          </a>
-          <a href="index.html" class="logo-dark">
-            <img src="../assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
-          </a>
-        </div>
-        <div class="d-flex align-items-center gap-4">
-
-          <div class="btn-group">
-            <button
-              class="btn btn-secondary toggle-menu round-45 p-2 d-flex align-items-center justify-content-center bg-white rounded-circle"
-              type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-              <iconify-icon icon="solar:hamburger-menu-line-duotone" class="menu-icon fs-8 text-dark"></iconify-icon>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end p-4">
-              <div class="d-flex flex-column gap-6">
-                <div class="hstack justify-content-between border-bottom pb-6">
-                  <p class="mb-0 fs-5 text-dark">Menu</p>
-                  <button type="button" class="btn-close opacity-75" aria-label="Close"></button>
-                </div>
-                <div class="d-flex flex-column gap-3">
-                  <ul class="header-menu list-unstyled mb-0 d-flex flex-column gap-2">
-                    <li class="header-item">
-                      <a href="index.html" aria-current="true"
-                        class="header-link active hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Home</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="about-us.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">About</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="projects.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Projects</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="FAQ.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Blog</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Services</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="contact.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Contact</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Docs</a>
-                    </li>
-                  </ul>
-                  <div class="hstack gap-3">
-                    <a href="sign-in.php"
-                      class="btn btn-outline-light fs-6 bg-white px-3 py-2 text-dark w-50 hstack justify-content-center">Sign
-                      In</a>
-                    <a href="sign-up.php"
-                      class="btn btn-dark text-white fs-6 bg-dark px-3 py-2 w-50 hstack justify-content-center">Sign
-                      Up</a>
-                  </div>
-                </div>
-                <div>
-                  <a class="text-dark" href="tel:+1-212-456-7890">+1-212-456-7890</a>
-                  <a class="fs-8 text-dark fw-bold" href="mailto:info@wrappixel.com">info@wrappixel.com</a>
-                </div>
-              </div>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+  <?php include 'header.php'; ?>
 
   <!--  Page Wrapper -->
   <div class="page-wrapper overflow-hidden">
@@ -114,14 +31,13 @@
               <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
                 data-aos-duration="1000">
                 <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                <p class="mb-0 text-white fs-5 text-opacity-70">We create <span
-                    class="text-primary">high-performing</span> digital designs that elevate brands and enhance
-                  conversions.</p>
+                  <p class="mb-0 text-white fs-5 text-opacity-70">Discover <span class="text-primary">
+                    the best festival tickets</span> in one place - experiences you'll remember forever.</p>
               </div>
             </div>
           </div>
           <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-            <h1 class="mb-0 fs-16 text-white lh-1">Studiova</h1>
+            <h1 class="mb-0 fs-16 text-white lh-1">Tickets @ Gábor</h1>
             <a href="javascript:void(0)" class="p-1 ps-7 bg-primary rounded-pill">
               <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
                 <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
@@ -142,7 +58,7 @@
               <span
                 class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">01</span>
               <hr class="border-line">
-              <span class="badge text-bg-dark">Stats & facts</span>
+              <span class="badge text-bg-dark">Statistics</span>
             </div>
           </div>
           <div class="col-xl-8 col-xxl-7">
@@ -151,9 +67,9 @@
                 <div class="col-xxl-8">
                   <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
                     data-aos-duration="1000">
-                    <h2 class="mb-0">High quality web design solutions you can trust.</h2>
-                    <p class="fs-5 mb-0">When selecting a web design agency, it's essential to consider its reputation,
-                      experience, and the specific needs of your project.</p>
+                    <h2 class="mb-0">Hungary's leading festival ticket seller.</h2>
+                      <p class="fs-5 mb-0">Secure your spot at the biggest names and most unforgettable experiences
+                          - with simple, fast and reliable ticket purchasing.</p>
                   </div>
                 </div>
               </div>
@@ -162,26 +78,26 @@
                   <div class="d-flex flex-column gap-6 pt-9 border-top" data-aos="fade-up" data-aos-delay="200"
                     data-aos-duration="1000">
                     <h2 class="mb-0 fs-14"><span class="count" data-target="40">40</span>K+</h2>
-                    <p class="mb-0">People who have launched their websites</p>
+                    <p class="mb-0">Festival tickets sold</p>
                   </div>
                 </div>
                 <div class="col-md-6 col-lg-4 mb-7 mb-lg-0">
                   <div class="d-flex flex-column gap-6 pt-9 border-top" data-aos="fade-up" data-aos-delay="300"
                     data-aos-duration="1000">
-                    <h2 class="mb-0 fs-14"><span class="count" data-target="238">238</span>+</h2>
-                    <p class="mb-0">Experienced professionals ready to assist</p>
+                    <h2 class="mb-0 fs-14"><span class="count" data-target="238">25</span>+</h2>
+                    <p class="mb-0">Partner festivals</p>
                   </div>
                 </div>
                 <div class="col-md-6 col-lg-4 mb-7 mb-lg-0">
                   <div class="d-flex flex-column gap-6 pt-9 border-top" data-aos="fade-up" data-aos-delay="400"
                     data-aos-duration="1000">
-                    <h2 class="mb-0 fs-14"><span class="count" data-target="3">3</span>M+</h2>
-                    <p class="mb-0">Support through messages and live consultations</p>
+                    <h2 class="mb-0 fs-14"><span class="count" data-target="3">99</span>%</h2>
+                    <p class="mb-0">Satisfied customers</p>
                   </div>
                 </div>
               </div>
               <a href="about-us.php" class="btn" data-aos="fade-up" data-aos-delay="500" data-aos-duration="1000">
-                <span class="btn-text">Who we are</span>
+                <span class="btn-text">More info about us</span>
                 <iconify-icon icon="lucide:arrow-up-right"
                   class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
               </a>
@@ -205,7 +121,7 @@
                 <span
                   class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">02</span>
                 <hr class="border-line">
-                <span class="badge text-bg-dark">Portfolio</span>
+                <span class="badge text-bg-dark">Events</span>
               </div>
             </div>
             <div class="col-xl-8 col-xxl-7">
@@ -213,9 +129,9 @@
                 <div class="col-xxl-8">
                   <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
                     data-aos-duration="1000">
-                    <h2 class="mb-0">Featured projects</h2>
-                    <p class="fs-5 mb-0">A glimpse into our creativity—exploring innovative designs, successful
-                      collaborations, and transformative digital experiences.</p>
+                      <h2 class="mb-0">Our featured festivals</h2>
+                      <p class="fs-5 mb-0">Discover our most popular festivals - the best music
+                          festivals you've been waiting for.</p>
                   </div>
                 </div>
               </div>
@@ -236,10 +152,10 @@
                   </div>
                 </div>
                 <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">Snapclear</h3>
+                  <h3 class="mb-0">Sziget Festival</h3>
                   <div class="hstack gap-2">
-                    <span class="badge text-dark border">UX Strategy</span>
-                    <span class="badge text-dark border">UI Design</span>
+                    <span class="badge text-dark border">August 7-13</span>
+                    <span class="badge text-dark border">Budapest</span>
                   </div>
                 </div>
               </div>
@@ -256,10 +172,10 @@
                   </div>
                 </div>
                 <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">Amber Bottle</h3>
+                  <h3 class="mb-0">Balaton Sound</h3>
                   <div class="hstack gap-2">
-                    <span class="badge text-dark border">Web development</span>
-                    <span class="badge text-dark border">Digital design</span>
+                    <span class="badge text-dark border">June 26-30</span>
+                    <span class="badge text-dark border">Zamárdi</span>
                   </div>
                 </div>
               </div>
@@ -276,10 +192,10 @@
                   </div>
                 </div>
                 <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">Pixelforge</h3>
+                  <h3 class="mb-0">VOLT Festival</h3>
                   <div class="hstack gap-2">
-                    <span class="badge text-dark border">UI/UX design</span>
-                    <span class="badge text-dark border">Web development</span>
+                    <span class="badge text-dark border">June 19-23</span>
+                    <span class="badge text-dark border">Sopron</span>
                   </div>
                 </div>
               </div>
@@ -296,30 +212,10 @@
                   </div>
                 </div>
                 <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">BioTrack LIMS</h3>
+                  <h3 class="mb-0">EFOTT</h3>
                   <div class="hstack gap-2">
-                    <span class="badge text-dark border">Brand identity</span>
-                    <span class="badge text-dark border">Digital design</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="portfolio d-flex flex-column gap-6">
-                <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-5.jpg" alt="" class="img-fluid">
-                  <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
-                      class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                      <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-                <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">Amber Bottle</h3>
-                  <div class="hstack gap-2">
-                    <span class="badge text-dark border">Photography</span>
-                    <span class="badge text-dark border">Studio</span>
+                    <span class="badge text-dark border">July 10-14</span>
+                    <span class="badge text-dark border">Tapolca</span>
                   </div>
                 </div>
               </div>
@@ -336,10 +232,10 @@
                   </div>
                 </div>
                 <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">Digital Magazine</h3>
+                  <h3 class="mb-0">SZIN Festival</h3>
                   <div class="hstack gap-2">
-                    <span class="badge text-dark border">Digital design</span>
-                    <span class="badge text-dark border">Web development</span>
+                    <span class="badge text-dark border">August 27-31</span>
+                    <span class="badge text-dark border">Szeged</span>
                   </div>
                 </div>
               </div>
@@ -350,144 +246,144 @@
     </section>
 
     <!--  Services Section -->
-    <section class="services py-5 py-lg-11 py-xl-12 bg-dark" id="services">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-10">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">03</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-dark bg-white">Services</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0 text-white">What we do</h2>
-                    <p class="fs-5 mb-0 text-white text-opacity-70">A glimpse into our creativity—exploring innovative
-                      designs, successful collaborations, and transformative digital experiences.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="services-tab">
-            <div class="row gap-5 gap-xl-0">
-              <div class="col-xl-4">
-                <div class="tab-content" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">
-                  <div class="tab-pane active" id="one" role="tabpanel" aria-labelledby="one-tab" tabindex="0">
-                    <img src="../assets/images/services/services-img-1.jpg" alt="services" class="img-fluid">
-                  </div>
-                  <div class="tab-pane" id="two" role="tabpanel" aria-labelledby="two-tab" tabindex="0">
-                    <img src="../assets/images/services/services-img-2.jpg" alt="services" class="img-fluid">
-                  </div>
-                  <div class="tab-pane" id="three" role="tabpanel" aria-labelledby="three-tab" tabindex="0">
-                    <img src="../assets/images/services/services-img-3.jpg" alt="services" class="img-fluid">
-                  </div>
-                  <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="four-tab" tabindex="0">
-                    <img src="../assets/images/services/services-img-4.jpg" alt="services" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-8">
-                <div class="d-flex flex-column gap-5">
-                  <ul class="nav nav-tabs" id="myTab" role="tablist" data-aos="fade-up" data-aos-delay="200"
-                    data-aos-duration="1000">
-                    <li
-                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"
-                      role="presentation">
-                      <div class="row w-100 align-items-center gx-3">
-                        <div class="col-lg-6 col-xxl-5">
-                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0 active"
-                            id="one-tab" data-bs-toggle="tab" data-bs-target="#one" type="button" role="tab"
-                            aria-controls="one" aria-selected="true">Brand identity</button>
-                        </div>
-                        <div class="col-lg-6 col-xxl-7">
-                          <p class="text-white text-opacity-70 mb-0">
-                            When selecting a web design agency, it's essential to consider its reputation, experience,
-                            and
-                            the
-                            specific needs of your project.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li
-                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"
-                      role="presentation">
-                      <div class="row w-100 align-items-center gx-3">
-                        <div class="col-lg-6 col-xxl-5">
-                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0" id="two-tab"
-                            data-bs-toggle="tab" data-bs-target="#two" type="button" role="tab" aria-controls="two"
-                            aria-selected="false">Web development</button>
-                        </div>
-                        <div class="col-lg-6 col-xxl-7">
-                          <p class="text-white text-opacity-70 mb-0">
-                            When selecting a web design agency, it's essential to consider its reputation, experience,
-                            and
-                            the
-                            specific needs of your project.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li
-                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"
-                      role="presentation">
-                      <div class="row w-100 align-items-center gx-3">
-                        <div class="col-lg-6 col-xxl-5">
-                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0"
-                            id="three-tab" data-bs-toggle="tab" data-bs-target="#three" type="button" role="tab"
-                            aria-controls="three" aria-selected="false">Content creation</button>
-                        </div>
-                        <div class="col-lg-6 col-xxl-7">
-                          <p class="text-white text-opacity-70 mb-0">
-                            When selecting a web design agency, it's essential to consider its reputation, experience,
-                            and
-                            the
-                            specific needs of your project.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li
-                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"
-                      role="presentation">
-                      <div class="row w-100 align-items-center gx-3">
-                        <div class="col-lg-6 col-xxl-5">
-                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0"
-                            id="four-tab" data-bs-toggle="tab" data-bs-target="#four" type="button" role="tab"
-                            aria-controls="four" aria-selected="false">Motion & 3d modeling</button>
-                        </div>
-                        <div class="col-lg-6 col-xxl-7">
-                          <p class="text-white text-opacity-70 mb-0">
-                            When selecting a web design agency, it's essential to consider its reputation, experience,
-                            and
-                            the
-                            specific needs of your project.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  <a href="projects.html" class="btn border border-white border-opacity-25" data-aos="fade-up"
-                    data-aos-delay="300" data-aos-duration="1000">
-                    <span class="btn-text">See our Work</span>
-                    <iconify-icon icon="lucide:arrow-up-right"
-                      class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<!--    <section class="services py-5 py-lg-11 py-xl-12 bg-dark" id="services">-->
+<!--      <div class="container">-->
+<!--        <div class="d-flex flex-column gap-5 gap-xl-10">-->
+<!--          <div class="row gap-7 gap-xl-0">-->
+<!--            <div class="col-xl-4 col-xxl-4">-->
+<!--              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"-->
+<!--                data-aos-duration="1000">-->
+<!--                <span-->
+<!--                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">03</span>-->
+<!--                <hr class="border-line bg-white">-->
+<!--                <span class="badge text-dark bg-white">Services</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="col-xl-8 col-xxl-7">-->
+<!--              <div class="row">-->
+<!--                <div class="col-xxl-8">-->
+<!--                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"-->
+<!--                    data-aos-duration="1000">-->
+<!--                    <h2 class="mb-0 text-white">What we do</h2>-->
+<!--                    <p class="fs-5 mb-0 text-white text-opacity-70">A glimpse into our creativity—exploring innovative-->
+<!--                      designs, successful collaborations, and transformative digital experiences.</p>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="services-tab">-->
+<!--            <div class="row gap-5 gap-xl-0">-->
+<!--              <div class="col-xl-4">-->
+<!--                <div class="tab-content" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">-->
+<!--                  <div class="tab-pane active" id="one" role="tabpanel" aria-labelledby="one-tab" tabindex="0">-->
+<!--                    <img src="../assets/images/services/services-img-1.jpg" alt="services" class="img-fluid">-->
+<!--                  </div>-->
+<!--                  <div class="tab-pane" id="two" role="tabpanel" aria-labelledby="two-tab" tabindex="0">-->
+<!--                    <img src="../assets/images/services/services-img-2.jpg" alt="services" class="img-fluid">-->
+<!--                  </div>-->
+<!--                  <div class="tab-pane" id="three" role="tabpanel" aria-labelledby="three-tab" tabindex="0">-->
+<!--                    <img src="../assets/images/services/services-img-3.jpg" alt="services" class="img-fluid">-->
+<!--                  </div>-->
+<!--                  <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="four-tab" tabindex="0">-->
+<!--                    <img src="../assets/images/services/services-img-4.jpg" alt="services" class="img-fluid">-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="col-xl-8">-->
+<!--                <div class="d-flex flex-column gap-5">-->
+<!--                  <ul class="nav nav-tabs" id="myTab" role="tablist" data-aos="fade-up" data-aos-delay="200"-->
+<!--                    data-aos-duration="1000">-->
+<!--                    <li-->
+<!--                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"-->
+<!--                      role="presentation">-->
+<!--                      <div class="row w-100 align-items-center gx-3">-->
+<!--                        <div class="col-lg-6 col-xxl-5">-->
+<!--                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0 active"-->
+<!--                            id="one-tab" data-bs-toggle="tab" data-bs-target="#one" type="button" role="tab"-->
+<!--                            aria-controls="one" aria-selected="true">Brand identity</button>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-6 col-xxl-7">-->
+<!--                          <p class="text-white text-opacity-70 mb-0">-->
+<!--                            When selecting a web design agency, it's essential to consider its reputation, experience,-->
+<!--                            and-->
+<!--                            the-->
+<!--                            specific needs of your project.-->
+<!--                          </p>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </li>-->
+<!--                    <li-->
+<!--                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"-->
+<!--                      role="presentation">-->
+<!--                      <div class="row w-100 align-items-center gx-3">-->
+<!--                        <div class="col-lg-6 col-xxl-5">-->
+<!--                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0" id="two-tab"-->
+<!--                            data-bs-toggle="tab" data-bs-target="#two" type="button" role="tab" aria-controls="two"-->
+<!--                            aria-selected="false">Web development</button>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-6 col-xxl-7">-->
+<!--                          <p class="text-white text-opacity-70 mb-0">-->
+<!--                            When selecting a web design agency, it's essential to consider its reputation, experience,-->
+<!--                            and-->
+<!--                            the-->
+<!--                            specific needs of your project.-->
+<!--                          </p>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </li>-->
+<!--                    <li-->
+<!--                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"-->
+<!--                      role="presentation">-->
+<!--                      <div class="row w-100 align-items-center gx-3">-->
+<!--                        <div class="col-lg-6 col-xxl-5">-->
+<!--                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0"-->
+<!--                            id="three-tab" data-bs-toggle="tab" data-bs-target="#three" type="button" role="tab"-->
+<!--                            aria-controls="three" aria-selected="false">Content creation</button>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-6 col-xxl-7">-->
+<!--                          <p class="text-white text-opacity-70 mb-0">-->
+<!--                            When selecting a web design agency, it's essential to consider its reputation, experience,-->
+<!--                            and-->
+<!--                            the-->
+<!--                            specific needs of your project.-->
+<!--                          </p>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </li>-->
+<!--                    <li-->
+<!--                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"-->
+<!--                      role="presentation">-->
+<!--                      <div class="row w-100 align-items-center gx-3">-->
+<!--                        <div class="col-lg-6 col-xxl-5">-->
+<!--                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0"-->
+<!--                            id="four-tab" data-bs-toggle="tab" data-bs-target="#four" type="button" role="tab"-->
+<!--                            aria-controls="four" aria-selected="false">Motion & 3d modeling</button>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-6 col-xxl-7">-->
+<!--                          <p class="text-white text-opacity-70 mb-0">-->
+<!--                            When selecting a web design agency, it's essential to consider its reputation, experience,-->
+<!--                            and-->
+<!--                            the-->
+<!--                            specific needs of your project.-->
+<!--                          </p>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </li>-->
+<!--                  </ul>-->
+<!--                  <a href="projects.html" class="btn border border-white border-opacity-25" data-aos="fade-up"-->
+<!--                    data-aos-delay="300" data-aos-duration="1000">-->
+<!--                    <span class="btn-text">See our Work</span>-->
+<!--                    <iconify-icon icon="lucide:arrow-up-right"-->
+<!--                      class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>-->
+<!--                  </a>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </section>-->
 
     <!--  Why choose us Section -->
     <section class="why-choose-us py-5 py-lg-11 py-xl-12">
@@ -498,15 +394,13 @@
               <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
                 data-aos-duration="1000">
                 <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">04</span>
+                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">03</span>
                 <hr class="border-line">
                 <span class="badge text-bg-dark">About us</span>
               </div>
-              <h2 class="mb-0" data-aos="fade-right" data-aos-delay="200" data-aos-duration="1000">Why choose us</h2>
-              <p class="mb-0 fs-5" data-aos="fade-right" data-aos-delay="300" data-aos-duration="1000">We blend
-                creativity with strategy to craft unique digital experiences that make an
-                impact.
-                With a focus on innovation, attention to details.</p>
+                <h2 class="mb-0" data-aos="fade-right" data-aos-delay="200" data-aos-duration="1000">Why choose us?</h2>
+                <p class="mb-0 fs-5" data-aos="fade-right" data-aos-delay="300" data-aos-duration="1000">Guaranteed best
+                    prices, instant delivery and excellent customer support when purchasing festival tickets.</p>
             </div>
           </div>
           <div class="col-xl-9 col-xxl-8">
@@ -528,20 +422,19 @@
                         <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-line-duotone"
                               class="fs-6 text-dark"></iconify-icon></a></li>
                       </ul>
-                      <p class="mb-0 fs-6 text-dark">The team exceeded our expectations with a stunning brand identity.
-                      </p>
+                      <p class="mb-0 fs-6 text-dark">Fast and hassle-free ticket purchase with instant e-ticket delivery.</p>
                     </div>
                     <div class="position-relative z-1">
                       <div class="pb-6 border-bottom">
-                        <h2 class="mb-0">98.6%</h2>
+                        <h2 class="mb-0">99%</h2>
                         <p class="mb-0">Customer satisfaction</p>
                       </div>
                       <div class="hstack gap-6 pt-6">
                         <img src="../assets/images/profile/avatar-1.png" alt=""
                           class="img-fluid rounded-circle overflow-hidden flex-shrink-0" width="64" height="64">
                         <div>
-                          <h5 class="mb-0">Wade Warren</h5>
-                          <p class="mb-0">Bank of America</p>
+                          <h5 class="mb-0">Kovács Eszter</h5>
+                          <p class="mb-0">Budapest</p>
                         </div>
                       </div>
                     </div>
@@ -560,8 +453,8 @@
                   <div class="card bg-dark">
                     <div class="card-body d-flex flex-column gap-7">
                       <div>
-                        <h2 class="mb-0 text-white">500+</h2>
-                        <p class="mb-0 text-white text-opacity-70">Successful projects completed</p>
+                        <h2 class="mb-0 text-white">25+</h2>
+                        <p class="mb-0 text-white text-opacity-70">Partners</p>
                       </div>
                       <ul class="d-flex align-items-center mb-0">
                         <li>
@@ -600,15 +493,14 @@
                     class="border rounded-circle round-490 d-block position-absolute top-0 start-50 translate-middle"></span>
                   <div class="card-body d-flex flex-column justify-content-between">
                     <div>
-                      <h2 class="mb-0">238+</h2>
-                      <p class="mb-0 text-dark">Brands served worldwide</p>
+                      <h2 class="mb-0">0%</h2>
+                      <p class="mb-0 text-dark">Transaction fee</p>
                     </div>
                     <div class="d-flex flex-column gap-3">
                       <a href="index.html" class="logo-dark">
-                        <img src="../assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
+                        <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
                       </a>
-                      <p class="mb-0 fs-5 text-dark">Our global reach allows us to create unique, culturally relevant
-                        designs for businesses across different industries.</p>
+                      <p class="mb-0 fs-5 text-dark">No hidden costs - all ticket prices are final, without transaction fees.</p>
                     </div>
                   </div>
                   <span
@@ -630,9 +522,9 @@
               <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
                 data-aos-duration="1000">
                 <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">05</span>
+                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">04</span>
                 <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">Testimonial</span>
+                <span class="badge text-bg-dark">Reviews</span>
               </div>
             </div>
             <div class="col-xl-8 col-xxl-7">
@@ -640,9 +532,9 @@
                 <div class="col-xxl-8">
                   <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
                     data-aos-duration="1000">
-                    <h2 class="mb-0">Stories from clients</h2>
-                    <p class="fs-5 mb-0 text-opacity-70">Real experiences, genuine feedback—discover how our creative
-                      solutions have transformed brands and elevated businesses.</p>
+                      <h2 class="mb-0">Our customers' reviews</h2>
+                      <p class="fs-5 mb-0 text-opacity-70">Read what those who have already purchased festival tickets
+                          from us say about us.</p>
                   </div>
                 </div>
               </div>
@@ -654,14 +546,14 @@
                 <div class="card-body d-flex flex-column gap-5 gap-xl-11 justify-content-between">
                   <div class="d-flex flex-column gap-4">
                     <p class="mb-0">Hear from them</p>
-                    <h4 class="mb-0">Our website redesign was flawless. They understood our vision perfectly!</h4>
+                    <h4 class="mb-0">The ticket purchase was fast and seamless, I received my e-ticket immediately!</h4>
                   </div>
                   <div class="hstack gap-3">
                     <img src="../assets/images/testimonial/testimonial-1.jpg" alt=""
                       class="img-fluid rounded-circle overflow-hidden flex-shrink-0" width="60" height="60">
                     <div>
-                      <h5 class="mb-1 fw-normal">Albert Flores</h5>
-                      <p class="mb-0">MasterCard</p>
+                      <h5 class="mb-1 fw-normal">Nagy Adrián</h5>
+                      <p class="mb-0">Debrecen</p>
                     </div>
                   </div>
                 </div>
@@ -672,8 +564,8 @@
                 <div class="card-body d-flex flex-column gap-5 gap-xl-11 justify-content-between">
                   <div class="d-flex flex-column gap-4">
                     <p class="mb-0 text-white text-opacity-70">Hear from them</p>
-                    <h4 class="mb-0 text-white pe-xl-2">From concept to execution, they delivered outstanding results.
-                      Highly recommend their expertise!</h4>
+                    <h4 class="mb-0 text-white pe-xl-2">I found the best prices here,
+                        and the customer service was excellent when I had a question.</h4>
                     <div class="hstack gap-2">
                       <ul class="list-unstyled mb-0 hstack gap-1">
                         <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
@@ -684,10 +576,10 @@
                               class="fs-6 text-white"></iconify-icon></a></li>
                         <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-white"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-line-duotone"
+                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-white"></iconify-icon></a></li>
                       </ul>
-                      <h6 class="mb-0 text-white fw-medium">4.0</h6>
+                      <h6 class="mb-0 text-white fw-medium">5.0</h6>
                     </div>
                   </div>
                   <div class="d-flex align-items-center justify-content-between">
@@ -695,8 +587,8 @@
                       <img src="../assets/images/testimonial/testimonial-2.jpg" alt=""
                         class="img-fluid rounded-circle overflow-hidden flex-shrink-0" width="60" height="60">
                       <div>
-                        <h5 class="mb-1 fw-normal text-white">Robert Fox</h5>
-                        <p class="mb-0 text-white text-opacity-70">Mitsubishi</p>
+                        <h5 class="mb-1 fw-normal text-white">Horváth Béla</h5>
+                        <p class="mb-0 text-white text-opacity-70">Szeged</p>
                       </div>
                     </div>
                     <span><img src="../assets/images/testimonial/quete.svg" alt="quete"
@@ -710,14 +602,14 @@
                 <div class="card-body d-flex flex-column gap-5 gap-xl-11 justify-content-between">
                   <div class="d-flex flex-column gap-4">
                     <p class="mb-0">Hear from them</p>
-                    <h4 class="mb-0">Super smooth process with incredible results. highly recommend!</h4>
+                    <h4 class="mb-0">I've purchased tickets here several times, everything was always perfect, highly recommend!</h4>
                   </div>
                   <div class="hstack gap-3">
                     <img src="../assets/images/testimonial/testimonial-3.jpg" alt=""
                       class="img-fluid rounded-circle overflow-hidden flex-shrink-0" width="60" height="60">
                     <div>
-                      <h5 class="mb-1 fw-normal">Jenny Wilson</h5>
-                      <p class="mb-0">Pizza Hut</p>
+                      <h5 class="mb-1 fw-normal">Tóth Zsuzsa</h5>
+                      <p class="mb-0">Pécs</p>
                     </div>
                   </div>
                 </div>
@@ -727,672 +619,10 @@
         </div>
       </div>
     </section>
-
-    <!--  Meet our team Section -->
-    <section class="meet-our-team py-5 py-lg-11 py-xl-12">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-11">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">06</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">The team</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">Meet our team</h2>
-                    <p class="fs-5 mb-0 text-opacity-70">Our team is committed to redefining digital experiences through
-                      innovative web solutions while fostering a diverse and collaborative environment.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="meet-team d-flex flex-column gap-4" data-aos="fade-up" data-aos-delay="100"
-                data-aos-duration="1000">
-                <div class="meet-team-img position-relative overflow-hidden">
-                  <img src="../assets/images/team/team-img-1.jpg" alt="team-img" class="img-fluid w-100">
-                  <div class="meet-team-overlay p-7 d-flex flex-column justify-content-end">
-                    <ul class="social list-unstyled mb-0 hstack gap-2 justify-content-end">
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-twitter.svg" alt="twitter"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-be.svg" alt="be"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-linkedin.svg" alt="linkedin"></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="meet-team-details">
-                  <h4 class="mb-0">Martha Finley</h4>
-                  <p class="mb-0">Creative Director</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="meet-team d-flex flex-column gap-4" data-aos="fade-up" data-aos-delay="200"
-                data-aos-duration="1000">
-                <div class="meet-team-img position-relative overflow-hidden">
-                  <img src="../assets/images/team/team-img-2.jpg" alt="team-img" class="img-fluid w-100">
-                  <div class="meet-team-overlay p-7 d-flex flex-column justify-content-end">
-                    <ul class="social list-unstyled mb-0 hstack gap-2 justify-content-end">
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-twitter.svg" alt="twitter"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-be.svg" alt="be"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-linkedin.svg" alt="linkedin"></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="meet-team-details">
-                  <h4 class="mb-0">Floyd Miles</h4>
-                  <p class="mb-0">Marketing Strategist</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="meet-team d-flex flex-column gap-4" data-aos="fade-up" data-aos-delay="300"
-                data-aos-duration="1000">
-                <div class="meet-team-img position-relative overflow-hidden">
-                  <img src="../assets/images/team/team-img-3.jpg" alt="team-img" class="img-fluid w-100">
-                  <div class="meet-team-overlay p-7 d-flex flex-column justify-content-end">
-                    <ul class="social list-unstyled mb-0 hstack gap-2 justify-content-end">
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-twitter.svg" alt="twitter"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-be.svg" alt="be"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-linkedin.svg" alt="linkedin"></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="meet-team-details">
-                  <h4 class="mb-0">Glenna Snyder</h4>
-                  <p class="mb-0">Lead Designer</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="meet-team d-flex flex-column gap-4" data-aos="fade-up" data-aos-delay="400"
-                data-aos-duration="1000">
-                <div class="meet-team-img position-relative overflow-hidden">
-                  <img src="../assets/images/team/team-img-4.jpg" alt="team-img" class="img-fluid w-100">
-                  <div class="meet-team-overlay p-7 d-flex flex-column justify-content-end">
-                    <ul class="social list-unstyled mb-0 hstack gap-2 justify-content-end">
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-twitter.svg" alt="twitter"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-be.svg" alt="be"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-linkedin.svg" alt="linkedin"></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="meet-team-details">
-                  <h4 class="mb-0">Albert Flores</h4>
-                  <p class="mb-0">UX/UI Developer</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Pricing Section -->
-    <section class="pricing-section py-5 py-lg-11 py-xl-12 bg-light-gray">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-10">
-          <div class="d-flex flex-column gap-5 gap-xl-11">
-            <div class="row gap-7 gap-xl-0">
-              <div class="col-xl-4 col-xxl-4">
-                <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                  data-aos-duration="1000">
-                  <span
-                    class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">07</span>
-                  <hr class="border-line bg-white">
-                  <span class="badge text-bg-dark">Pricing</span>
-                </div>
-              </div>
-              <div class="col-xl-8 col-xxl-7">
-                <div class="row">
-                  <div class="col-xxl-8">
-                    <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                      data-aos-duration="1000">
-                      <h2 class="mb-0">Affordable pricing</h2>
-                      <p class="fs-5 mb-0 text-opacity-70">A glimpse into our creativity—exploring innovative designs,
-                        successful collaborations, and transformative digital experiences.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-6 col-xl-4 mb-7 mb-xl-0 d-flex align-items-stretch">
-                <div class="card w-100" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
-                  <div class="card-body p-7 p-xxl-5 d-flex flex-column gap-8">
-                    <div class="d-flex flex-column gap-6">
-                      <h5 class="mb-0 fw-medium">Launch</h5>
-                      <div class="hstack gap-2">
-                        <h3 class="mb-0">$699</h3>
-                        <p class="mb-0">/month</p>
-                      </div>
-                      <p class="mb-0">Ideal for startups and small businesses taking their first steps online.</p>
-                    </div>
-                    <div class="pt-8 border-top d-flex flex-column gap-6">
-                      <h6 class="mb-0 fw-normal">What’s Included:</h6>
-                      <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Competitive research & insights</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Wireframing and prototyping</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Basic tracking setup (Google Analytics, etc.)</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Standard contact form integration</h6>
-                        </li>
-                      </ul>
-                    </div>
-                    <a href="" class="btn w-100 justify-content-center">
-                      <span class="btn-text">Subscribe now</span>
-                      <iconify-icon icon="lucide:arrow-up-right"
-                        class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xl-4 mb-7 mb-xl-0 d-flex align-items-stretch">
-                <div class="card w-100" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                  <div class="card-body p-7 p-xxl-5 d-flex flex-column gap-8">
-                    <div class="d-flex flex-column gap-6">
-                      <div class="hstack gap-3">
-                        <h5 class="mb-0 fw-medium">Scale</h5>
-                        <span class="badge text-bg-dark hstack gap-2"><iconify-icon icon="lucide:flame"
-                            class="fs-5"></iconify-icon>Most popular</span>
-                      </div>
-                      <div class="hstack gap-2">
-                        <h3 class="mb-0 text-opacity-50 text-dark"><del>$2,199</del></h3>
-                        <h3 class="mb-0">$1,699</h3>
-                        <p class="mb-0">/month</p>
-                      </div>
-                      <p class="mb-0">Perfect for growing brands needing more customization and flexibility.</p>
-                    </div>
-                    <div class="pt-8 border-top d-flex flex-column gap-6">
-                      <h6 class="mb-0 fw-normal">What’s Included:</h6>
-                      <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Everything in the Launch Plan</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Custom design for up to 10 pages</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Seamless social media integration</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">SEO enhancements for key pages</h6>
-                        </li>
-                      </ul>
-                    </div>
-                    <a href="" class="btn w-100 justify-content-center">
-                      <span class="btn-text">Subscribe now</span>
-                      <iconify-icon icon="lucide:arrow-up-right"
-                        class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xl-4 mb-7 mb-xl-0 d-flex align-items-stretch">
-                <div class="card w-100" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
-                  <div class="card-body p-7 p-xxl-5 d-flex flex-column gap-8">
-                    <div class="d-flex flex-column gap-6">
-                      <h5 class="mb-0 fw-medium">Elevate</h5>
-                      <div class="hstack gap-2">
-                        <h3 class="mb-0">$3,499</h3>
-                        <p class="mb-0">/month</p>
-                      </div>
-                      <p class="mb-0">Best suited for established businesses wanting a fully tailored experience.</p>
-                    </div>
-                    <div class="pt-8 border-top d-flex flex-column gap-6">
-                      <h6 class="mb-0 fw-normal">What’s Included:</h6>
-                      <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Everything in the Scale Plan</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">E-commerce functionality (if needed)</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Branded email template design</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Priority support for six months after launch</h6>
-                        </li>
-                      </ul>
-                    </div>
-                    <a href="" class="btn w-100 justify-content-center">
-                      <span class="btn-text">Subscribe now</span>
-                      <iconify-icon icon="lucide:arrow-up-right"
-                        class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex flex-column gap-8" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
-            <p class="fs-5 mb-0 text-center text-dark">More than 320 trusted partners & clients</p>
-            <div class="marquee w-100 d-flex align-items-center overflow-hidden">
-              <div class="marquee-content d-flex align-items-center gap-8">
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-1.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-2.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-3.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-4.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-5.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-1.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-2.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-3.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-4.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-5.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-1.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-2.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-3.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-4.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-5.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-1.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-2.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-3.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-4.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-5.svg" alt="partners" class="img-fluid">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  FAQ Section -->
-    <section class="faq py-5 py-lg-11 py-xl-12">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-11">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">08</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">FAQs</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-9">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">Frequently asked questions</h2>
-                    <p class="fs-5 mb-0 text-opacity-70">Discover how we tailor our solutions to meet unique needs,
-                      delivering impactful strategies, personalized branding, and exceptional customer experiences.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row justify-content-end">
-            <div class="col-xl-8">
-              <div class="accordion accordion-flush" id="accordionFlushExample" data-aos="fade-up" data-aos-delay="200"
-                data-aos-duration="1000">
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed fs-8 fw-bold" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                      What services does your agency offer?
-                    </button>
-                  </h2>
-                  <div id="flush-collapseOne" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body pt-0 fs-5 text-dark">Yes, we provide post-launch support to ensure smooth
-                      implementation and offer ongoing maintenance packages for clients needing regular updates or
-                      technical assistance.</div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed fs-8 fw-bold" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                      How long does a typical project take?
-                    </button>
-                  </h2>
-                  <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body pt-0 fs-5 text-dark">Yes, we provide post-launch support to ensure smooth
-                      implementation and offer ongoing maintenance packages for clients needing regular updates or
-                      technical assistance.</div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed fs-8 fw-bold" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                      Do you offer custom designs, or do you use templates?
-                    </button>
-                  </h2>
-                  <div id="flush-collapseThree" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body pt-0 fs-5 text-dark">Yes, we provide post-launch support to ensure smooth
-                      implementation and offer ongoing maintenance packages for clients needing regular updates or
-                      technical assistance.</div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed fs-8 fw-bold" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                      What’s the cost of a project?
-                    </button>
-                  </h2>
-                  <div id="flush-collapseFour" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body pt-0 fs-5 text-dark">Yes, we provide post-launch support to ensure smooth
-                      implementation and offer ongoing maintenance packages for clients needing regular updates or
-                      technical assistance.</div>
-                  </div>
-                </div>
-                <div class="accordion-item border-bottom">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed fs-8 fw-bold" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-                      Do you provide ongoing support after project completion?
-                    </button>
-                  </h2>
-                  <div id="flush-collapseFive" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body pt-0 fs-5 text-dark">Yes, we provide post-launch support to ensure smooth
-                      implementation and offer ongoing maintenance packages for clients needing regular updates or
-                      technical assistance.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Recent news Section -->
-    <section class="Recent-news bg-light-gray py-5 py-lg-11 py-xl-12">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-11">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">09</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">Resources</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">Recent news</h2>
-                    <p class="fs-5 mb-0 text-opacity-70">Explore the latest trends, bold projects, and creative insights
-                      from our agency—shaping the future of branding, digital experiences, and storytelling.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xl-6 mb-7 mb-xl-0">
-              <div class="resources d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                data-aos-duration="1000">
-                <a href="blog-detail.html"
-                  class="resources-img resources-img-first position-relative overflow-hidden d-block">
-                  <img src="../assets/images/resources/resources-1.jpg" alt="resources" class="img-fluid">
-                </a>
-                <div class="resources-details">
-                  <p class="mb-0">Dec 24, 2025</p>
-                  <h4 class="mb-0">A campaign that connects</h4>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="resources d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="200"
-                data-aos-duration="1000">
-                <a href="blog-detail.html" class="resources-img position-relative overflow-hidden d-block">
-                  <img src="../assets/images/resources/resources-2.jpg" alt="resources" class="img-fluid">
-                </a>
-                <div class="resources-details">
-                  <p class="mb-0">Dec 24, 2025</p>
-                  <h4 class="mb-0">An breaking boundaries our latest brand redesign</h4>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="resources d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="300"
-                data-aos-duration="1000">
-                <a href="blog-detail.html" class="resources-img position-relative overflow-hidden d-block">
-                  <img src="../assets/images/resources/resources-3.jpg" alt="resources" class="img-fluid">
-                </a>
-                <div class="resources-details">
-                  <p class="mb-0">Dec 24, 2025</p>
-                  <h4 class="mb-0">Recognized for design</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Get in touch Section -->
-    <section class="get-in-touch py-5 py-lg-11 py-xl-12">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-10">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">10</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">Contact us</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">Get in touch</h2>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row justify-content-between gap-7 gap-xl-0">
-            <div class="col-xl-3">
-              <p class="mb-0 fs-5" data-aos="fade-right" data-aos-delay="100" data-aos-duration="1000">Let’s collaborate
-                and create something amazing! Tell me about your project—I’m all
-                ears.</p>
-            </div>
-            <div class="col-xl-8">
-              <form class="d-flex flex-column gap-7" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                <div>
-                  <input type="text" class="form-control border-bottom border-dark" id="formGroupExampleInput"
-                    placeholder="Name">
-                </div>
-                <div>
-                  <input type="email" class="form-control border-bottom border-dark" id="exampleInputEmail1"
-                    placeholder="Email" aria-describedby="emailHelp">
-                </div>
-                <div>
-                  <textarea class="form-control border-bottom border-dark" id="exampleFormControlTextarea1"
-                    placeholder="Tell us about your project" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn w-100 justify-content-center">
-                  <span class="btn-text">Submit message</span>
-                  <iconify-icon icon="lucide:arrow-up-right"
-                    class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </div>
 
-  <footer class="footer bg-dark py-5 py-lg-11 py-xl-12">
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-5 mb-8 mb-xl-0">
-          <div class="d-flex flex-column gap-8 pe-xl-5">
-            <h2 class="mb-0 text-white">Build something together?</h2>
-            <div class="d-flex flex-column gap-2">
-              <a href="https://www.wrappixel.com/" target="_blank" class="link-hover hstack gap-3 text-white fs-5">
-                <iconify-icon icon="lucide:arrow-up-right" class="fs-7 text-primary"></iconify-icon>
-                info@wrappixel.com
-              </a>
-              <a href="https://maps.app.goo.gl/hpDp81fqzGt5y4bC8" target="_blank"
-                class="link-hover hstack gap-3 text-white fs-5">
-                <iconify-icon icon="lucide:map-pin" class="fs-7 text-primary"></iconify-icon>
-                info@wrappixel.com
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
-          <ul class="footer-menu list-unstyled mb-0 d-flex flex-column gap-2">
-            <li><a class="link-hover fs-5 text-white" href="index.html">Home</a></li>
-            <li><a class="link-hover fs-5 text-white" href="about-us.php">About</a></li>
-            <li><a class="link-hover fs-5 text-white" id="services" href="#services">Services</a></li>
-            <li><a class="link-hover fs-5 text-white" href="projects.html">Work</a></li>
-            <li><a class="link-hover fs-5 text-white" href="terms-and-conditions.html">Terms</a></li>
-            <li><a class="link-hover fs-5 text-white" href="privacy-policy.html">Privacy Policy</a></li>
-            <li><a class="link-hover fs-5 text-white" href="404.php">Error 404</a></li>
-          </ul>
-        </div>
-        <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
-          <ul class="footer-menu list-unstyled mb-0 d-flex flex-column gap-2">
-            <li><a class="link-hover fs-5 text-white" href="#!">Facebook</a></li>
-            <li><a class="link-hover fs-5 text-white" href="#!">Instagram</a></li>
-            <li><a class="link-hover fs-5 text-white" href="#!">Twitter</a></li>
-          </ul>
-        </div>
-        <div class="col-md-4 col-xl-3 mb-8 mb-xl-0">
-          <p class="mb-0 text-white text-opacity-70 text-md-end">© Studiova copyright 2025</p>
-        </div>
-      </div>
-    </div>
-  <p class="mb-0 text-white text-opacity-70 text-md-center mt-10">Distributed by <a class="text-white" href="https://www.themewagon.com" target="_blank">ThemeWagon</a></p>
-  </footer>
+  <!-- Footer section -->
+  <?php include 'footer.php'; ?>
 
   <div class="get-template hstack gap-2">
     <button class="btn bg-primary p-2 round-52 rounded-circle hstack justify-content-center flex-shrink-0"
