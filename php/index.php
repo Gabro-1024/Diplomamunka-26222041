@@ -38,7 +38,7 @@
           </div>
           <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
             <h1 class="mb-0 fs-16 text-white lh-1">Tickets @ Gábor</h1>
-            <a href="javascript:void(0)" class="p-1 ps-7 bg-primary rounded-pill">
+            <a href="about-us.php" class="p-1 ps-7 bg-primary rounded-pill">
               <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
                 <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
               </span>
@@ -223,7 +223,7 @@
             <div class="item">
               <div class="portfolio d-flex flex-column gap-6">
                 <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-6.jpg" alt="" class="img-fluid">
+                  <img src="../assets/images/portfolio/portfolio-img-5.jpg" alt="" class="img-fluid">
                   <div class="portfolio-overlay">
                     <a href="projects-detail.html"
                       class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
@@ -419,7 +419,7 @@
                               class="fs-6 text-dark"></iconify-icon></a></li>
                         <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-dark"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-line-duotone"
+                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-dark"></iconify-icon></a></li>
                       </ul>
                       <p class="mb-0 fs-6 text-dark">Fast and hassle-free ticket purchase with instant e-ticket delivery.</p>
@@ -497,7 +497,7 @@
                       <p class="mb-0 text-dark">Transaction fee</p>
                     </div>
                     <div class="d-flex flex-column gap-3">
-                      <a href="index.html" class="logo-dark">
+                      <a href="index.php" class="logo-dark">
                         <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
                       </a>
                       <p class="mb-0 fs-5 text-dark">No hidden costs - all ticket prices are final, without transaction fees.</p>
