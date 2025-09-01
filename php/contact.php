@@ -29,14 +29,14 @@
               <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
                 data-aos-duration="1000">
                 <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                <p class="mb-0 text-white fs-5 text-opacity-70">Ready to <span class="text-primary">start
-                    something</span> great? Reach out we’d love to hear from you.</p>
+                <p class="mb-0 text-white fs-5 text-opacity-70 p-3 rounded-3" style="background-color: rgba(0,0,0,0.4); backdrop-filter: blur(5px);">
+                    Ready to <span class="text-primary">start something</span> great? Reach out we’d love to hear from you.</p>
               </div>
             </div>
           </div>
           <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
             <h1 class="mb-0 fs-16 text-white lh-1">Contact</h1>
-            <a href="javascript:void(0)" class="p-1 ps-7 bg-primary rounded-pill">
+            <a href="sign-up.php" class="p-1 ps-7 bg-primary rounded-pill">
               <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
                 <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
               </span>
@@ -74,7 +74,7 @@
           <div class="row justify-content-between gap-7 gap-xl-0">
             <div class="col-xl-3">
               <p class="mb-0 fs-5" data-aos="fade-right" data-aos-delay="100" data-aos-duration="1000">Let’s collaborate
-                and create something amazing! Tell me about your project—I’m all
+                and create something amazing! Tell us about your project—We’re all
                 ears.</p>
             </div>
             <div class="col-xl-8">
