@@ -51,8 +51,11 @@
         <div class="row justify-content-center">
           <div class="col-lg-10">
             <div class="accordion accordion-flush" id="faqAccordion">
-              <h2 class="mb-5 text-center">Frequently Asked Questions</h2>
-              <p class="lead text-center mb-6">Find answers to common questions about ticket purchases, events, and more.</p>
+              <div class="text-center mb-6">
+                <span class="badge badge-accent-blue fs-6 px-3 py-2 mb-3">FAQ</span>
+                <h2 class="mb-3">Frequently Asked Questions</h2>
+                <p class="lead mb-0">Find answers to common questions about ticket purchases, events, and more.</p>
+              </div>
               
               <div class="accordion-item mb-4 border-0 rounded-3 overflow-hidden shadow-sm" data-aos="fade-up" data-aos-delay="100">
                 <h3 class="accordion-header">
@@ -77,7 +80,7 @@
                 </h3>
                 <div id="faqTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                   <div class="accordion-body p-4 pt-0">
-                    <p class="mb-0">First, please check your spam or junk folder. If you still can't find your ticket, contact our customer service at <a href="mailto:info@ticketsatgabor.hu" class="text-primary">info@ticketsatgabor.hu</a> or call us at <a href="tel:+36301234567" class="text-primary">+36-30-123-4567</a>. Have your order number ready for faster assistance.</p>
+                    <p class="mb-0">First, please check your spam or junk folder. If you still can't find your ticket, contact our customer service at <a href="mailto:info@ticketsatgabor.hu" class="link-accent-blue">info@ticketsatgabor.hu</a> or call us at <a href="tel:+36301234567" class="link-accent-blue">+36-30-123-4567</a>. Have your order number ready for faster assistance.</p>
                   </div>
                 </div>
               </div>
@@ -128,7 +131,7 @@
             <div class="mt-8 text-center" data-aos="fade-up" data-aos-delay="350">
               <h3 class="mb-4">Still have questions?</h3>
               <p class="mb-4">Can't find the answer you're looking for? Our support team is here to help you.</p>
-              <a href="contact.php" class="btn btn-primary btn-lg">Contact Support</a>
+              <a href="contact.php" class="btn btn-accent-blue btn-lg">Contact Support</a>
             </div>
           </div>
         </div>

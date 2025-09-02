@@ -10,6 +10,7 @@
   --bs-blue: #FF6F61;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
+  --bs-accent-blue: #2210FF;
   --bs-pink: #d63384;
   --bs-red: #dc3545;
   --bs-orange: #fd7e14;
@@ -39,6 +40,7 @@
   --bs-light-gray: #F4F8FA;
   --bs-primary-rgb: 255, 111, 97;
   --bs-secondary-rgb: 31, 42, 46;
+  --bs-accent-blue-rgb: 34, 16, 255;
   --bs-light-rgb: 31, 42, 46;
   --bs-dark-rgb: 31, 42, 46;
   --bs-muted-rgb: 31, 42, 46;
@@ -16666,7 +16668,7 @@ a:hover {
 }
 
 .link-hover:hover {
-  color: var(--bs-primary) !important;
+  color: var(--bs-accent-blue) !important;
 }
 
 ul {
@@ -16789,6 +16791,61 @@ ul {
 .btn-dark:hover {
   color: var(--bs-dark);
   background-color: var(--bs-white);
+}
+
+/* Custom Blue Accent Color Classes */
+.text-accent-blue {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-accent-blue-rgb), var(--bs-text-opacity)) !important;
+}
+
+.bg-accent-blue {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-accent-blue-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.border-accent-blue {
+  --bs-border-opacity: 1;
+  border-color: rgba(var(--bs-accent-blue-rgb), var(--bs-border-opacity)) !important;
+}
+
+.btn-accent-blue {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--bs-accent-blue);
+  --bs-btn-border-color: var(--bs-accent-blue);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #1a0acc;
+  --bs-btn-hover-border-color: #1a0acc;
+  --bs-btn-focus-shadow-rgb: 34, 16, 255;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #1a0acc;
+  --bs-btn-active-border-color: #1a0acc;
+}
+
+.badge-accent-blue {
+  color: #fff;
+  background-color: var(--bs-accent-blue);
+}
+
+.link-accent-blue {
+  color: var(--bs-accent-blue) !important;
+  text-decoration-color: var(--bs-accent-blue) !important;
+}
+
+.link-accent-blue:hover, .link-accent-blue:focus {
+  color: #1a0acc !important;
+  text-decoration-color: #1a0acc !important;
+}
+
+/* Blue accent hover effects */
+.hover-accent-blue:hover {
+  color: var(--bs-accent-blue) !important;
+  transition: color 0.3s ease;
+}
+
+.hover-bg-accent-blue:hover {
+  background-color: var(--bs-accent-blue) !important;
+  transition: background-color 0.3s ease;
 }
 
 /*# sourceMappingURL=styles.css.map */
