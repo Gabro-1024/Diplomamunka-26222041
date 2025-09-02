@@ -58,7 +58,7 @@
               <span
                 class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">01</span>
               <hr class="border-line">
-              <span class="badge text-bg-dark">Statistics</span>
+              <span class="badge badge-accent-blue">Statistics</span>
             </div>
           </div>
           <div class="col-xl-8 col-xxl-7">
@@ -121,7 +121,7 @@
                 <span
                   class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">02</span>
                 <hr class="border-line">
-                <span class="badge text-bg-dark">Events</span>
+                <span class="badge badge-accent-blue">Events</span>
               </div>
             </div>
             <div class="col-xl-8 col-xxl-7">
@@ -396,7 +396,7 @@
                 <span
                   class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">03</span>
                 <hr class="border-line">
-                <span class="badge text-bg-dark">About us</span>
+                <span class="badge badge-accent-blue">About us</span>
               </div>
                 <h2 class="mb-0" data-aos="fade-right" data-aos-delay="200" data-aos-duration="1000">Why choose us?</h2>
                 <p class="mb-0 fs-5" data-aos="fade-right" data-aos-delay="300" data-aos-duration="1000">Guaranteed best
@@ -524,7 +524,7 @@
                 <span
                   class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">04</span>
                 <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">Reviews</span>
+                <span class="badge badge-accent-blue">Reviews</span>
               </div>
             </div>
             <div class="col-xl-8 col-xxl-7">

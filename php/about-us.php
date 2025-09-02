@@ -61,10 +61,18 @@
                         <div class="d-flex flex-column gap-4 gap-lg-5" data-aos="fade-up" data-aos-delay="200"
                              data-aos-duration="1000">
                             <p class="mb-0 fs-5 text-dark">
-                                Your gateway to the most exciting festivals and events. We started with a simple mission: to make festival ticket purchasing easy, reliable, and enjoyable. What began as a passion project has grown into Hungary's leading festival ticket provider, connecting thousands of music lovers with their favorite events.
+                                Your gateway to the most exciting festivals and events. We started with a simple
+                                mission: to make festival ticket purchasing easy, reliable, and enjoyable. What began as
+                                a passion project has grown into Hungary's leading festival ticket provider, connecting
+                                thousands of music lovers with their favorite events.
                             </p>
                             <p class="mb-0 fs-5 text-dark">
-                                At Tickets at Gábor, we believe that everyone deserves to experience the magic of live events. That's why we've partnered with the most popular festivals across Hungary and beyond to bring you the best selection of tickets. Our team works tirelessly to ensure a seamless purchasing experience, from browsing events to receiving your e-tickets instantly. We're not just selling tickets – we're creating opportunities for unforgettable memories.
+                                At Tickets at Gábor, we believe that everyone deserves to experience the magic of live
+                                events. That's why we've partnered with the most popular festivals across Hungary and
+                                beyond to bring you the best selection of tickets. Our team works tirelessly to ensure a
+                                seamless purchasing experience, from browsing events to receiving your e-tickets
+                                instantly. We're not just selling tickets – we're creating opportunities for
+                                unforgettable memories.
                             </p>
                         </div>
                     </div>
@@ -168,10 +176,10 @@
                     <div class="col-xl-4 col-xxl-4">
                         <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
                              data-aos-duration="1000">
-                <span
-                        class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">05</span>
+                            <span
+                                    class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">05</span>
                             <hr class="border-line bg-white">
-                            <span class="badge text-bg-dark">Our team</span>
+                            <span class="badge badge-accent-blue">Our team</span>
                         </div>
                     </div>
                     <div class="col-xl-8 col-xxl-7">
