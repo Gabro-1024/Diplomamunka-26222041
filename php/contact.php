@@ -55,9 +55,9 @@
               <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
                 data-aos-duration="1000">
                 <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">10</span>
+                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">06</span>
                 <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">Contact us</span>
+                <span class="badge badge-accent-blue">Contact us</span>
               </div>
             </div>
             <div class="col-xl-8 col-xxl-7">
