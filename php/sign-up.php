@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/signup_errors.log');
+error_reporting(E_ALL);
 // Master genre list
 $allGenres = [
     'Ambient','Bass','Breakbeat','Classical','Country','Dance','Deep House','Disco','Drum & Bass','Dubstep','EDM','Electro',
@@ -104,32 +108,91 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->fetch()) {
                 $errors['email'] = 'This email is already registered.';
             } else {
+                // Generate registration token
+                $regToken = bin2hex(random_bytes(32));
+                $regTokenHash = password_hash($regToken, PASSWORD_DEFAULT);
+                
+                // Set token expiration (24 hours from now)
+                $tokenExpires = (new DateTime())->modify('+24 hours')->format('Y-m-d H:i:s');
+                
                 // Hash password
                 $hashedPassword = password_hash($formData['password'], PASSWORD_DEFAULT);
 
-                // Insert user
-                $stmt = $pdo->prepare('
-                    INSERT INTO users (first_name, last_name, email, password_hash, city, birth_date, phone_number, role)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                ');
+                // Start transaction
+                $pdo->beginTransaction();
+                
+                try {
+                    // Insert user with verification token
+                    $stmt = $pdo->prepare('
+                        INSERT INTO users (
+                            first_name, last_name, email, password_hash, 
+                            city, birth_date, phone_number, role, created_at,
+                            reg_token, reg_token_expires, is_verified
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+                    ');
 
-                $success = $stmt->execute([
-                    $formData['first_name'],
-                    $formData['last_name'],
-                    $formData['email'],
-                    $hashedPassword,
-                    $formData['city'] ?: null,
-                    $formData['birth_date'] ?: null,
-                    $formData['phone_number'] ?: null,
-                    $formData['role']
-                ]);
+                    try {
+                        $success = $stmt->execute([
+                            $formData['first_name'],
+                            $formData['last_name'],
+                            $formData['email'],
+                            $hashedPassword,
+                            $formData['city'] ?: null,
+                            $formData['birth_date'] ?: null,
+                            $formData['phone_number'] ?: null,
+                            $formData['role'],
+                            (new DateTime())->format('Y-m-d H:i:s'),
+                            $regTokenHash,
+                            $tokenExpires
+                        ]);
+                    } catch (PDOException $e) {
+                        error_log('Database Error: ' . $e->getMessage());
+                        error_log('SQL Query: ' . $stmt->queryString);
+                        error_log('Parameters: ' . print_r([
+                            'first_name' => $formData['first_name'],
+                            'email' => $formData['email'],
+                            'role' => $formData['role'],
+                            'created_at' => (new DateTime())->format('Y-m-d H:i:s'),
+                            'token_length' => strlen($regTokenHash),
+                            'token_expires' => $tokenExpires
+                        ], true));
+                        throw $e;
+                    }
 
-                if ($success) {
-                    // Redirect to success page or login
-                    header('Location: sign-in.php?registered=1');
-                    exit;
-                } else {
-                    $errors['general'] = 'An error occurred. Please try again.';
+                    if ($success) {
+                        $userId = $pdo->lastInsertId();
+                        
+                        // Insert user interests if any
+                        if (!empty($formData['interests'])) {
+                            $interestStmt = $pdo->prepare('INSERT INTO user_interests (user_id, style_name) VALUES (?, ?)');
+                            foreach ($formData['interests'] as $interest) {
+                                $interestStmt->execute([$userId, $interest]);
+                            }
+                        }
+                        
+                        // Include and send verification email
+                        require_once __DIR__ . '/includes/send_email.php';
+                        $emailSent = sendRegistrationEmail(
+                            $formData['email'],
+                            $formData['first_name'] . ' ' . $formData['last_name'],
+                            $regToken
+                        );
+                        
+                        if ($emailSent) {
+                            $pdo->commit();
+                            // Redirect to success page
+                            header('Location: sign-in.php?registered=1');
+                            exit;
+                        } else {
+                            throw new Exception('Failed to send verification email. Please try again later.');
+                        }
+                    } else {
+                        throw new Exception('Failed to create user account');
+                    }
+                } catch (Exception $e) {
+                    $pdo->rollBack();
+                    error_log('Registration error: ' . $e->getMessage());
+                    $errors['general'] = 'An error occurred during registration. Please try again.';
                 }
             }
         } catch (PDOException $e) {
@@ -144,6 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tickets @ Gábor - Sign Up</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
     <link rel="stylesheet" href="../assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="../assets/libs/aos-master/dist/aos.css">
@@ -175,10 +239,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </a>
 
                     <?php if (!empty($errors['general'])): ?>
-                        <div class="alert alert-danger" role="alert">
-                            <?php echo htmlspecialchars($errors['general']); ?>
-                        </div>
-                    <?php endif; ?>
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <div><?php echo htmlspecialchars($errors['general']); ?></div>
+                </div>
+            <?php endif; ?>
+            
+            <?php if (isset($_GET['registered'])): ?>
+                <div class="alert alert-success d-flex align-items-center" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <div>
+                        Registration successful! Please check your email to verify your account.
+                        <div class="small mt-1">If you don't see the email, please check your spam folder.</div>
+                    </div>
+                </div>
+            <?php endif; ?>
 
                     <form class="d-flex flex-column gap-3 needs-validation" method="post" action="sign-up.php" novalidate>
                         <div class="row g-3">
@@ -279,7 +354,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                        id="phone_number"
                                        class="form-control border-bottom <?php echo isset($errors['phone_number']) ? 'is-invalid' : ''; ?>"
                                        value="<?php echo htmlspecialchars($formData['phone_number']); ?>"
-                                       pattern="[0-9 +-]+"
+                                       pattern="[0-9 +\-]+"
                                        title="Only numbers, spaces, and + - characters are allowed">
                                 <div class="invalid-feedback">
                                     <?php echo $errors['phone_number'] ?? ''; ?>
@@ -410,7 +485,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     const firstInvalid = form.querySelector(':invalid');
                     if (firstInvalid) {
                         firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        window.scrollBy(0, -50); // Adjust scroll position slightly up
+                        window.scrollBy(0, -50);
                         firstInvalid.focus();
                     }
                 }
