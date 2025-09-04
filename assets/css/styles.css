@@ -16849,3 +16849,60 @@ ul {
 }
 
 /*# sourceMappingURL=styles.css.map */
+
+/* -------------------------------------------------
+   Custom Graphite (#333333) Utilities
+   ------------------------------------------------- */
+:root {
+  --bs-graphite: #333333;
+  --bs-graphite-rgb: 51, 51, 51;
+}
+
+.text-graphite { color: var(--bs-graphite) !important; }
+.bg-graphite { background-color: var(--bs-graphite) !important; }
+.border-graphite { border-color: var(--bs-graphite) !important; }
+.link-graphite { color: var(--bs-graphite) !important; }
+.link-graphite:hover { color: #000000 !important; }
+
+/* Button variants for graphite */
+.btn-graphite {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--bs-graphite);
+  --bs-btn-border-color: var(--bs-graphite);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #1f1f1f;
+  --bs-btn-hover-border-color: #1f1f1f;
+  --bs-btn-focus-shadow-rgb: 51, 51, 51;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #1a1a1a;
+  --bs-btn-active-border-color: #1a1a1a;
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: rgba(var(--bs-graphite-rgb), 0.65);
+  --bs-btn-disabled-border-color: rgba(var(--bs-graphite-rgb), 0.65);
+}
+
+.btn-outline-graphite {
+  --bs-btn-color: var(--bs-graphite);
+  --bs-btn-border-color: var(--bs-graphite);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--bs-graphite);
+  --bs-btn-hover-border-color: var(--bs-graphite);
+  --bs-btn-focus-shadow-rgb: 51, 51, 51;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #1f1f1f;
+  --bs-btn-active-border-color: #1f1f1f;
+  --bs-btn-disabled-color: var(--bs-graphite);
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: var(--bs-graphite);
+}
+
+/* Ensure outline-graphite behaves like Bootstrap outline variants when active/checked */
+.btn-check:checked + .btn-outline-graphite,
+.btn-check:active + .btn-outline-graphite,
+.btn-outline-graphite:active,
+.btn-outline-graphite.active,
+.show > .btn-outline-graphite.dropdown-toggle {
+  color: #fff !important;
+  background-color: var(--bs-graphite) !important;
+  border-color: var(--bs-graphite) !important;
+}
