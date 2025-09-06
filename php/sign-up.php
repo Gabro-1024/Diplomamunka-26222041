@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/includes/auth_check.php';
+redirectIfLoggedIn();
+
 ini_set('display_errors', 1);
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/signup_errors.log');

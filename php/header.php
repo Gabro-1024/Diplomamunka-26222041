@@ -1,6 +1,9 @@
 <?php
 // header.php
+require_once __DIR__ . '/includes/auth_check.php';
 $current_page = basename($_SERVER['PHP_SELF']);
+$isLoggedIn = isUserLoggedIn();
+$userName = $isLoggedIn ? $_SESSION['first_name'] ?? 'User' : '';
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -76,14 +79,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                         </a>
                                     </li>
                                 </ul>
+                                <?php if ($isLoggedIn): ?>
+                                <a href="logout.php" class="btn btn-danger text-white fs-6 px-3 py-2 hstack gap-2 align-items-center" style="background-color: #dc3545; border-color: #dc3545;">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Logout</span>
+                                </a>
+                                <?php else: ?>
                                 <div class="hstack gap-3">
-                                    <a href="sign-in.php"
-                                       class="btn btn-outline-light fs-6 bg-white px-3 py-2 text-dark w-50 hstack justify-content-center">Sign
-                                        In</a>
-                                    <a href="sign-up.php"
-                                       class="btn btn-dark text-white fs-6 bg-dark px-3 py-2 w-50 hstack justify-content-center">Sign
-                                        Up</a>
+                                    <a href="sign-in.php" class="btn btn-outline-light fs-6 bg-white px-3 py-2 text-dark w-50 hstack justify-content-center">Sign In</a>
+                                    <a href="sign-up.php" class="btn btn-dark text-white fs-6 bg-dark px-3 py-2 w-50 hstack justify-content-center">Sign Up</a>
                                 </div>
+                                <?php endif; ?>
                             </div>
                             <div>
                                 <a class="text-dark" href="tel:+381-800-123-1234">+381-800-123-1234</a>
