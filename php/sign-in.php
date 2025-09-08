@@ -1,5 +1,50 @@
 <?php
 require_once __DIR__ . '/includes/auth_check.php';
+require_once __DIR__ . '/db_connect.php';
+
+// Initialize database connection
+$pdo = db_connect();
+
+// Handle email verification if token is provided
+if (isset($_GET['verify']) && !empty($_GET['verify'])) {
+    $token = $_GET['verify'];
+    
+    try {
+        // Get all unverified users with non-expired tokens
+        $stmt = $pdo->prepare("SELECT id, reg_token, reg_token_expires FROM users WHERE is_verified = 0 AND reg_token_expires > NOW()");
+        $stmt->execute();
+        $users = $stmt->fetchAll();
+        
+        $user = null;
+        foreach ($users as $u) {
+            // Verify the token against the hashed value in the database
+            if (password_verify($token, $u['reg_token'])) {
+                $user = $u;
+                break;
+            }
+        }
+        
+        if (!$user) {
+            $verification_error = "This verification link is invalid or has expired. Please request a new one.";
+        }
+
+        if ($user) {
+            // Update user as verified and clear the token
+            $updateStmt = $pdo->prepare("UPDATE users SET is_verified = 1, reg_token = NULL WHERE id = ?");
+            $updateStmt->execute([$user['id']]);
+            
+            // Set success message
+            $verification_success = true;
+        } else {
+            // Set error message for invalid/expired token
+            $verification_error = "Invalid or expired verification link.";
+        }
+    } catch (PDOException $e) {
+        error_log("Email verification error: " . $e->getMessage());
+        $verification_error = "An error occurred during verification. Please try again later.";
+    }
+}
+
 redirectIfLoggedIn();
 ?>
 <!doctype html>
@@ -28,10 +73,28 @@ redirectIfLoggedIn();
               <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
             </a>
             
-            <?php if (isset($_GET['registered']) && $_GET['registered'] == '1'): ?>
+            <?php if (isset($verification_success) && $verification_success): ?>
             <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle-fill flex-shrink-0 me-2" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+              </svg>
+              <div>
+                Email verified successfully! You can now log in to your account.
+              </div>
+            </div>
+            <?php elseif (isset($verification_error)): ?>
+            <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </svg>
+              <div>
+                <?php echo htmlspecialchars($verification_error); ?>
+              </div>
+            </div>
+            <?php elseif (isset($_GET['registered']) && $_GET['registered'] == '1'): ?>
+            <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-info-circle-fill flex-shrink-0 me-2" viewBox="0 0 16 16">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
               </svg>
               <div>
                 Registration successful! Please check your email to verify your account.
@@ -159,8 +222,27 @@ redirectIfLoggedIn();
             window.location.href = data.redirect || 'index.php';
           }, 100);
         } else {
-          // Show only generic error message to user
-          loginError.textContent = 'Invalid email or password. Please try again.';
+          // Handle different error cases
+          let errorMessage = 'An error occurred. Please try again.';
+          
+          switch(data.code) {
+            case 'user_not_found':
+              errorMessage = 'No account found with this email. Please check your email or sign up.';
+              break;
+            case 'not_verified':
+              errorMessage = 'Please verify your email before logging in. Check your inbox.';
+              break;
+            case 'invalid_password':
+              errorMessage = 'Incorrect password. Please try again.';
+              break;
+            case 'auth_error':
+              errorMessage = 'An authentication error occurred. Please try again later.';
+              break;
+            default:
+              errorMessage = data.message || 'Invalid email or password. Please try again.';
+          }
+          
+          loginError.textContent = errorMessage;
           loginError.classList.remove('d-none');
           
           // Log the full error to console for debugging

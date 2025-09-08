@@ -117,3 +117,230 @@
 [06-Sep-2025 12:11:14 Europe/Berlin] Login attempt - User not found: farkas.gabor.vts@gmail.com
 [06-Sep-2025 12:11:14 Europe/Berlin] Login error: Invalid email or password. [Code: auth_failed]
 [2025-09-06 12:11:14] Login error: Invalid email or password. [Code: auth_failed]
+[08-Sep-2025 12:30:30 Europe/Berlin] ============================================================
+[08-Sep-2025 12:30:30 Europe/Berlin] Login attempt at 2025-09-08 12:30:30
+[08-Sep-2025 12:30:30 Europe/Berlin] Input received -> email valid: no, password provided: no, rememberMe: no
+[08-Sep-2025 12:30:30 Europe/Berlin] Login error: Please provide both email and password. [Code: missing_fields]
+[2025-09-08 12:30:30] Login error: Please provide both email and password. [Code: missing_fields]
+[08-Sep-2025 13:06:12 Europe/Berlin] ============================================================
+[08-Sep-2025 13:06:12 Europe/Berlin] Login attempt at 2025-09-08 13:06:12
+[08-Sep-2025 13:06:12 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:06:12 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:06:13 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[08-Sep-2025 13:06:13 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:06:13 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:06:13] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:09:52 Europe/Berlin] ============================================================
+[08-Sep-2025 13:09:52 Europe/Berlin] Login attempt at 2025-09-08 13:09:52
+[08-Sep-2025 13:09:52 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:09:52 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:09:52 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[08-Sep-2025 13:09:52 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:09:52 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:09:52] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:26 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:26 Europe/Berlin] Login attempt at 2025-09-08 13:13:26
+[08-Sep-2025 13:13:26 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:26 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:26 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:26 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:26] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:27 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:27 Europe/Berlin] Login attempt at 2025-09-08 13:13:27
+[08-Sep-2025 13:13:27 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:27 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:27 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:27 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:27] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:28 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:28 Europe/Berlin] Login attempt at 2025-09-08 13:13:28
+[08-Sep-2025 13:13:28 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:28 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:28 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:28 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:28] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:28 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:28 Europe/Berlin] Login attempt at 2025-09-08 13:13:28
+[08-Sep-2025 13:13:28 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:28 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:28 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:28 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:28] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:28 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:28 Europe/Berlin] Login attempt at 2025-09-08 13:13:28
+[08-Sep-2025 13:13:28 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:28 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:28 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:28 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:28] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:28 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:28 Europe/Berlin] Login attempt at 2025-09-08 13:13:28
+[08-Sep-2025 13:13:28 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:28 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:28 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:28 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:28] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:28 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:28 Europe/Berlin] Login attempt at 2025-09-08 13:13:28
+[08-Sep-2025 13:13:28 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:28 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:28 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:28 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:28] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:29 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:29 Europe/Berlin] Login attempt at 2025-09-08 13:13:29
+[08-Sep-2025 13:13:29 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:29 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:29 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:29 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:29] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:29 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:29 Europe/Berlin] Login attempt at 2025-09-08 13:13:29
+[08-Sep-2025 13:13:29 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:29 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:29 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:29 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:29] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:29 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:29 Europe/Berlin] Login attempt at 2025-09-08 13:13:29
+[08-Sep-2025 13:13:29 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:29 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:29 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:29 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:29] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:29 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:29 Europe/Berlin] Login attempt at 2025-09-08 13:13:29
+[08-Sep-2025 13:13:29 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:29 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:29 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:29 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:29] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:29 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:29 Europe/Berlin] Login attempt at 2025-09-08 13:13:29
+[08-Sep-2025 13:13:29 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:29 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:29 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:29 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:29] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:29 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:29 Europe/Berlin] Login attempt at 2025-09-08 13:13:29
+[08-Sep-2025 13:13:29 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:29 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:29 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:29 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:29] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:29 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:29 Europe/Berlin] Login attempt at 2025-09-08 13:13:29
+[08-Sep-2025 13:13:29 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:29 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:29 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:29 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:29] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:36 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:36 Europe/Berlin] Login attempt at 2025-09-08 13:13:36
+[08-Sep-2025 13:13:36 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:36 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:36 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:36 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:36] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:39 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:39 Europe/Berlin] Login attempt at 2025-09-08 13:13:39
+[08-Sep-2025 13:13:39 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:39 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:39 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:39 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:39] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:41 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:41 Europe/Berlin] Login attempt at 2025-09-08 13:13:41
+[08-Sep-2025 13:13:41 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:41 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:41 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:41 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:41] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:41 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:41 Europe/Berlin] Login attempt at 2025-09-08 13:13:41
+[08-Sep-2025 13:13:41 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:41 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:41 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:41 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:41] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:42 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:42 Europe/Berlin] Login attempt at 2025-09-08 13:13:42
+[08-Sep-2025 13:13:42 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:42 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:42 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:42 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:42] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:42 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:42 Europe/Berlin] Login attempt at 2025-09-08 13:13:42
+[08-Sep-2025 13:13:42 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:42 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:42 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:42 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:42] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:42 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:42 Europe/Berlin] Login attempt at 2025-09-08 13:13:42
+[08-Sep-2025 13:13:42 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:42 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:42 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:42 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:42] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:42 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:42 Europe/Berlin] Login attempt at 2025-09-08 13:13:42
+[08-Sep-2025 13:13:42 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:42 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:42 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:42 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:42] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:42 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:42 Europe/Berlin] Login attempt at 2025-09-08 13:13:42
+[08-Sep-2025 13:13:42 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:42 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:42 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:42 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:42] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:42 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:42 Europe/Berlin] Login attempt at 2025-09-08 13:13:42
+[08-Sep-2025 13:13:42 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:42 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:42 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:42 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:42] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:13:45 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:45 Europe/Berlin] Login attempt at 2025-09-08 13:13:45
+[08-Sep-2025 13:13:45 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:45 Europe/Berlin] User lookup: no user found for farkasgabor1024@gmail.co
+[08-Sep-2025 13:13:45 Europe/Berlin] Login attempt - User not found: farkasgabor1024@gmail.co
+[08-Sep-2025 13:13:45 Europe/Berlin] Login error: No account found with this email. Please check your email or sign up. [Code: user_not_found]
+[2025-09-08 13:13:45] Login error: No account found with this email. Please check your email or sign up. [Code: user_not_found]
+[08-Sep-2025 13:13:54 Europe/Berlin] ============================================================
+[08-Sep-2025 13:13:54 Europe/Berlin] Login attempt at 2025-09-08 13:13:54
+[08-Sep-2025 13:13:54 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:13:54 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:13:54 Europe/Berlin] Email verified: no
+[08-Sep-2025 13:13:54 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-08 13:13:54] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[08-Sep-2025 13:14:05 Europe/Berlin] ============================================================
+[08-Sep-2025 13:14:05 Europe/Berlin] Login attempt at 2025-09-08 13:14:05
+[08-Sep-2025 13:14:05 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:14:05 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:14:05 Europe/Berlin] Email verified: yes
+[08-Sep-2025 13:14:05 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: no
+[08-Sep-2025 13:14:05 Europe/Berlin] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[2025-09-08 13:14:05] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[08-Sep-2025 13:30:15 Europe/Berlin] ============================================================
+[08-Sep-2025 13:30:15 Europe/Berlin] Login attempt at 2025-09-08 13:30:15
+[08-Sep-2025 13:30:15 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:30:15 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:30:15 Europe/Berlin] Email verified: yes
+[08-Sep-2025 13:30:15 Europe/Berlin] Login attempt - User: random.koala497@passinbox.com, Password match: yes
+[08-Sep-2025 13:30:15 Europe/Berlin] Session cookie set: yes
+[08-Sep-2025 13:30:15 Europe/Berlin] Session variables set for user_id 18
+[08-Sep-2025 13:36:10 Europe/Berlin] ============================================================
+[08-Sep-2025 13:36:10 Europe/Berlin] Login attempt at 2025-09-08 13:36:10
+[08-Sep-2025 13:36:10 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[08-Sep-2025 13:36:10 Europe/Berlin] User lookup: found user
+[08-Sep-2025 13:36:10 Europe/Berlin] Email verified: yes
+[08-Sep-2025 13:36:10 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[08-Sep-2025 13:36:10 Europe/Berlin] Session cookie set: yes
+[08-Sep-2025 13:36:10 Europe/Berlin] Session variables set for user_id 16

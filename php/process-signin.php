@@ -81,27 +81,28 @@ try {
         throw new Exception('An error occurred during authentication. Please try again later.');
     }
 
-    // Verify user exists and password is correct
-    $pwdOk = false;
-    if ($user) {
-        $pwdOk = password_verify($password, $user['password_hash'] ?? '');
-        error_log('Login attempt - User: ' . $email . ', Password match: ' . ($pwdOk ? 'yes' : 'no'));
-    } else {
+    // First check if user exists
+    if (!$user) {
         error_log('Login attempt - User not found: ' . $email);
-    }
-    
-    // Don't reveal if user exists or password is wrong
-    if (!$user || !$pwdOk) {
-        $response['code'] = 'auth_failed';
-        throw new Exception('Invalid email or password.');
+        $response['code'] = 'user_not_found';
+        throw new Exception('No account found with this email. Please check your email or sign up.');
     }
 
-    // Check if email is verified
+    // Then check if email is verified
     $isVerified = (int)($user['is_verified'] ?? 0) === 1;
     error_log('Email verified: ' . ($isVerified ? 'yes' : 'no'));
     if (!$isVerified) {
         $response['code'] = 'not_verified';
         throw new Exception('Please verify your email before logging in. Check your inbox.');
+    }
+
+    // Finally, verify the password
+    $pwdOk = password_verify($password, $user['password_hash'] ?? '');
+    error_log('Login attempt - User: ' . $email . ', Password match: ' . ($pwdOk ? 'yes' : 'no'));
+    
+    if (!$pwdOk) {
+        $response['code'] = 'invalid_password';
+        throw new Exception('Incorrect password. Please try again.');
     }
 
     // Generate session token

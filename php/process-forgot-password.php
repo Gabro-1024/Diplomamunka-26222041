@@ -104,31 +104,12 @@ try {
             throw new Exception('Failed to process your request. Please try again.');
         }
 
-        // Send reset email
-        $resetLink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . "://$_SERVER[HTTP_HOST]/php/reset-password.php?token=" . $token;
+        // Generate reset link
+        $resetLink = 'https' . "://$_SERVER[HTTP_HOST]/Diplomamunka-26222041/php/reset-password.php?token=" . $token;
         
-        // Use the existing email sending function with modified content
-        $mail = new PHPMailer(true);
-        
-        // Server settings
-        $mail->isSMTP();
-        $mail->Host = 'sandbox.smtp.mailtrap.io';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'ddd5c19228d753';
-        $mail->Password = '138a3f6bfe0c20';
-        $mail->Port = 2525;
-        $mail->SMTPSecure = 'tls';
-        $mail->CharSet = 'UTF-8';
-        
-        // Recipients
-        $mail->setFrom('noreply@ticketsatgabor.com', 'Tickets @ Gábor');
-        $mail->addAddress($email, $user['first_name']);
-        
-        // Content
-        $mail->isHTML(true);
-        $mail->Subject = 'Password Reset Request - Tickets @ Gábor';
-        
-        $mail->Body = "
+        // Email content
+        $subject = 'Password Reset Request - Tickets @ Gábor';
+        $htmlContent = "
             <h2>Password Reset Request</h2>
             <p>Hello {$user['first_name']},</p>
             <p>We received a request to reset your password. Click the button below to set a new password:</p>
@@ -143,21 +124,21 @@ try {
             <p>If you didn't request this, you can safely ignore this email.</p>
         ";
         
-        $mail->AltBody = "Password Reset Request\n\n" .
-                       "Hello {$user['first_name']},\n\n" .
-                       "We received a request to reset your password. Please visit the following link to set a new password:\n\n" .
-                       "$resetLink\n\n" .
-                       "This link will expire in 1 hour.\n\n" .
-                       "If you didn't request this, you can safely ignore this email.";
+        $textContent = "Password Reset Request\n\n" .
+                     "Hello {$user['first_name']},\n\n" .
+                     "We received a request to reset your password. Please visit the following link to set a new password:\n\n" .
+                     "$resetLink\n\n" .
+                     "This link will expire in 1 hour.\n\n" .
+                     "If you didn't request this, you can safely ignore this email.";
         
-        try {
-            $mail->send();
+        // Include the send_email.php file
+        require_once __DIR__ . '/includes/send_email.php';
+        
+        // Send the email using the existing function
+        if (sendPasswordResetEmail($email, $user['first_name'], $token, $resetLink)) {
             logError('Password reset email sent', ['email' => $email]);
-        } catch (Exception $e) {
-            logError('Failed to send password reset email', [
-                'error' => $e->getMessage(),
-                'email' => $email
-            ]);
+        } else {
+            logError('Failed to send password reset email', ['email' => $email]);
             throw new Exception('Failed to send reset email. Please try again.');
         }
     } else {
