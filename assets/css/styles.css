@@ -16127,8 +16127,27 @@ textarea.form-control-lg {
     padding-right: 96px !important;
   }
   .pe-xxl-12 {
-    padding-right: 160px !important;
+    padding-right: 96px !important;
   }
+
+  /* Footer link styles */
+  .footer-link {
+    display: inline-block;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+  }
+
+  .footer-link:hover {
+    background-color: white !important;
+    color: var(--bs-accent-blue) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .footer-link:active {
+    transform: translateY(0);
+  }
+
   .pb-xxl-0 {
     padding-bottom: 0 !important;
   }
