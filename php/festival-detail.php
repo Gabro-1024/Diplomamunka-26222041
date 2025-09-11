@@ -288,31 +288,18 @@ try {
 
   <!--  Page Wrapper -->
   <div class="page-wrapper overflow-hidden">
-    <!--  Banner Section -->
+    <!-- Banner Section -->
     <section class="banner-section banner-inner-section position-relative overflow-hidden d-flex align-items-end"
-      style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(<?php echo !empty($festival['venue_cover']) ? '../' . htmlspecialchars($festival['venue_cover']) : '../assets/images/backgrounds/venues-banner.jpg'; ?>); background-size: cover; background-position: center;">
+      style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+             url('<?php echo !empty($festival['cover_image']) ? '../assets/images/portfolio/' . htmlspecialchars($festival['cover_image']) : '../assets/images/backgrounds/festivals-banner.jpg'; ?>');
+             background-size: cover; background-position: center;">
       <div class="container">
         <div class="d-flex flex-column gap-4 pb-5 pb-xl-10 position-relative z-1">
-          <div class="row align-items-center">
-            <div class="col-xl-6">
-              <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
-                data-aos-duration="1000">
-                <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                <p class="mb-0 text-white fs-5 text-opacity-70">
-                  <span class="text-primary"><?php echo htmlspecialchars($festival['venue_name']); ?></span> • 
-                  <?php echo $start_date->format($date_format); ?>
-                  <?php if ($start_date->format('Y-m-d') !== $end_date->format('Y-m-d')): ?>
-                    - <?php echo $end_date->format($date_format); ?>
-                  <?php endif; ?>
-                </p>
-              </div>
-            </div>
-          </div>
           <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
             <h1 class="mb-0 fs-15 text-white lh-1"><?php echo htmlspecialchars($festival['name']); ?></h1>
-            <a href="#tickets" class="p-1 ps-7 bg-primary rounded-pill">
+            <a href="#about" class="p-1 ps-7 bg-primary rounded-pill">
               <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
-                <iconify-icon icon="lucide:arrow-down" class="fs-8 text-dark"></iconify-icon>
+                <iconify-icon icon="lucide:arrow-down" class="fs-8 text-dark" id="about"></iconify-icon>
               </span>
             </a>
           </div>
@@ -321,7 +308,7 @@ try {
     </section>
 
     <!-- Festival Details Section -->
-    <section class="py-5 py-lg-11 py-xl-12">
+    <section class="py-5 py-lg-8 py-xl-8">
       <div class="container">
         <div class="row">
           <!-- Main Content -->
@@ -377,7 +364,7 @@ try {
                         </div>
                       </div>
                       <?php endif; ?>
-                      
+
                       <!-- Get Directions Button -->
                       <div class="mt-4">
                         <a href="https://www.google.com/maps/dir//<?php echo urlencode($festival['address'] . ', ' . $festival['city'] . ', ' . $festival['country']); ?>" 
@@ -409,7 +396,7 @@ try {
                       </div>
                       <div>
                         <h4 class="mb-0 fs-5 fw-bold"><?php echo htmlspecialchars(trim($performer)); ?></h4>
-                        <span class="text-muted">Headliner</span>
+                        <span class="text-muted">Artist</span>
                       </div>
                     </div>
                   </div>
@@ -567,11 +554,6 @@ try {
                       <span>Capacity: <?php echo number_format($festival['venue_capacity']); ?> people</span>
                     </div>
                     <?php endif; ?>
-                    <a href="https://www.google.com/maps/search/?api=1&query=<?php echo urlencode($festival['address'] . ', ' . $festival['city'] . ', ' . $festival['country']); ?>" 
-                       target="_blank" 
-                       class="btn btn-outline-accent-blue w-100">
-                      <i class="fas fa-directions me-2"></i>Get Directions
-                    </a>
                   </div>
                 </div>
                 
