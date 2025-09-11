@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Sze 10. 19:52
+-- Létrehozás ideje: 2025. Sze 11. 23:22
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -43,9 +43,11 @@ CREATE TABLE `events` (
   `id` int(11) NOT NULL,
   `name` varchar(200) NOT NULL,
   `slogan` varchar(255) DEFAULT NULL,
+  `lineup` text NOT NULL DEFAULT 'No lineup announced yet :(',
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
   `description` text DEFAULT NULL,
+  `cover_image` varchar(255) NOT NULL,
   `organizer_id` int(11) NOT NULL,
   `venue_id` int(11) DEFAULT NULL,
   `total_tickets` int(11) NOT NULL
@@ -55,13 +57,13 @@ CREATE TABLE `events` (
 -- A tábla adatainak kiíratása `events`
 --
 
-INSERT INTO `events` (`id`, `name`, `slogan`, `start_date`, `end_date`, `description`, `organizer_id`, `venue_id`, `total_tickets`) VALUES
-(19, 'Sziget Festival', 'The Island of Freedom', '2026-08-07 10:00:00', '2026-08-13 23:59:59', 'One of Europe\'s largest music and cultural festivals, held on Óbuda Island in Budapest, Hungary. Features a diverse lineup of international and local artists across multiple stages.', 16, 1, 50000),
-(20, 'Balaton Sound', 'The Biggest Lakeside Party', '2026-06-26 12:00:00', '2026-06-30 23:59:59', 'Europe\'s premier open-air electronic music festival held on the shores of Lake Balaton. Known for its stunning location and world-class DJs.', 16, 2, 35000),
-(21, 'VOLT Festival', 'Music. Love. Unity.', '2026-06-19 14:00:00', '2026-06-23 23:59:59', 'Hungary\'s most popular music festival featuring a mix of rock, pop, electronic, and world music in the beautiful city of Sopron.', 16, 3, 30000),
-(22, 'EFOTT', 'Hungary\'s Biggest Student Festival', '2026-07-10 10:00:00', '2026-07-14 23:59:59', 'A week-long festival on the shores of Lake Velence, offering music, sports, and cultural programs for students and young adults.', 16, 4, 25000),
-(23, 'Sziget Festival', 'The Island of Freedom', '2026-08-06 10:00:00', '2026-08-12 23:59:59', 'The 2025 edition of Europe\'s most colorful festival, featuring an even more diverse lineup and exciting new programs.', 16, 5, 50000),
-(24, 'Balaton Sound', 'The Biggest Lakeside Party', '2026-06-25 12:00:00', '2026-06-29 23:59:59', 'Next year\'s edition promises to be even more spectacular with top international DJs and amazing beach parties.', 16, 6, 35000);
+INSERT INTO `events` (`id`, `name`, `slogan`, `lineup`, `start_date`, `end_date`, `description`, `cover_image`, `organizer_id`, `venue_id`, `total_tickets`) VALUES
+(19, 'Sziget Festival', 'The Island of Freedom', 'No lineup announced yet :(', '2026-08-07 10:00:00', '2026-08-13 23:59:59', 'One of Europe\'s largest music and cultural festivals, held on Óbuda Island in Budapest, Hungary. Features a diverse lineup of international and local artists across multiple stages.', 'portfolio-img-1.jpg', 16, 1, 50000),
+(20, 'Balaton Sound', 'The Biggest Lakeside Party', 'No lineup announced yet :(', '2026-06-26 12:00:00', '2026-06-30 23:59:59', 'Europe\'s premier open-air electronic music festival held on the shores of Lake Balaton. Known for its stunning location and world-class DJs.', '', 16, 2, 35000),
+(21, 'VOLT Festival', 'Music. Love. Unity.', 'No lineup announced yet :(', '2026-06-19 14:00:00', '2026-06-23 23:59:59', 'Hungary\'s most popular music festival featuring a mix of rock, pop, electronic, and world music in the beautiful city of Sopron.', '', 16, 3, 30000),
+(22, 'EFOTT', 'Hungary\'s Biggest Student Festival', 'No lineup announced yet :(', '2026-07-10 10:00:00', '2026-07-14 23:59:59', 'A week-long festival on the shores of Lake Velence, offering music, sports, and cultural programs for students and young adults.', '', 16, 4, 25000),
+(23, 'Sziget Festival', 'The Island of Freedom', 'No lineup announced yet :(', '2026-08-06 10:00:00', '2026-08-12 23:59:59', 'The 2025 edition of Europe\'s most colorful festival, featuring an even more diverse lineup and exciting new programs.', 'portfolio-img-1.jpg', 16, 5, 50000),
+(24, 'Balaton Sound', 'The Biggest Lakeside Party', 'Timmy Trumpet, Martin Garrix,DVPVLV', '2026-06-25 12:00:00', '2026-06-29 23:59:59', 'Next year\'s edition promises to be even more spectacular with top international DJs and amazing beach parties.', '', 16, 6, 35000);
 
 -- --------------------------------------------------------
 
