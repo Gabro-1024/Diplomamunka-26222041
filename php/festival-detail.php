@@ -144,24 +144,27 @@ try {
     
     /* Accordion Styles */
     .accordion-button {
-      background-color: var(--light-gray);
-      color: var(--dark-text);
-      font-weight: 600;
+      color: #fff !important;
+      background-color: #2d3748 !important; /* Dark grey background by default */
+      font-weight: 500;
       border: none;
-      box-shadow: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       padding: 1.25rem 1.5rem;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
+    }
+    
+    .accordion-button:hover {
+      background-color: #4a5568 !important; /* Slightly lighter on hover */
     }
     
     .accordion-button:not(.collapsed) {
-      background-color: var(--primary);
-      color: white;
-      box-shadow: none;
+      background-color: var(--bs-accent-blue) !important;
+      color: #fff !important;
     }
     
     .accordion-button:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 0.25rem rgba(255, 111, 97, 0.25);
+      border-color: var(--bs-accent-blue);
+      box-shadow: 0 0 0 0.25rem rgba(34, 16, 255, 0.25);
     }
     
     .accordion-button::after {
@@ -427,15 +430,15 @@ try {
                   ?>
                   <div class="accordion-item mb-3 border-0">
                     <h2 class="accordion-header" id="heading<?php echo $dayCount; ?>">
-                      <button class="accordion-button bg-light rounded-3 p-4 fw-bold" type="button"
+                      <button class="accordion-button bg-light rounded-3 p-4 fw-bold collapsed" type="button"
                               data-bs-toggle="collapse" data-bs-target="#<?php echo $dayId; ?>"
-                              aria-expanded="<?php echo $dayCount === 1 ? 'true' : 'false'; ?>"
+                              aria-expanded="false"
                               aria-controls="<?php echo $dayId; ?>">
                         <?php echo $dayName; ?>, <?php echo $formattedDate; ?>
                       </button>
                     </h2>
                     <div id="<?php echo $dayId; ?>" 
-                         class="accordion-collapse collapse <?php echo $dayCount === 1 ? 'show' : ''; ?>" 
+                         class="accordion-collapse collapse"
                          aria-labelledby="heading<?php echo $dayCount; ?>" 
                          data-bs-parent="#scheduleAccordion">
                       <div class="accordion-body p-4">
