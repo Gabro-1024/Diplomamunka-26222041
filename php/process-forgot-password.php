@@ -61,7 +61,7 @@ try {
     require_once __DIR__ . '/../vendor/autoload.php';
     
     // Include database connection and email functions
-    require_once __DIR__ . '/db_connect.php';
+    require_once __DIR__ . '/includes/db_connect.php';
     require_once __DIR__ . '/includes/send_email.php';
 
 

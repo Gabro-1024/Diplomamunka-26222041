@@ -10,9 +10,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Studiova</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="../assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="../assets/libs/aos-master/dist/aos.css">
-  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
 </head>
 
 <body>
@@ -29,7 +29,7 @@
             data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">
           <h2 class="mb-0 text-center" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">Oops! Page Not
             Found</h2>
-          <a href="index.php" class="btn mx-auto" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
+          <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="btn mx-auto" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
             <span class="btn-text">Back to Home</span>
             <iconify-icon icon="lucide:arrow-up-right"
               class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>

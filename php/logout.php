@@ -23,5 +23,5 @@ if (isset($_COOKIE['session_token'])) {
 }
 
 // Redirect to home page
-header('Location: index.php');
+header('Location: http://localhost:63342/Diplomamunka-26222041/php/index.php');
 exit();

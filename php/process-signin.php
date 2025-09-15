@@ -17,7 +17,7 @@ if (!file_exists($logFile)) {
 }
 
 require_once __DIR__ . '/includes/auth_check.php';
-require_once __DIR__ . '/db_connect.php';
+require_once __DIR__ . '/includes/db_connect.php';
 
 // Set content type to JSON
 header('Content-Type: application/json');
@@ -31,7 +31,7 @@ if (isUserLoggedIn()) {
     header('Content-Type: application/json');
     echo json_encode([
         'success' => true,
-        'redirect' => 'index.php',
+        'redirect' => 'http://localhost:63342/Diplomamunka-26222041/php/index.php',
         'message' => 'Already logged in',
         'code' => 'already_logged_in'
     ]);
@@ -153,7 +153,7 @@ try {
         $pdo->commit();
 
         $response['success'] = true;
-        $response['redirect'] = 'index.php';
+        $response['redirect'] = 'http://localhost:63342/Diplomamunka-26222041/php/index.php';
         $response['message'] = 'Login successful!';
 
     } catch (Throwable $e) {

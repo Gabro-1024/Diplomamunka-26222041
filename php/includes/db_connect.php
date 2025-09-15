@@ -1,5 +1,5 @@
 <?php
-function db_connect() {
+function db_connect() : PDO {
     $dsn = 'mysql:host=localhost;dbname=ticketing_system;charset=utf8mb4';
     $user = 'root';
     $pass = '';

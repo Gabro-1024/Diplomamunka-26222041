@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tickets @ Gábor</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="../assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="../assets/libs/aos-master/dist/aos.css">
-  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
 </head>
 
 <body>
@@ -497,8 +497,8 @@
                       <p class="mb-0 text-dark">Transaction fee</p>
                     </div>
                     <div class="d-flex flex-column gap-3">
-                      <a href="index.php" class="logo-dark">
-                        <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
+                      <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="logo-dark">
+                        <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
                       </a>
                       <p class="mb-0 fs-5 text-dark">No hidden costs - all ticket prices are final, without transaction fees.</p>
                     </div>

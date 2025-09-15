@@ -10,7 +10,7 @@ function isUserLoggedIn() {
     
     // Check for remember me cookie
     if (isset($_COOKIE['session_token'])) {
-        require_once __DIR__ . '/../db_connect.php';
+        require_once __DIR__ . '/db_connect.php';
         
         try {
             $pdo = db_connect();
@@ -44,7 +44,7 @@ function isUserLoggedIn() {
 }
 
 // Redirect to home if user is already logged in
-function redirectIfLoggedIn($redirectTo = 'index.php') {
+function redirectIfLoggedIn($redirectTo = 'http://localhost:63342/Diplomamunka-26222041/php/index.php') {
     if (isUserLoggedIn()) {
         header('Location: ' . $redirectTo);
         exit();

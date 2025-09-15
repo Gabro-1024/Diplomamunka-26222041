@@ -10,9 +10,9 @@ redirectIfLoggedIn();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Forgot Password - Tickets at Gábor</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="../assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="../assets/libs/aos-master/dist/aos.css">
-  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -23,8 +23,8 @@ redirectIfLoggedIn();
       <div class="container py-3">
         <div class="sign-in card mx-auto shadow-lg">
           <div class="card-body py-8 px-lg-5">
-            <a href="index.php" class="mb-8 hstack justify-content-center">
-              <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
+            <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="mb-8 hstack justify-content-center">
+              <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
             </a>
             
             <?php if (isset($_GET['reset']) && $_GET['reset'] == 'sent'): ?>

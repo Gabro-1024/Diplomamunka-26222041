@@ -26,7 +26,7 @@ function logError($message, $context = []) {
 }
 
 require_once __DIR__ . '/includes/auth_check.php';
-require_once __DIR__ . '/db_connect.php';
+require_once __DIR__ . '/includes/db_connect.php';
 
 $error = '';
 $success = false;
@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reset Password - Tickets at Gábor</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
@@ -160,8 +160,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="container py-3">
         <div class="sign-in card mx-auto shadow-lg">
           <div class="card-body py-8 px-lg-5">
-            <a href="index.php" class="mb-8 hstack justify-content-center">
-              <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
+            <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="mb-8 hstack justify-content-center">
+              <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
             </a>
             
             <?php if ($success): ?>

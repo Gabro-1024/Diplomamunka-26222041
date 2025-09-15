@@ -1,6 +1,8 @@
 <?php
+ini_set("log_errors", 1);
+ini_set("error_log", __DIR__ . "/logs/php_errors.log");
 require_once __DIR__ . '/includes/auth_check.php';
-require_once __DIR__ . '/db_connect.php';
+require_once __DIR__ . '/includes/db_connect.php';
 
 // Initialize database connection
 $pdo = db_connect();
@@ -14,7 +16,6 @@ if (isset($_GET['verify']) && !empty($_GET['verify'])) {
         $stmt = $pdo->prepare("SELECT id, reg_token, reg_token_expires FROM users WHERE is_verified = 0 AND reg_token_expires > NOW()");
         $stmt->execute();
         $users = $stmt->fetchAll();
-        
         $user = null;
         foreach ($users as $u) {
             // Verify the token against the hashed value in the database
@@ -55,9 +56,9 @@ redirectIfLoggedIn();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Studiova</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="../assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="../assets/libs/aos-master/dist/aos.css">
-  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
 </head>
 
 <body>
@@ -69,10 +70,10 @@ redirectIfLoggedIn();
       <div class="container py-3">
         <div class="sign-in card mx-auto shadow-lg">
           <div class="card-body py-8 px-lg-5">
-            <a href="index.php" class="mb-8 hstack justify-content-center">
-              <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
+            <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="mb-8 hstack justify-content-center">
+              <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
             </a>
-            
+
             <?php if (isset($verification_success) && $verification_success): ?>
             <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle-fill flex-shrink-0 me-2" viewBox="0 0 16 16">
@@ -101,7 +102,7 @@ redirectIfLoggedIn();
               </div>
             </div>
             <?php endif; ?>
-            
+
             <form id="loginForm" class="d-flex flex-column gap-3 needs-validation" novalidate>
               <div id="loginError" class="alert alert-danger d-none" role="alert"></div>
               <div class="row g-3">
@@ -151,7 +152,7 @@ redirectIfLoggedIn();
               </button>
 
               <p class="text-center text-graphite mt-4 mb-0">
-                Don't have an account? 
+                Don't have an account?
                 <a href="sign-up.php" class="text-primary fw-bold">Sign up</a>
               </p>
           </div>
@@ -162,7 +163,7 @@ redirectIfLoggedIn();
   </div>
 
   <div class="get-template hstack gap-2">
-    
+
     <button class="btn bg-primary p-2 round-52 rounded-circle hstack justify-content-center flex-shrink-0"
       id="scrollToTopBtn">
       <iconify-icon icon="lucide:arrow-up" class="fs-7 text-dark"></iconify-icon>
@@ -219,7 +220,7 @@ redirectIfLoggedIn();
         if (data.success) {
           // Add a small delay to ensure session is properly set
           setTimeout(() => {
-            window.location.href = data.redirect || 'index.php';
+            window.location.href = data.redirect || 'http://localhost:63342/Diplomamunka-26222041/php/index.php';
           }, 100);
         } else {
           // Handle different error cases

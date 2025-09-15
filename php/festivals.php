@@ -1,5 +1,5 @@
 <?php
-require_once 'db_connect.php';
+require_once 'includes/db_connect.php';
 
 try {
     $pdo = db_connect();
@@ -24,9 +24,9 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Festivals - Tickets @ Gábor</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="../assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="../assets/libs/aos-master/dist/aos.css">
-  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
 </head>
 
 <body>
@@ -95,9 +95,8 @@ try {
                       default: $location = 'Hungary';
                   }
                   
-                  // Cycle through available images (1-5)
-                  $imageNumber = $imageIndex % 5 + 1;
-                  $imagePath = "../assets/images/portfolio/portfolio-img-{$imageNumber}.jpg";
+                  // Get the event's cover image from the database
+                  $imagePath = !empty($row['cover_image']) ? htmlspecialchars($row['cover_image']) : "../assets/images/portfolio/portfolio-img-1.jpg";
                   
                   // Output the festival card
                   echo '<div class="col-lg-6 mb-7">

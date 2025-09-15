@@ -1,5 +1,5 @@
 <?php
-require_once 'db_connect.php';
+require_once 'includes/db_connect.php';
 
 // Check if festival ID is provided
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -62,9 +62,9 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?php echo htmlspecialchars($festival['name']); ?> - Tickets @ Gábor</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="../assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="../assets/libs/aos-master/dist/aos.css">
-  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     /* Color Variables */
@@ -406,7 +406,7 @@ try {
                   <?php endforeach; ?>
                   <?php if (count($performers) > 4): ?>
                   <div class="col-12">
-                    <button class="btn btn-link text-primary p-0">+<?php echo (count($performers) - 4); ?> more artists</button>
+                    <button class="btn btn-link text-primary p-0" style="padding: 5px !important;">+<?php echo (count($performers) - 4); ?> more artists</button>
                   </div>
                   <?php endif; ?>
                 </div>
@@ -570,10 +570,9 @@ try {
                     <span>Add to Calendar</span>
                   </a>
                   
-                  <a href="#" 
+                  <a href='raver_sites/ticket_cart.php?event_id=<?php echo $festival_id; ?>'
                      class="btn btn-tickets flex-grow-1 d-flex align-items-center justify-content-center"
                      data-aos="fade-up" data-aos-delay="200"
-                     onclick="window.location.href='tickets.php?event_id=<?php echo $festival_id; ?>'; return false;">
                     <iconify-icon icon="solar:ticket-bold" class="me-2 fs-5"></iconify-icon>
                     <span>Buy Tickets</span>
                   </a>
