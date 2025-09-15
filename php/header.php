@@ -11,7 +11,7 @@ $userName = $isLoggedIn ? $_SESSION['first_name'] ?? 'User' : '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tickets at Gábor - Fesztiváljegyek</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css">
 </head>
 <body>
 <!-- Header -->
@@ -19,11 +19,11 @@ $userName = $isLoggedIn ? $_SESSION['first_name'] ?? 'User' : '';
     <div class="container">
         <div class="header-wrapper d-flex align-items-center justify-content-between">
             <div class="logo">
-                <a href="index.php" class="logo-white">
-                    <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
+                <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="logo-white">
+                    <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
                 </a>
-                <a href="index.php" class="logo-dark">
-                    <img src="../assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
+                <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="logo-dark">
+                    <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
                 </a>
             </div>
             <div class="d-flex align-items-center gap-4">
@@ -43,38 +43,38 @@ $userName = $isLoggedIn ? $_SESSION['first_name'] ?? 'User' : '';
                             <div class="d-flex flex-column gap-3">
                                 <ul class="header-menu list-unstyled mb-0 d-flex flex-column gap-2">
                                     <li class="header-item">
-                                        <a href="index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
-                                            <img src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                        <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
+                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             Home
                                         </a>
                                     </li>
                                     <li class="header-item">
                                         <a href="about-us.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'about-us.php') ? 'active' : ''; ?>">
-                                            <img src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             About us
                                         </a>
                                     </li>
                                     <li class="header-item">
                                         <a href="festivals.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'festivals.php') ? 'active' : ''; ?>">
-                                            <img src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             Festivals
                                         </a>
                                     </li>
                                     <li class="header-item">
                                         <a href="locations.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'locations.php') ? 'active' : ''; ?>">
-                                            <img src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             Venues
                                         </a>
                                     </li>
                                     <li class="header-item">
                                         <a href="FAQ.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'FAQ.php') ? 'active' : ''; ?>">
-                                            <img src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             FAQ
                                         </a>
                                     </li>
                                     <li class="header-item">
                                         <a href="contact.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>">
-                                            <img src="../assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             Contact
                                         </a>
                                     </li>

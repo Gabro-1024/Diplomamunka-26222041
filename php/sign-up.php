@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // If no errors, proceed with database operations
     if (empty($errors)) {
-        require_once __DIR__ . '/db_connect.php';
+        require_once __DIR__ . '/includes/db_connect.php';
 
         try {
             $pdo = db_connect();
@@ -212,9 +212,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Tickets @ Gábor - Sign Up</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-    <link rel="stylesheet" href="../assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="../assets/libs/aos-master/dist/aos.css">
-    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
+    <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
     <style>
         .is-invalid {
             border-color: #dc3545 !important;
@@ -237,8 +237,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container py-3">
             <div class="sign-in card mx-auto shadow-lg">
                 <div class="card-body py-8 px-lg-5">
-                    <a href="index.php" class="mb-8 hstack justify-content-center">
-                        <img src="../assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
+                    <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="mb-8 hstack justify-content-center">
+                        <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
                     </a>
 
                     <?php if (!empty($errors['general'])): ?>

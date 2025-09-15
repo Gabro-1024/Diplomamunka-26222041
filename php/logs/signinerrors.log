@@ -344,3 +344,35 @@
 [08-Sep-2025 13:36:10 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
 [08-Sep-2025 13:36:10 Europe/Berlin] Session cookie set: yes
 [08-Sep-2025 13:36:10 Europe/Berlin] Session variables set for user_id 16
+[14-Sep-2025 22:26:11 Europe/Berlin] ============================================================
+[14-Sep-2025 22:26:11 Europe/Berlin] Login attempt at 2025-09-14 22:26:11
+[14-Sep-2025 22:26:11 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[14-Sep-2025 22:26:11 Europe/Berlin] User lookup: found user
+[14-Sep-2025 22:26:11 Europe/Berlin] Email verified: yes
+[14-Sep-2025 22:26:11 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: no
+[14-Sep-2025 22:26:11 Europe/Berlin] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[2025-09-14 22:26:11] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[14-Sep-2025 22:26:36 Europe/Berlin] ============================================================
+[14-Sep-2025 22:26:36 Europe/Berlin] Login attempt at 2025-09-14 22:26:36
+[14-Sep-2025 22:26:36 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[14-Sep-2025 22:26:36 Europe/Berlin] User lookup: found user
+[14-Sep-2025 22:26:36 Europe/Berlin] Email verified: yes
+[14-Sep-2025 22:26:36 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: no
+[14-Sep-2025 22:26:36 Europe/Berlin] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[2025-09-14 22:26:36] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[14-Sep-2025 22:27:06 Europe/Berlin] ============================================================
+[14-Sep-2025 22:27:06 Europe/Berlin] Login attempt at 2025-09-14 22:27:06
+[14-Sep-2025 22:27:06 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[14-Sep-2025 22:27:06 Europe/Berlin] User lookup: found user
+[14-Sep-2025 22:27:06 Europe/Berlin] Email verified: yes
+[14-Sep-2025 22:27:06 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[14-Sep-2025 22:27:06 Europe/Berlin] Session cookie set: yes
+[14-Sep-2025 22:27:06 Europe/Berlin] Session variables set for user_id 16
+[14-Sep-2025 23:03:24 Europe/Berlin] ============================================================
+[14-Sep-2025 23:03:24 Europe/Berlin] Login attempt at 2025-09-14 23:03:24
+[14-Sep-2025 23:03:24 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[14-Sep-2025 23:03:24 Europe/Berlin] User lookup: found user
+[14-Sep-2025 23:03:24 Europe/Berlin] Email verified: yes
+[14-Sep-2025 23:03:24 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[14-Sep-2025 23:03:24 Europe/Berlin] Session cookie set: yes
+[14-Sep-2025 23:03:24 Europe/Berlin] Session variables set for user_id 16
