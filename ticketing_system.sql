@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Sze 11. 23:22
+-- Létrehozás ideje: 2025. Sze 15. 22:08
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -50,20 +50,21 @@ CREATE TABLE `events` (
   `cover_image` varchar(255) NOT NULL,
   `organizer_id` int(11) NOT NULL,
   `venue_id` int(11) DEFAULT NULL,
-  `total_tickets` int(11) NOT NULL
+  `total_tickets` int(11) NOT NULL,
+  `remaining_tickets` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- A tábla adatainak kiíratása `events`
 --
 
-INSERT INTO `events` (`id`, `name`, `slogan`, `lineup`, `start_date`, `end_date`, `description`, `cover_image`, `organizer_id`, `venue_id`, `total_tickets`) VALUES
-(19, 'Sziget Festival', 'The Island of Freedom', 'No lineup announced yet :(', '2026-08-07 10:00:00', '2026-08-13 23:59:59', 'One of Europe\'s largest music and cultural festivals, held on Óbuda Island in Budapest, Hungary. Features a diverse lineup of international and local artists across multiple stages.', 'portfolio-img-1.jpg', 16, 1, 50000),
-(20, 'Balaton Sound', 'The Biggest Lakeside Party', 'No lineup announced yet :(', '2026-06-26 12:00:00', '2026-06-30 23:59:59', 'Europe\'s premier open-air electronic music festival held on the shores of Lake Balaton. Known for its stunning location and world-class DJs.', '', 16, 2, 35000),
-(21, 'VOLT Festival', 'Music. Love. Unity.', 'No lineup announced yet :(', '2026-06-19 14:00:00', '2026-06-23 23:59:59', 'Hungary\'s most popular music festival featuring a mix of rock, pop, electronic, and world music in the beautiful city of Sopron.', '', 16, 3, 30000),
-(22, 'EFOTT', 'Hungary\'s Biggest Student Festival', 'No lineup announced yet :(', '2026-07-10 10:00:00', '2026-07-14 23:59:59', 'A week-long festival on the shores of Lake Velence, offering music, sports, and cultural programs for students and young adults.', '', 16, 4, 25000),
-(23, 'Sziget Festival', 'The Island of Freedom', 'No lineup announced yet :(', '2026-08-06 10:00:00', '2026-08-12 23:59:59', 'The 2025 edition of Europe\'s most colorful festival, featuring an even more diverse lineup and exciting new programs.', 'portfolio-img-1.jpg', 16, 5, 50000),
-(24, 'Balaton Sound', 'The Biggest Lakeside Party', 'Timmy Trumpet, Martin Garrix,DVPVLV', '2026-06-25 12:00:00', '2026-06-29 23:59:59', 'Next year\'s edition promises to be even more spectacular with top international DJs and amazing beach parties.', '', 16, 6, 35000);
+INSERT INTO `events` (`id`, `name`, `slogan`, `lineup`, `start_date`, `end_date`, `description`, `cover_image`, `organizer_id`, `venue_id`, `total_tickets`, `remaining_tickets`) VALUES
+(19, 'Sziget Festival', 'The Island of Freedom', 'Timmy Trumpet, The Straikerz, Angerfist, Ke$ha', '2026-08-07 10:00:00', '2026-08-13 23:59:59', 'One of Europe\'s largest music and cultural festivals, held on Óbuda Island in Budapest, Hungary. Features a diverse lineup of international and local artists across multiple stages.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-1.jpg', 16, 1, 50000, 0),
+(20, 'Balaton Sound', 'The Biggest Lakeside Party', 'David Guetta, Armin van Buuren, Dimitri Vegas & Like Mike', '2026-06-26 12:00:00', '2026-06-30 23:59:59', 'Europe\'s premier open-air electronic music festival held on the shores of Lake Balaton. Known for its stunning location and world-class DJs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-4.jpg', 16, 2, 35000, 0),
+(21, 'VOLT Festival', 'Music. Love. Unity.', 'Imagine Dragons, Arctic Monkeys, Halott Pénz', '2026-06-19 14:00:00', '2026-06-23 23:59:59', 'Hungary\'s most popular music festival featuring a mix of rock, pop, electronic, and world music in the beautiful city of Sopron.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-3.jpg', 16, 3, 30000, 0),
+(22, 'EFOTT', 'Hungary\'s Biggest Student Festival', 'Majka & Curtis, Wellhello, Tankcsapda', '2026-07-10 10:00:00', '2026-07-14 23:59:59', 'A week-long festival on the shores of Lake Velence, offering music, sports, and cultural programs for students and young adults.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-5.jpg', 16, 4, 25000, 0),
+(23, 'SZIN festival', 'Zárjuk együtt a nyarat 2026-ban is!', 'Rúzsa Magdolna, Follow The Flow, Punnany Massif, Margaret Island, Carson Coma', '2026-08-06 10:00:00', '2026-08-12 23:59:59', 'The 2025 edition of Europe\'s most colorful festival, featuring an even more diverse lineup and exciting new programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-6.jpg', 16, 11, 50000, 0),
+(24, 'Fishing on Orfű', 'Zenés nyár a Mecsek lábánál', '30Y, Quimby, Bagossy Brothers Company, Blahalouisiana, Péterfy Bori & Love Band', '2026-06-19 12:00:00', '2026-06-22 23:59:59', 'One of Hungary\'s most beloved smaller festivals, held near Pécs by Lake Orfű. Known for its cozy atmosphere, lakeside concerts, and family-friendly programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-2.jpg', 16, 12, 15000, 0);
 
 -- --------------------------------------------------------
 
@@ -93,7 +94,9 @@ INSERT INTO `login_sessions` (`id`, `user_id`, `user_agent`, `session_token`, `e
 (6, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', 'c02fbd7855b3e353d4e331950179fa2cd4195d64a1ca7c6815227456b4169e69', '2025-09-07 11:38:00', '2025-09-06 09:38:00'),
 (7, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', '36e5b239f0cbad9ae887358fc22781e9aa4fe09af006cdfa9841f993a3c4e87c', '2025-09-07 12:10:54', '2025-09-06 10:10:54'),
 (8, 18, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', 'd16a63dc43eb0a7092176c3ccb1bc7eb7462fcf875daf7e341c1f944457fc3bb', '2025-09-09 13:30:15', '2025-09-08 11:30:15'),
-(9, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', '46d99115bfc3873f011a4c69796d7974b38f4ca2bd1e41d8c1a09e0b18bd96fe', '2025-09-09 13:36:10', '2025-09-08 11:36:10');
+(9, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', '46d99115bfc3873f011a4c69796d7974b38f4ca2bd1e41d8c1a09e0b18bd96fe', '2025-09-09 13:36:10', '2025-09-08 11:36:10'),
+(10, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', 'bd109cffdf99d78ab66ff60fda50aaed033da8e031cd4ae97fcbfe256a00857a', '2025-09-15 22:27:06', '2025-09-14 20:27:06'),
+(11, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', '183273f334169718f36a2a1347f60fa32f59a4bb4e05030a9bda58f6debbe0aa', '2025-09-15 23:03:24', '2025-09-14 21:03:24');
 
 -- --------------------------------------------------------
 
@@ -136,17 +139,6 @@ CREATE TABLE `purchases` (
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `purchase_tickets`
---
-
-CREATE TABLE `purchase_tickets` (
-  `purchase_id` int(11) NOT NULL,
-  `ticket_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Tábla szerkezet ehhez a táblához `tickets`
 --
 
@@ -158,6 +150,38 @@ CREATE TABLE `tickets` (
   `is_used` tinyint(1) DEFAULT 0,
   `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `ticket_types`
+--
+
+CREATE TABLE `ticket_types` (
+  `ticket_type_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  `ticket_type` enum('regular','vip') NOT NULL,
+  `price` int(11) NOT NULL,
+  `remaining_tickets` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- A tábla adatainak kiíratása `ticket_types`
+--
+
+INSERT INTO `ticket_types` (`ticket_type_id`, `event_id`, `ticket_type`, `price`, `remaining_tickets`) VALUES
+(1, 19, 'regular', 5990, 45000),
+(2, 19, 'vip', 8990, 5000),
+(3, 20, 'regular', 4990, 30000),
+(4, 20, 'vip', 7990, 5000),
+(5, 21, 'regular', 4490, 25000),
+(6, 21, 'vip', 7490, 5000),
+(7, 22, 'regular', 3990, 20000),
+(8, 22, 'vip', 6990, 5000),
+(9, 23, 'regular', 5990, 45000),
+(10, 23, 'vip', 8990, 5000),
+(11, 24, 'regular', 4990, 30000),
+(12, 24, 'vip', 7990, 5000);
 
 -- --------------------------------------------------------
 
@@ -186,7 +210,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `last_name`, `first_name`, `email`, `password_hash`, `city`, `birth_date`, `phone_number`, `role`, `created_at`, `reg_token`, `reg_token_expires`, `is_verified`) VALUES
-(16, 'Farkas', 'Gábor', 'farkasgabor1024@gmail.com', '$2y$10$xy4bc8zF4N6psvlK.OMxpebAI6rg/hOmgNSFu4lO8hUbhWOCkofB.', 'Mol', '2003-10-24', '+381621516073', 'raver', '2025-09-05 11:44:02', '', '2025-09-06 13:44:02', 1),
+(16, 'Farkas', 'Gábor', 'farkasgabor1024@gmail.com', '$2a$12$55rGML/byY0LfH/TOgdbUexjimugkjvI9N5CGqUtMiAalSVGZecES', 'Mol', '2003-10-24', '+381621516073', 'raver', '2025-09-05 11:44:02', '', '2025-09-06 13:44:02', 1),
 (18, 'Miska', 'Fizi', 'random.koala497@passinbox.com', '$2y$10$WuIaFAi4P3dX4dK.nldIyOG2qenos2WbwLks/5maad6b6V0fWqEEi', NULL, '1979-07-09', NULL, 'raver', '2025-09-08 11:04:10', NULL, '2025-09-09 13:04:09', 1);
 
 -- --------------------------------------------------------
@@ -244,7 +268,9 @@ INSERT INTO `venues` (`id`, `name`, `address`, `city`, `country`, `cover_image`,
 (7, 'Akvárium Klub', 'Jókai Mór 105/B', 'Budapest', 'Hungary', 'portfolio-img-2.jpg', 2500),
 (8, 'Budapest Park', 'Nagyboldogasszony Sgt. 179', 'Budapest', 'Hungary', 'portfolio-img-3.jpg', 10000),
 (9, 'A38 Hajó', 'Pesti rakpart (1117)', 'Budapest', 'Hungary', 'portfolio-img-4.jpg', 800),
-(10, 'MVM Dome', 'Oktogon 110', 'Budapest', 'Hungary', 'portfolio-img-5.jpg', 20000);
+(10, 'MVM Dome', 'Oktogon 110', 'Budapest', 'Hungary', 'portfolio-img-5.jpg', 20000),
+(11, 'Újszegedi Partfürdő és Kemping', 'Torontál tér 1', 'Szeged', 'Hungary', 'portfolio-img-6.jpg', 25000),
+(12, 'Orfűi-tó Kemping', 'Pécsi út 45', 'Orfű', 'Hungary', 'portfolio-img-7.jpg', 15000);
 
 -- --------------------------------------------------------
 
@@ -294,19 +320,19 @@ ALTER TABLE `purchases`
   ADD KEY `user_id` (`user_id`);
 
 --
--- A tábla indexei `purchase_tickets`
---
-ALTER TABLE `purchase_tickets`
-  ADD PRIMARY KEY (`purchase_id`,`ticket_id`),
-  ADD KEY `ticket_id` (`ticket_id`);
-
---
 -- A tábla indexei `tickets`
 --
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`id`),
   ADD KEY `event_id` (`event_id`),
   ADD KEY `owner_id` (`owner_id`);
+
+--
+-- A tábla indexei `ticket_types`
+--
+ALTER TABLE `ticket_types`
+  ADD PRIMARY KEY (`ticket_type_id`),
+  ADD KEY `fk_ticket_event` (`event_id`);
 
 --
 -- A tábla indexei `users`
@@ -349,7 +375,7 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT a táblához `login_sessions`
 --
 ALTER TABLE `login_sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT a táblához `password_resets`
@@ -370,6 +396,12 @@ ALTER TABLE `tickets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT a táblához `ticket_types`
+--
+ALTER TABLE `ticket_types`
+  MODIFY `ticket_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
@@ -385,7 +417,7 @@ ALTER TABLE `user_interests`
 -- AUTO_INCREMENT a táblához `venues`
 --
 ALTER TABLE `venues`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT a táblához `venue_images`
@@ -417,18 +449,17 @@ ALTER TABLE `purchases`
   ADD CONSTRAINT `purchases_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
--- Megkötések a táblához `purchase_tickets`
---
-ALTER TABLE `purchase_tickets`
-  ADD CONSTRAINT `purchase_tickets_ibfk_1` FOREIGN KEY (`purchase_id`) REFERENCES `purchases` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `purchase_tickets_ibfk_2` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE;
-
---
 -- Megkötések a táblához `tickets`
 --
 ALTER TABLE `tickets`
   ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`);
+
+--
+-- Megkötések a táblához `ticket_types`
+--
+ALTER TABLE `ticket_types`
+  ADD CONSTRAINT `fk_ticket_event` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `user_interests`
