@@ -1,0 +1,284 @@
+{
+    "time": "2025-09-16 21:45:22",
+    "event_id": 23,
+    "request_body": {
+        "event_id": 23,
+        "items": [
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 8990,
+                "quantity": 1,
+                "ticket_type_id": "10"
+            }
+        ]
+    },
+    "requested": {
+        "10": 1
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 10,
+            "ticket_type": "vip",
+            "price": 8990
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 8990
+            },
+            "quantity": 1
+        }
+    ],
+    "computed_total_huf": 8990
+}
+
+{
+    "time": "2025-09-16 21:48:00",
+    "event_id": 23,
+    "request_body": {
+        "event_id": 23,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 5990,
+                "quantity": 1,
+                "ticket_type_id": "9"
+            },
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 8990,
+                "quantity": 2,
+                "ticket_type_id": "10"
+            }
+        ]
+    },
+    "requested": {
+        "9": 1,
+        "10": 2
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 9,
+            "ticket_type": "regular",
+            "price": 5990
+        },
+        {
+            "ticket_type_id": 10,
+            "ticket_type": "vip",
+            "price": 8990
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 5990
+            },
+            "quantity": 1
+        },
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 8990
+            },
+            "quantity": 2
+        }
+    ],
+    "computed_total_huf": 23970
+}{
+    "time": "2025-09-16 21:56:24",
+    "event_id": 23,
+    "request_body": {
+        "event_id": 23,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 5990,
+                "quantity": 2,
+                "ticket_type_id": "9"
+            },
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 8990,
+                "quantity": 3,
+                "ticket_type_id": "10"
+            }
+        ]
+    },
+    "requested": {
+        "9": 2,
+        "10": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 9,
+            "ticket_type": "regular",
+            "price": 5990
+        },
+        {
+            "ticket_type_id": 10,
+            "ticket_type": "vip",
+            "price": 8990
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 599000
+            },
+            "quantity": 2
+        },
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 899000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 38950,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-16 22:03:53",
+    "event_id": 20,
+    "request_body": {
+        "event_id": 20,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 4990,
+                "quantity": 1,
+                "ticket_type_id": "3"
+            },
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 7990,
+                "quantity": 2,
+                "ticket_type_id": "4"
+            }
+        ]
+    },
+    "requested": {
+        "3": 1,
+        "4": 2
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 3,
+            "ticket_type": "regular",
+            "price": 4990
+        },
+        {
+            "ticket_type_id": 4,
+            "ticket_type": "vip",
+            "price": 7990
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 499000
+            },
+            "quantity": 1
+        },
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 799000
+            },
+            "quantity": 2
+        }
+    ],
+    "computed_total_huf": 20970,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-16 22:06:16",
+    "event_id": 20,
+    "request_body": {
+        "event_id": 20,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 4990,
+                "quantity": 1,
+                "ticket_type_id": "3"
+            },
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 7990,
+                "quantity": 3,
+                "ticket_type_id": "4"
+            }
+        ]
+    },
+    "requested": {
+        "3": 1,
+        "4": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 3,
+            "ticket_type": "regular",
+            "price": 4990
+        },
+        {
+            "ticket_type_id": 4,
+            "ticket_type": "vip",
+            "price": 7990
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 499000
+            },
+            "quantity": 1
+        },
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 799000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 28960,
+    "huf_factor": 100
+}
+

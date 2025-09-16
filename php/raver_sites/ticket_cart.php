@@ -188,20 +188,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <a href="../festival-detail.php?id=<?php echo $event_id; ?>" class="text-decoration-none d-inline-flex align-items-center text-dark mb-4" style="padding-top: 5em; max-width: fit-content;">
                 <i class="fas fa-arrow-left me-2"></i> Back to Event
               </a>
-              
+
               <!-- Page Header -->
               <div class="text-center mb-6">
                 <h1 class="display-5 fw-bold mb-3">Purchase Tickets</h1>
                 <p class="lead">Complete your purchase for <?php echo htmlspecialchars($event['name']); ?></p>
               </div>
-              
+
               <div class="row g-5">
                 <!-- Ticket Selection -->
                 <div class="col-lg-7">
                   <div class="card border-0 shadow-sm h-100">
                     <div class="card-body p-5">
                       <h3 class="h4 mb-4">Select Tickets</h3>
-                      
+
                       <form id="ticketForm" method="POST" action="">
                         <?php foreach ($ticket_types as $ticket): ?>
                         <div class="mb-4 p-4 border rounded <?php echo $ticket['ticket_type'] === 'vip' ? 'ticket-vip' : ''; ?>">
@@ -213,14 +213,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="text-end">
                               <div class="d-flex align-items-center">
                                 <button type="button" class="btn btn-outline-secondary btn-sm rounded-circle quantity-btn" data-type="decrease" data-ticket-type="<?php echo $ticket['ticket_type_id']; ?>">-</button>
-                                <input type="number" 
-                                       class="form-control mx-2 text-center ticket-quantity" 
+                                <input type="number"
+                                       class="form-control mx-2 text-center ticket-quantity"
                                        id="quantity-<?php echo $ticket['ticket_type_id']; ?>"
                                        name="tickets[<?php echo $ticket['ticket_type_id']; ?>]"
-                                       value="0" 
-                                       min="0" 
+                                       value="0"
+                                       min="0"
                                        max="5"
                                        data-price="<?php echo $ticket['price']; ?>"
+                                       data-name="<?php echo strtoupper($ticket['ticket_type']); ?> TICKET"
                                        style="width: 70px;">
                                 <button type="button" class="btn btn-outline-secondary btn-sm rounded-circle quantity-btn" data-type="increase" data-ticket-type="<?php echo $ticket['ticket_type_id']; ?>">+</button>
                               </div>
@@ -235,22 +236,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Order Summary -->
                 <div class="col-lg-5">
                   <div class="card border-0 shadow-sm h-100">
                     <div class="card-body p-5">
                       <h3 class="h4 mb-4">Order Summary</h3>
-                      
+
                       <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
                         <span class="text-muted">Event</span>
                         <span class="fw-medium"><?php echo htmlspecialchars($event['name']); ?></span>
                       </div>
-                      
+
                       <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
                         <span class="text-muted">Date</span>
                         <span class="fw-medium">
-                          <?php 
+                          <?php
                             $start_date = new DateTime($event['start_date']);
                             $end_date = new DateTime($event['end_date']);
                             if ($start_date->format('Y-m-d') === $end_date->format('Y-m-d')) {
@@ -261,7 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                           ?>
                         </span>
                       </div>
-                      
+
                       <div id="order-summary-items">
                         <!-- Ticket items will be added here by JavaScript -->
                       </div>
@@ -279,12 +280,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h5 id="total">0 Ft</h5>
                       </div>
                       <p class="text-muted small mb-4">* All prices include VAT. No additional fees will be charged.</p>
-                      
+
                       <div class="d-grid gap-3">
-                        <button type="button" class="btn btn-dark btn-pay" id="payWithStripe">
+                        <button type="button" class="btn btn-dark btn-pay" id="checkout-button-stripe">
                           <i class="fab fa-cc-stripe me-2"></i> Pay with Stripe
                         </button>
-                        <button type="button" class="btn btn-primary btn-pay" id="payWithPayPal">
+                        <button type="button" class="btn btn-primary btn-pay" id="checkout-button-paypal">
                           <i class="fab fa-paypal me-2"></i> Pay with PayPal
                         </button>
                       </div>
@@ -305,7 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="col-lg-8 mx-auto text-center text-white">
             <h1 class="display-4 fw-bold mb-3"><?php echo htmlspecialchars($event['name']); ?></h1>
             <p class="lead mb-0">
-              <?php 
+              <?php
                 echo $start_date->format('F j, Y');
                 if ($start_date->format('Y-m-d') !== $end_date->format('Y-m-d')) {
                   echo ' - ' . $end_date->format('F j, Y');
@@ -330,10 +331,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <!-- Add jQuery and Bootstrap JS bundle -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  
+
   <!-- Custom JS for header scroll effect -->
   <script src="../../assets/js/custom.js"></script>
-  
+
   <!-- Other JS libraries -->
   <script src="../../assets/libs/owl.carousel/dist/owl.carousel.min.js"></script>
   <script src="../../assets/libs/aos-master/dist/aos.js"></script>
@@ -358,16 +359,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           const ticketType = this.getAttribute('data-ticket-type');
           const input = document.getElementById(`quantity-${ticketType}`);
           if (!input) return;
-          
+
           let value = parseInt(input.value) || 0;
           const max = parseInt(input.max) || 5;
-          
+
           if (type === 'increase' && value < max) {
             value++;
           } else if (type === 'decrease' && value > 0) {
             value--;
           }
-          
+
           input.value = value;
           updateOrderSummary();
         });
@@ -378,7 +379,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         input.addEventListener('change', function() {
           const max = parseInt(this.max);
           const value = parseInt(this.value);
-          
+
           if (isNaN(value) || value < 0) {
             this.value = 0;
           } else if (value > max) {
@@ -393,7 +394,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         let subtotal = 0;
         let totalTickets = 0;
         let orderItemsHtml = '';
-        
+
         // Calculate subtotal based on selected tickets
         document.querySelectorAll('.ticket-quantity').forEach(input => {
           const quantity = parseInt(input.value) || 0;
@@ -403,10 +404,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const ticketType = document.querySelector(`[data-ticket-type="${ticketTypeId}"]`);
             const ticketName = ticketType ? ticketType.textContent.trim() : 'Ticket';
             const itemTotal = quantity * price;
-            
+
             subtotal += itemTotal;
             totalTickets += quantity;
-            
+
             // Add to order items
             orderItemsHtml += `
               <div class="d-flex justify-content-between mb-2">
@@ -416,24 +417,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             `;
           }
         });
-        
+
         // Update the order summary
         const orderItemsContainer = document.getElementById('order-items');
         if (orderItemsContainer) {
           orderItemsContainer.innerHTML = orderItemsHtml || '<div class="text-muted">No tickets selected</div>';
         }
-        
+
         // Update totals
         const subtotalElement = document.getElementById('subtotal');
         const totalElement = document.getElementById('total');
-        
+
         if (subtotalElement) subtotalElement.textContent = `${subtotal.toFixed(2)} Ft`;
         if (totalElement) totalElement.textContent = `${subtotal.toFixed(2)} Ft`;
       }
-      
+
       // Initial update of the order summary
       updateOrderSummary();
   });
+
+
+    // Stripe checkout
+    document.getElementById("checkout-button-stripe").addEventListener("click", async () => {
+        // Collect selected ticket items
+        const items = [];
+        let clientTotal = 0;
+        document.querySelectorAll('.ticket-quantity').forEach(input => {
+          const quantity = parseInt(input.value, 10) || 0;
+          if (quantity > 0) {
+            const unitAmount = parseInt(input.getAttribute('data-price'), 10) || 0;
+            const name = input.getAttribute('data-name') || 'Ticket';
+            const ticketTypeId = input.id.startsWith('quantity-') ? input.id.replace('quantity-', '') : null;
+            if (unitAmount > 0) {
+              items.push({ name, unit_amount: unitAmount, quantity, ticket_type_id: ticketTypeId });
+              clientTotal += unitAmount * quantity;
+            }
+          }
+        });
+
+        if (items.length === 0) {
+          alert('Kérjük, válasszon legalább egy jegyet a folytatáshoz.');
+          return;
+        }
+
+        if (clientTotal < 175) {
+          alert('A Stripe fizetés minimális összege 175 Ft. Kérjük, növelje a mennyiséget.');
+          return;
+        }
+
+        const eventIdInput = document.querySelector('input[name="event_id"]');
+        const eventId = eventIdInput ? parseInt(eventIdInput.value, 10) : null;
+
+        try {
+          const response = await fetch("/Diplomamunka-26222041/php/raver_sites/create_checkout.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              event_id: eventId,
+              items
+            })
+          });
+
+          if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errText}`);
+          }
+
+          const data = await response.json();
+          if (data.url) {
+            window.location.href = data.url;
+          } else {
+            alert("Hiba történt: " + (data.error || 'Ismeretlen hiba'));
+          }
+        } catch (e) {
+          console.error('Checkout error:', e);
+          alert('Hiba történt a fizetés indításakor. Kérjük, próbálja meg később.');
+        }
+    });
   </script>
 </body>
 

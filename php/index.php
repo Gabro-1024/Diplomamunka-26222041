@@ -1,3 +1,78 @@
+<?php
+// Handle Stripe success callback: /php/index.php?payment=success&session_id=...
+require_once __DIR__ . '/includes/auth_check.php'; // starts session
+
+if (isset($_GET['payment']) && $_GET['payment'] === 'success' && !empty($_GET['session_id'])) {
+    $sessionId = $_GET['session_id'];
+    $logDir = __DIR__ . '/logs';
+    if (!is_dir($logDir)) { @mkdir($logDir, 0777, true); }
+    $purchaseLog = $logDir . '/purchases.log';
+
+    try {
+        // Load Composer and env
+        require_once __DIR__ . '/../vendor/autoload.php';
+        $projectRoot = realpath(__DIR__ . '/..');
+        if ($projectRoot && file_exists($projectRoot . '/.env')) {
+            $dotenv = Dotenv\Dotenv::createImmutable($projectRoot);
+            $dotenv->load();
+        }
+        $secretKey = $_ENV['STRIPE_SECRET_KEY'] ?? getenv('STRIPE_SECRET_KEY');
+        if (!$secretKey) { throw new Exception('Stripe key missing'); }
+        \Stripe\Stripe::setApiKey($secretKey);
+
+        // Retrieve session
+        $session = \Stripe\Checkout\Session::retrieve($sessionId);
+        $paid = ($session->payment_status === 'paid');
+        $currency = strtolower($session->currency);
+        $amountTotalMinor = (int)($session->amount_total ?? 0);
+        // Convert to major units for DB storing. For HUF we treat minor=2 decimals as used in checkout
+        $divisor = ($currency === 'huf') ? 100 : 100;
+        $amountMajor = $amountTotalMinor / $divisor;
+        $status = $paid ? 'completed' : 'failed';
+
+        // Insert into purchases
+        require_once __DIR__ . '/includes/db_connect.php';
+        $pdo = db_connect();
+        $userId = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
+        if (!$userId) { throw new Exception('User not authenticated for purchase record'); }
+
+        // Prevent duplicate insert within this browser session
+        if (!isset($_SESSION['recorded_sessions'])) { $_SESSION['recorded_sessions'] = []; }
+        if (isset($_SESSION['recorded_sessions'][$sessionId])) {
+            // already recorded in this session
+        } else {
+            $stmt = $pdo->prepare('INSERT INTO purchases (user_id, amount, status, payment_method) VALUES (?, ?, ?, ?)');
+            $stmt->execute([$userId, $amountMajor, $status, 'stripe']);
+            $_SESSION['recorded_sessions'][$sessionId] = true;
+        }
+
+        // Optional: log
+        $logData = [
+            'time' => date('Y-m-d H:i:s'),
+            'user_id' => $userId,
+            'session_id' => $sessionId,
+            'currency' => $currency,
+            'amount_total_minor' => $amountTotalMinor,
+            'amount_stored' => $amountMajor,
+            'status' => $status,
+            'payment_method' => 'stripe',
+        ];
+        @file_put_contents($purchaseLog, json_encode($logData, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) . "\n\n", FILE_APPEND);
+
+        // Show a small flash message (optional)
+        $_SESSION['payment_message'] = $paid ? 'Payment completed successfully.' : 'Payment not completed.';
+
+    } catch (Throwable $e) {
+        $errData = [
+            'time' => date('Y-m-d H:i:s'),
+            'session_id' => $sessionId,
+            'error' => $e->getMessage(),
+        ];
+        @file_put_contents($purchaseLog, json_encode($errData, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) . "\n\n", FILE_APPEND);
+        // Do not block page render; just continue
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 
