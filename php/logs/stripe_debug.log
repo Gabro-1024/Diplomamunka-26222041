@@ -1496,3 +1496,167 @@
     "huf_factor": 100
 }
 
+{
+    "time": "2025-09-17 21:12:49",
+    "event_id": 19,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 19,
+        "items": [
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 8990,
+                "quantity": 3,
+                "ticket_type_id": "2"
+            }
+        ]
+    },
+    "requested": {
+        "2": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 2,
+            "ticket_type": "vip",
+            "price": 8990
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 899000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 26970,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-17 21:12:51",
+    "event_id": 19,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 19,
+        "items": [
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 8990,
+                "quantity": 3,
+                "ticket_type_id": "2"
+            }
+        ]
+    },
+    "requested": {
+        "2": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 2,
+            "ticket_type": "vip",
+            "price": 8990
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 899000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 26970,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-17 21:12:53",
+    "event_id": 19,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 19,
+        "items": [
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 8990,
+                "quantity": 3,
+                "ticket_type_id": "2"
+            }
+        ]
+    },
+    "requested": {
+        "2": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 2,
+            "ticket_type": "vip",
+            "price": 8990
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 899000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 26970,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-17 21:12:55",
+    "event_id": 19,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 19,
+        "items": [
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 8990,
+                "quantity": 3,
+                "ticket_type_id": "2"
+            }
+        ]
+    },
+    "requested": {
+        "2": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 2,
+            "ticket_type": "vip",
+            "price": 8990
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 899000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 26970,
+    "huf_factor": 100
+}
+
