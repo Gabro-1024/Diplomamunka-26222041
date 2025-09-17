@@ -372,6 +372,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           input.value = value;
           updateOrderSummary();
         });
+
+    // PayPal checkout
+    document.getElementById("checkout-button-paypal").addEventListener("click", async () => {
+        // Collect selected ticket items
+        const items = [];
+        let clientTotal = 0;
+        document.querySelectorAll('.ticket-quantity').forEach(input => {
+          const quantity = parseInt(input.value, 10) || 0;
+          if (quantity > 0) {
+            const unitAmount = parseInt(input.getAttribute('data-price'), 10) || 0; // HUF
+            const name = input.getAttribute('data-name') || 'Ticket';
+            const ticketTypeId = input.id.startsWith('quantity-') ? input.id.replace('quantity-', '') : null;
+            if (unitAmount > 0) {
+              items.push({ name, unit_amount: unitAmount, quantity, ticket_type_id: ticketTypeId });
+              clientTotal += unitAmount * quantity;
+            }
+          }
+        });
+
+        if (items.length === 0) {
+          alert('Kérjük, válasszon legalább egy jegyet a folytatáshoz.');
+          return;
+        }
+        if (clientTotal < 5) {
+          alert('A PayPal fizetés minimális összege 5 Ft. Kérjük, növelje a mennyiséget.');
+          return;
+        }
+
+        const eventIdInput = document.querySelector('input[name="event_id"]');
+        const eventId = eventIdInput ? parseInt(eventIdInput.value, 10) : null;
+
+        try {
+          const response = await fetch("/Diplomamunka-26222041/php/raver_sites/create_checkout.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              payment_method: 'paypal',
+              event_id: eventId,
+              items
+            })
+          });
+          if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errText}`);
+          }
+          const data = await response.json();
+          if (data.url) {
+            window.location.href = data.url; // PayPal approval URL
+          } else {
+            alert('Hiba történt a PayPal fizetés indításakor: ' + (data.error || 'Ismeretlen hiba'));
+          }
+        } catch (e) {
+          console.error('PayPal checkout error:', e);
+          alert('Hiba történt a PayPal fizetés indításakor. Kérjük, próbálja később.');
+        }
+    });
       });
 
       // Handle direct input changes

@@ -1,0 +1,14 @@
+{
+    "time": "2025-09-17 20:32:54",
+    "order_id": "4YT702076D491533B",
+    "user_id": 16,
+    "event_id": 24,
+    "items": [
+        {
+            "ticket_type_id": 12,
+            "ticket_type": "vip",
+            "price_huf": 7990,
+            "quantity": 2
+        }
+    ]
+}

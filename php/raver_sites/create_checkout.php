@@ -1,4 +1,6 @@
 <?php
+// Start session to capture current user
+require_once __DIR__ . '/../includes/auth_check.php';
 // Composer autoload from project root
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -23,6 +25,7 @@ if (!$secretKey) {
 $body = json_decode(file_get_contents('php://input'), true) ?? [];
 $items = $body['items'] ?? [];
 $eventId = $body['event_id'] ?? null;
+$paymentMethod = strtolower($body['payment_method'] ?? 'stripe');
 
 if (!is_array($items) || count($items) === 0) {
     http_response_code(400);
@@ -139,20 +142,110 @@ $debugPayload = [
 $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $basePath = '/Diplomamunka-26222041/php';
-$successUrl = sprintf('http://localhost:63342/Diplomamunka-26222041/php/index.php?payment=success&session_id={CHECKOUT_SESSION_ID}', $scheme, $host, $basePath);
-$cancelUrl = sprintf('%s://%s%s/raver_sites/ticket_cart.php%s', $scheme, $host, $basePath, $eventId ? ('?event_id=' . urlencode((string)$eventId)) : '');
+$successUrl = sprintf('%s://%s%s/index.php?payment=success&session_id={CHECKOUT_SESSION_ID}%s', $scheme, $host, $basePath, $eventId ? ('&event_id=' . urlencode((string)$eventId)) : '');
+$cancelUrl = sprintf('http://localhost/Diplomamunka-26222041/php/raver_sites/ticket_cart.php?event_id=' . urlencode((string)$eventId));
 
 try {
-    $session = \Stripe\Checkout\Session::create([
-        'payment_method_types' => ['card'],
-        'mode' => 'payment',
-        'line_items' => $lineItems,
-        'success_url' => $successUrl,
-        'cancel_url' => $cancelUrl,
-    ]);
+    if ($paymentMethod === 'paypal') {
+        // Build PayPal order for total amount in HUF
+        $clientId = $_ENV['PAYPAL_CLIENT_ID'] ?? getenv('PAYPAL_CLIENT_ID');
+        $clientSecret = $_ENV['PAYPAL_CLIENT_SECRET'] ?? getenv('PAYPAL_CLIENT_SECRET');
+        if (!$clientId || !$clientSecret) {
+            throw new Exception('PayPal credentials not configured');
+        }
 
-    header('Content-Type: application/json');
-    echo json_encode(['url' => $session->url]);
+        $env = new \PayPalCheckoutSdk\Core\SandboxEnvironment($clientId, $clientSecret);
+        $client = new \PayPalCheckoutSdk\Core\PayPalHttpClient($env);
+
+        $orderRequest = new \PayPalCheckoutSdk\Orders\OrdersCreateRequest();
+        $orderRequest->prefer('return=representation');
+        $orderRequest->body = [
+            'intent' => 'CAPTURE',
+            'purchase_units' => [[
+                'amount' => [
+                    'currency_code' => 'HUF',
+                    'value' => number_format((float)$totalAmountHuf, 2, '.', ''),
+                ],
+                'description' => 'Tickets purchase',
+            ]],
+            'application_context' => [
+                // PayPal will append token=<ORDER_ID> to return_url automatically
+                'return_url' => sprintf('%s://%s%s/index.php?payment=paypal_success%s', $scheme, $host, $basePath, $eventId ? ('&event_id=' . urlencode((string)$eventId)) : ''),
+                'cancel_url' => sprintf('%s://%s%s/raver_sites/ticket_cart.php%s', $scheme, $host, $basePath, $eventId ? ('?event_id=' . urlencode((string)$eventId)) : ''),
+                'shipping_preference' => 'NO_SHIPPING',
+                'user_action' => 'PAY_NOW',
+            ],
+        ];
+
+        $response = $client->execute($orderRequest);
+        if ($response->statusCode >= 200 && $response->statusCode < 300) {
+            $order = $response->result;
+            $approveUrl = null;
+            foreach ($order->links as $lnk) {
+                if ($lnk->rel === 'approve') { $approveUrl = $lnk->href; break; }
+            }
+            if (!$approveUrl) { throw new Exception('PayPal approval link not found'); }
+
+            // Persist pending session details for PayPal keyed by order id
+            $pendingDir = __DIR__ . '/../logs/pending_sessions';
+            if (!is_dir($pendingDir)) { @mkdir($pendingDir, 0777, true); }
+            $userId = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
+            $pendingData = [
+                'time' => date('Y-m-d H:i:s'),
+                'order_id' => $order->id,
+                'user_id' => $userId,
+                'event_id' => (int)$eventId,
+                'items' => array_map(function($t) use ($requested) {
+                    return [
+                        'ticket_type_id' => (int)$t['ticket_type_id'],
+                        'ticket_type' => (string)$t['ticket_type'],
+                        'price_huf' => (int)$t['price'],
+                        'quantity' => (int)$requested[(int)$t['ticket_type_id']] ?? 0,
+                    ];
+                }, $tickets),
+            ];
+            @file_put_contents($pendingDir . '/' . $order->id . '.json', json_encode($pendingData, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
+
+            header('Content-Type: application/json');
+            echo json_encode(['url' => $approveUrl]);
+            exit;
+        } else {
+            throw new Exception('PayPal order creation failed');
+        }
+    } else {
+        // Stripe default path
+        $session = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'mode' => 'payment',
+            'line_items' => $lineItems,
+            'success_url' => $successUrl,
+            'cancel_url' => $cancelUrl,
+        ]);
+
+        // Persist pending session details for post-payment ticket generation
+        $pendingDir = __DIR__ . '/../logs/pending_sessions';
+        if (!is_dir($pendingDir)) { @mkdir($pendingDir, 0777, true); }
+        $userId = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
+        $pendingData = [
+            'time' => date('Y-m-d H:i:s'),
+            'session_id' => $session->id,
+            'user_id' => $userId,
+            'event_id' => (int)$eventId,
+            // Save trusted items with price and quantity per ticket_type_id
+            'items' => array_map(function($t) use ($requested) {
+                return [
+                    'ticket_type_id' => (int)$t['ticket_type_id'],
+                    'ticket_type' => (string)$t['ticket_type'],
+                    'price_huf' => (int)$t['price'],
+                    'quantity' => (int)$requested[(int)$t['ticket_type_id']] ?? 0,
+                ];
+            }, $tickets),
+        ];
+        @file_put_contents($pendingDir . '/' . $session->id . '.json', json_encode($pendingData, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
+
+        header('Content-Type: application/json');
+        echo json_encode(['url' => $session->url]);
+    }
 } catch (\Throwable $e) {
     http_response_code(500);
     header('Content-Type: application/json');
