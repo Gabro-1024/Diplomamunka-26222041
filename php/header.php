@@ -80,7 +80,7 @@ $userName = $isLoggedIn ? $_SESSION['first_name'] ?? 'User' : '';
                                     </li>
                                 </ul>
                                 <?php if ($isLoggedIn): ?>
-                                <a href="logout.php" class="btn btn-danger text-white fs-6 px-3 py-2 hstack gap-2 align-items-center" style="background-color: #dc3545; border-color: #dc3545;">
+                                <a href="http://localhost/Diplomamunka-26222041/php/logout.php" class="btn btn-danger text-white fs-6 px-3 py-2 hstack gap-2 align-items-center" style="background-color: #dc3545; border-color: #dc3545;">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span>Logout</span>
                                 </a>

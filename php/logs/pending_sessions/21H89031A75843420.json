@@ -1,0 +1,14 @@
+{
+    "time": "2025-09-17 21:01:08",
+    "order_id": "21H89031A75843420",
+    "user_id": 16,
+    "event_id": 20,
+    "items": [
+        {
+            "ticket_type_id": 3,
+            "ticket_type": "regular",
+            "price_huf": 4990,
+            "quantity": 1
+        }
+    ]
+}

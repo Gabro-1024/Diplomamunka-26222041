@@ -1,6 +1,308 @@
+<?php
+require_once __DIR__ . '/includes/auth_check.php';
+
+if (isset($_GET['payment'])) {
+    $paymentType = $_GET['payment'];
+    $logDir = __DIR__ . '/logs';
+    if (!is_dir($logDir)) { @mkdir($logDir, 0777, true); }
+    $purchaseLog = $logDir . '/purchases.log';
+
+    // PayPal success
+    if ($paymentType === 'paypal_success' && !empty($_GET['token'])) {
+        $orderId = $_GET['token'];
+        try {
+            require_once __DIR__ . '/../vendor/autoload.php';
+            $projectRoot = realpath(__DIR__ . '/..');
+            if ($projectRoot && file_exists($projectRoot . '/.env')) {
+                $dotenv = Dotenv\Dotenv::createImmutable($projectRoot);
+                $dotenv->load();
+            }
+
+            // Setup PayPal client
+            $clientId = $_ENV['PAYPAL_CLIENT_ID'] ?? getenv('PAYPAL_CLIENT_ID');
+            $clientSecret = $_ENV['PAYPAL_CLIENT_SECRET'] ?? getenv('PAYPAL_CLIENT_SECRET');
+            if (!$clientId || !$clientSecret) { throw new Exception('PayPal credentials missing'); }
+            $env = new \PayPalCheckoutSdk\Core\SandboxEnvironment($clientId, $clientSecret);
+            $client = new \PayPalCheckoutSdk\Core\PayPalHttpClient($env);
+
+            // Capture the order
+            $captureReq = new \PayPalCheckoutSdk\Orders\OrdersCaptureRequest($orderId);
+            $captureReq->prefer('return=representation');
+            $captureRes = $client->execute($captureReq);
+            $paid = ($captureRes->statusCode >= 200 && $captureRes->statusCode < 300 && isset($captureRes->result) && strtolower($captureRes->result->status ?? '') === 'completed');
+
+            // Amount and currency
+            $amountMajor = 0.00;
+            $currency = 'huf';
+            if (isset($captureRes->result->purchase_units[0]->payments->captures[0])) {
+                $cap = $captureRes->result->purchase_units[0]->payments->captures[0];
+                $amountMajor = (float)($cap->amount->value ?? 0);
+                $currency = strtolower($cap->amount->currency_code ?? 'HUF');
+            }
+            $status = $paid ? 'completed' : 'failed';
+
+            // Insert into purchases
+            require_once __DIR__ . '/includes/db_connect.php';
+            $pdo = db_connect();
+            $userId = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
+            if (!$userId) { throw new Exception('User not authenticated for purchase record'); }
+
+            if (!isset($_SESSION['recorded_paypal'])) { $_SESSION['recorded_paypal'] = []; }
+            $purchaseId = null;
+            if (isset($_SESSION['recorded_paypal'][$orderId])) {
+                // try to re-use last purchase id
+                if (isset($_SESSION['last_purchase_id'])) {
+                    $purchaseId = (int)$_SESSION['last_purchase_id'];
+                } else {
+                    $find = $pdo->prepare('SELECT id FROM purchases WHERE user_id = ? AND payment_method = ? ORDER BY id DESC LIMIT 1');
+                    $find->execute([$userId, 'paypal']);
+                    $row = $find->fetch(PDO::FETCH_ASSOC);
+                    if ($row) { $purchaseId = (int)$row['id']; }
+                }
+            } else {
+                $stmt = $pdo->prepare('INSERT INTO purchases (user_id, amount, status, payment_method) VALUES (?, ?, ?, ?)');
+                $stmt->execute([$userId, $amountMajor, $status, 'paypal']);
+                $_SESSION['recorded_paypal'][$orderId] = true;
+                $purchaseId = (int)$pdo->lastInsertId();
+                $_SESSION['last_purchase_id'] = $purchaseId;
+            }
+
+            // If paid, generate tickets from pending order payload
+            if ($paid) {
+                if (!isset($_SESSION['ticketed_paypal'])) { $_SESSION['ticketed_paypal'] = []; }
+                if (!isset($_SESSION['ticketed_paypal'][$orderId])) {
+                    $pendingDir = __DIR__ . '/logs/pending_sessions';
+                    $pendingFile = $pendingDir . '/' . $orderId . '.json';
+                    if (is_file($pendingFile)) {
+                        $pendingJson = json_decode(file_get_contents($pendingFile), true);
+                        if (json_last_error() === JSON_ERROR_NONE && !empty($pendingJson)) {
+                            $eventId = isset($_GET['event_id']) ? (int)$_GET['event_id'] : (int)($pendingJson['event_id'] ?? 0);
+                            $items = $pendingJson['items'] ?? [];
+                            if ($eventId > 0 && !empty($items)) {
+                                $qrDir = __DIR__ . '/worker_sites/qrcodes';
+                                if (!is_dir($qrDir)) { @mkdir($qrDir, 0777, true); }
+
+                                $pdo->beginTransaction();
+                                try {
+                                    $insertStmt = $pdo->prepare('INSERT INTO tickets (qr_code_path, event_id, owner_id, is_used, price, purchase_id) VALUES (?, ?, ?, 0, ?, ?)');
+                                    foreach ($items as $it) {
+                                        $qty = (int)($it['quantity'] ?? 0);
+                                        $priceHuf = (int)($it['price_huf'] ?? 0);
+                                        if ($qty <= 0 || $priceHuf <= 0) { continue; }
+                                        for ($i = 0; $i < $qty; $i++) {
+                                            $code = bin2hex(random_bytes(16));
+                                            $qrPathRel = 'worker_sites/qrcodes/' . $orderId . '_' . $code . '.png';
+                                            $qrPathAbs = __DIR__ . '/' . $qrPathRel;
+                                            $qrPayload = json_encode([
+                                                'oid' => $orderId,
+                                                'uid' => $userId,
+                                                'eid' => $eventId,
+                                                'c'   => $code,
+                                                'ts'  => time(),
+                                            ], JSON_UNESCAPED_SLASHES);
+                                            $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($qrPayload);
+                                            $img = @file_get_contents($qrUrl);
+                                            if ($img === false && function_exists('curl_init')) {
+                                                $ch = curl_init($qrUrl);
+                                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                                                $img = curl_exec($ch);
+                                                curl_close($ch);
+                                            }
+                                            if ($img === false && function_exists('imagecreatetruecolor')) {
+                                                $im = imagecreatetruecolor(600, 600);
+                                                $bg = imagecolorallocate($im, 255, 255, 255);
+                                                $fg = imagecolorallocate($im, 0, 0, 0);
+                                                imagefilledrectangle($im, 0, 0, 600, 600, $bg);
+                                                imagestring($im, 5, 10, 10, 'QR generation failed', $fg);
+                                                imagestring($im, 3, 10, 40, $code, $fg);
+                                                imagepng($im, $qrPathAbs);
+                                                imagedestroy($im);
+                                            } else if ($img !== false) {
+                                                @file_put_contents($qrPathAbs, $img);
+                                            }
+
+                                            $priceDecimal = number_format($priceHuf, 2, '.', '');
+                                            $insertStmt->execute([$qrPathRel, $eventId, $userId, $priceDecimal, $purchaseId]);
+                                        }
+                                    }
+                                    $pdo->commit();
+                                    $_SESSION['ticketed_paypal'][$orderId] = true;
+                                    @unlink($pendingFile);
+                                } catch (Throwable $txe) {
+                                    $pdo->rollBack();
+                                    @file_put_contents($purchaseLog, json_encode([
+                                        'time' => date('Y-m-d H:i:s'),
+                                        'order_id' => $orderId,
+                                        'error' => 'PayPal ticket insert failed: ' . $txe->getMessage()
+                                    ], JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) . "\n\n", FILE_APPEND);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Stripe success
+            $_SESSION['payment_flash'] = [
+                'type' => $paid ? 'success' : 'warning',
+                'title' => $paid ? 'Payment successful (PayPal)' : 'Payment not completed (PayPal)',
+                'message' => $paid ? 'Your payment was completed successfully.' : 'Your payment did not complete. You can try again.',
+                'amount' => $amountMajor,
+                'currency' => strtoupper($currency),
+            ];
+        } catch (Throwable $e) {
+            @file_put_contents($purchaseLog, json_encode([
+                'time' => date('Y-m-d H:i:s'),
+                'order_id' => $orderId ?? null,
+                'error' => $e->getMessage(),
+            ], JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) . "\n\n", FILE_APPEND);
+        }
+    }
+
+    // Stripe success: index.php?payment=success&session_id=...
+    if ($paymentType === 'success' && !empty($_GET['session_id'])) {
+        $sessionId = $_GET['session_id'];
+        try {
+            // Load Composer and env
+            require_once __DIR__ . '/../vendor/autoload.php';
+            $projectRoot = realpath(__DIR__ . '/..');
+            if ($projectRoot && file_exists($projectRoot . '/.env')) {
+                $dotenv = Dotenv\Dotenv::createImmutable($projectRoot);
+                $dotenv->load();
+            }
+
+            // Stripe session
+            $secretKey = $_ENV['STRIPE_SECRET_KEY'] ?? getenv('STRIPE_SECRET_KEY');
+            if (!$secretKey) { throw new Exception('Stripe key missing'); }
+            \Stripe\Stripe::setApiKey($secretKey);
+            $session = \Stripe\Checkout\Session::retrieve($sessionId);
+            $paid = ($session->payment_status === 'paid');
+            $currency = strtolower($session->currency);
+            $amountTotalMinor = (int)($session->amount_total ?? 0);
+            $divisor = ($currency === 'huf') ? 100 : 100;
+            $amountMajor = $amountTotalMinor / $divisor;
+            $status = $paid ? 'completed' : 'failed';
+
+            // Insert into purchases
+            require_once __DIR__ . '/includes/db_connect.php';
+            $pdo = db_connect();
+            $userId = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
+            if (!$userId) { throw new Exception('User not authenticated for purchase record'); }
+
+            if (!isset($_SESSION['recorded_sessions'])) { $_SESSION['recorded_sessions'] = []; }
+            $purchaseId = null;
+            if (isset($_SESSION['recorded_sessions'][$sessionId])) {
+                if (isset($_SESSION['last_purchase_id'])) {
+                    $purchaseId = (int)$_SESSION['last_purchase_id'];
+                } else {
+                    $find = $pdo->prepare('SELECT id FROM purchases WHERE user_id = ? AND payment_method = ? ORDER BY id DESC LIMIT 1');
+                    $find->execute([$userId, 'stripe']);
+                    $row = $find->fetch(PDO::FETCH_ASSOC);
+                    if ($row) { $purchaseId = (int)$row['id']; }
+                }
+            } else {
+                $stmt = $pdo->prepare('INSERT INTO purchases (user_id, amount, status, payment_method) VALUES (?, ?, ?, ?)');
+                $stmt->execute([$userId, $amountMajor, $status, 'stripe']);
+                $_SESSION['recorded_sessions'][$sessionId] = true;
+                $purchaseId = (int)$pdo->lastInsertId();
+                $_SESSION['last_purchase_id'] = $purchaseId;
+            }
+
+            // Generate tickets from pending session
+            if ($paid) {
+                if (!isset($_SESSION['ticketed_sessions'])) { $_SESSION['ticketed_sessions'] = []; }
+                if (!isset($_SESSION['ticketed_sessions'][$sessionId])) {
+                    $pendingDir = __DIR__ . '/logs/pending_sessions';
+                    $pendingFile = $pendingDir . '/' . $sessionId . '.json';
+                    if (is_file($pendingFile)) {
+                        $pendingJson = json_decode(file_get_contents($pendingFile), true);
+                        if (json_last_error() === JSON_ERROR_NONE && !empty($pendingJson)) {
+                            $eventId = isset($_GET['event_id']) ? (int)$_GET['event_id'] : (int)($pendingJson['event_id'] ?? 0);
+                            $items = $pendingJson['items'] ?? [];
+                            if ($eventId > 0 && !empty($items)) {
+                                $qrDir = __DIR__ . '/worker_sites/qrcodes';
+                                if (!is_dir($qrDir)) { @mkdir($qrDir, 0777, true); }
+
+                                $pdo->beginTransaction();
+                                try {
+                                    $insertStmt = $pdo->prepare('INSERT INTO tickets (qr_code_path, event_id, owner_id, is_used, price, purchase_id) VALUES (?, ?, ?, 0, ?, ?)');
+                                    foreach ($items as $it) {
+                                        $qty = (int)($it['quantity'] ?? 0);
+                                        $priceHuf = (int)($it['price_huf'] ?? 0);
+                                        if ($qty <= 0 || $priceHuf <= 0) { continue; }
+                                        for ($i = 0; $i < $qty; $i++) {
+                                            $code = bin2hex(random_bytes(16));
+                                            $qrPathRel = 'worker_sites/qrcodes/' . $sessionId . '_' . $code . '.png';
+                                            $qrPathAbs = __DIR__ . '/' . $qrPathRel;
+                                            $qrPayload = json_encode([
+                                                'sid' => $sessionId,
+                                                'uid' => $userId,
+                                                'eid' => $eventId,
+                                                'c'   => $code,
+                                                'ts'  => time(),
+                                            ], JSON_UNESCAPED_SLASHES);
+                                            $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($qrPayload);
+                                            $img = @file_get_contents($qrUrl);
+                                            if ($img === false && function_exists('curl_init')) {
+                                                $ch = curl_init($qrUrl);
+                                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                                                $img = curl_exec($ch);
+                                                curl_close($ch);
+                                            }
+                                            if ($img === false && function_exists('imagecreatetruecolor')) {
+                                                $im = imagecreatetruecolor(600, 600);
+                                                $bg = imagecolorallocate($im, 255, 255, 255);
+                                                $fg = imagecolorallocate($im, 0, 0, 0);
+                                                imagefilledrectangle($im, 0, 0, 600, 600, $bg);
+                                                imagestring($im, 5, 10, 10, 'QR generation failed', $fg);
+                                                imagestring($im, 3, 10, 40, $code, $fg);
+                                                imagepng($im, $qrPathAbs);
+                                                imagedestroy($im);
+                                            } else if ($img !== false) {
+                                                @file_put_contents($qrPathAbs, $img);
+                                            }
+
+                                            $priceDecimal = number_format($priceHuf, 2, '.', '');
+                                            $insertStmt->execute([$qrPathRel, $eventId, $userId, $priceDecimal, $purchaseId]);
+                                        }
+                                    }
+                                    $pdo->commit();
+                                    $_SESSION['ticketed_sessions'][$sessionId] = true;
+                                    @unlink($pendingFile);
+                                } catch (Throwable $txe) {
+                                    $pdo->rollBack();
+                                    @file_put_contents($purchaseLog, json_encode([
+                                        'time' => date('Y-m-d H:i:s'),
+                                        'session_id' => $sessionId,
+                                        'error' => 'Ticket insert failed: ' . $txe->getMessage()
+                                    ], JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) . "\n\n", FILE_APPEND);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            $_SESSION['payment_flash'] = [
+                'type' => $paid ? 'success' : 'warning',
+                'title' => $paid ? 'Payment successful (Stripe)' : 'Payment not completed (Stripe)',
+                'message' => $paid ? 'Your payment was completed successfully.' : 'Your payment did not complete. You can try again.',
+                'amount' => $amountMajor,
+                'currency' => strtoupper($currency),
+            ];
+        } catch (Throwable $e) {
+            @file_put_contents($purchaseLog, json_encode([
+                'time' => date('Y-m-d H:i:s'),
+                'session_id' => $sessionId ?? null,
+                'error' => $e->getMessage(),
+            ], JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) . "\n\n", FILE_APPEND);
+        }
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,12 +311,57 @@
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
+  <style>
+    .payment-toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1055;
+      max-width: 520px;
+      width: 90%;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.2);
+      color: #111;
+      padding: 20px 48px 20px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .payment-toast.success { background: #7cfc00; }
+    .payment-toast.warning { background: #ffe08a; }
+    .payment-toast .toast-title { font-weight: 700; margin-bottom: 4px; }
+    .payment-toast .amount { font-weight: 600; }
+    .payment-toast .toast-close {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: transparent; border: 0;
+      font-size: 1.25rem; line-height: 1; cursor: pointer;
+    }
+  </style>
 </head>
-
 <body>
 
   <!-- Header -->
   <?php include 'header.php'; ?>
+
+  <?php if (!empty($_SESSION['payment_flash'])): $flash = $_SESSION['payment_flash']; unset($_SESSION['payment_flash']); ?>
+    <div id="paymentToast" class="payment-toast <?php echo $flash['type'] === 'success' ? 'success' : 'warning'; ?>" role="status" aria-live="polite">
+      <div>
+        <div class="toast-title"><?php echo htmlspecialchars($flash['title']); ?></div>
+        <div>
+          <?php echo htmlspecialchars($flash['message']); ?>
+          <?php if (!empty($flash['amount'])): ?>
+            <span class="amount ms-1">(<?php echo number_format((float)$flash['amount'], 2, '.', ' '); ?> Ft)</span>
+          <?php endif; ?>
+        </div>
+      </div>
+      <button class="toast-close" aria-label="Close" onclick="document.getElementById('paymentToast')?.remove();">&times;</button>
+    </div>
+    <script>
+      setTimeout(() => { document.getElementById('paymentToast')?.remove(); }, 6000);
+    </script>
+  <?php endif; ?>
 
   <!--  Page Wrapper -->
   <div class="page-wrapper overflow-hidden">
@@ -244,146 +591,6 @@
         </div>
       </div>
     </section>
-
-    <!--  Services Section -->
-<!--    <section class="services py-5 py-lg-11 py-xl-12 bg-dark" id="services">-->
-<!--      <div class="container">-->
-<!--        <div class="d-flex flex-column gap-5 gap-xl-10">-->
-<!--          <div class="row gap-7 gap-xl-0">-->
-<!--            <div class="col-xl-4 col-xxl-4">-->
-<!--              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"-->
-<!--                data-aos-duration="1000">-->
-<!--                <span-->
-<!--                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">03</span>-->
-<!--                <hr class="border-line bg-white">-->
-<!--                <span class="badge text-dark bg-white">Services</span>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="col-xl-8 col-xxl-7">-->
-<!--              <div class="row">-->
-<!--                <div class="col-xxl-8">-->
-<!--                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"-->
-<!--                    data-aos-duration="1000">-->
-<!--                    <h2 class="mb-0 text-white">What we do</h2>-->
-<!--                    <p class="fs-5 mb-0 text-white text-opacity-70">A glimpse into our creativity—exploring innovative-->
-<!--                      designs, successful collaborations, and transformative digital experiences.</p>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="services-tab">-->
-<!--            <div class="row gap-5 gap-xl-0">-->
-<!--              <div class="col-xl-4">-->
-<!--                <div class="tab-content" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">-->
-<!--                  <div class="tab-pane active" id="one" role="tabpanel" aria-labelledby="one-tab" tabindex="0">-->
-<!--                    <img src="../assets/images/services/services-img-1.jpg" alt="services" class="img-fluid">-->
-<!--                  </div>-->
-<!--                  <div class="tab-pane" id="two" role="tabpanel" aria-labelledby="two-tab" tabindex="0">-->
-<!--                    <img src="../assets/images/services/services-img-2.jpg" alt="services" class="img-fluid">-->
-<!--                  </div>-->
-<!--                  <div class="tab-pane" id="three" role="tabpanel" aria-labelledby="three-tab" tabindex="0">-->
-<!--                    <img src="../assets/images/services/services-img-3.jpg" alt="services" class="img-fluid">-->
-<!--                  </div>-->
-<!--                  <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="four-tab" tabindex="0">-->
-<!--                    <img src="../assets/images/services/services-img-4.jpg" alt="services" class="img-fluid">-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div class="col-xl-8">-->
-<!--                <div class="d-flex flex-column gap-5">-->
-<!--                  <ul class="nav nav-tabs" id="myTab" role="tablist" data-aos="fade-up" data-aos-delay="200"-->
-<!--                    data-aos-duration="1000">-->
-<!--                    <li-->
-<!--                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"-->
-<!--                      role="presentation">-->
-<!--                      <div class="row w-100 align-items-center gx-3">-->
-<!--                        <div class="col-lg-6 col-xxl-5">-->
-<!--                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0 active"-->
-<!--                            id="one-tab" data-bs-toggle="tab" data-bs-target="#one" type="button" role="tab"-->
-<!--                            aria-controls="one" aria-selected="true">Brand identity</button>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-6 col-xxl-7">-->
-<!--                          <p class="text-white text-opacity-70 mb-0">-->
-<!--                            When selecting a web design agency, it's essential to consider its reputation, experience,-->
-<!--                            and-->
-<!--                            the-->
-<!--                            specific needs of your project.-->
-<!--                          </p>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </li>-->
-<!--                    <li-->
-<!--                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"-->
-<!--                      role="presentation">-->
-<!--                      <div class="row w-100 align-items-center gx-3">-->
-<!--                        <div class="col-lg-6 col-xxl-5">-->
-<!--                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0" id="two-tab"-->
-<!--                            data-bs-toggle="tab" data-bs-target="#two" type="button" role="tab" aria-controls="two"-->
-<!--                            aria-selected="false">Web development</button>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-6 col-xxl-7">-->
-<!--                          <p class="text-white text-opacity-70 mb-0">-->
-<!--                            When selecting a web design agency, it's essential to consider its reputation, experience,-->
-<!--                            and-->
-<!--                            the-->
-<!--                            specific needs of your project.-->
-<!--                          </p>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </li>-->
-<!--                    <li-->
-<!--                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"-->
-<!--                      role="presentation">-->
-<!--                      <div class="row w-100 align-items-center gx-3">-->
-<!--                        <div class="col-lg-6 col-xxl-5">-->
-<!--                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0"-->
-<!--                            id="three-tab" data-bs-toggle="tab" data-bs-target="#three" type="button" role="tab"-->
-<!--                            aria-controls="three" aria-selected="false">Content creation</button>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-6 col-xxl-7">-->
-<!--                          <p class="text-white text-opacity-70 mb-0">-->
-<!--                            When selecting a web design agency, it's essential to consider its reputation, experience,-->
-<!--                            and-->
-<!--                            the-->
-<!--                            specific needs of your project.-->
-<!--                          </p>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </li>-->
-<!--                    <li-->
-<!--                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"-->
-<!--                      role="presentation">-->
-<!--                      <div class="row w-100 align-items-center gx-3">-->
-<!--                        <div class="col-lg-6 col-xxl-5">-->
-<!--                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0"-->
-<!--                            id="four-tab" data-bs-toggle="tab" data-bs-target="#four" type="button" role="tab"-->
-<!--                            aria-controls="four" aria-selected="false">Motion & 3d modeling</button>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-6 col-xxl-7">-->
-<!--                          <p class="text-white text-opacity-70 mb-0">-->
-<!--                            When selecting a web design agency, it's essential to consider its reputation, experience,-->
-<!--                            and-->
-<!--                            the-->
-<!--                            specific needs of your project.-->
-<!--                          </p>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </li>-->
-<!--                  </ul>-->
-<!--                  <a href="projects.html" class="btn border border-white border-opacity-25" data-aos="fade-up"-->
-<!--                    data-aos-delay="300" data-aos-duration="1000">-->
-<!--                    <span class="btn-text">See our Work</span>-->
-<!--                    <iconify-icon icon="lucide:arrow-up-right"-->
-<!--                      class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>-->
-<!--                  </a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </section>-->
 
     <!--  Why choose us Section -->
     <section class="why-choose-us py-5 py-lg-11 py-xl-12">
@@ -631,14 +838,11 @@
     </button>
   </div>
 
-
   <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/libs/owl.carousel/dist/owl.carousel.min.js"></script>
   <script src="../assets/libs/aos-master/dist/aos.js"></script>
   <script src="../assets/js/custom.js"></script>
-  <!-- solar icons -->
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 </body>
-
 </html>
