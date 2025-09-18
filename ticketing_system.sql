@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Sze 15. 22:08
+-- Létrehozás ideje: 2025. Sze 17. 21:17
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -96,7 +96,8 @@ INSERT INTO `login_sessions` (`id`, `user_id`, `user_agent`, `session_token`, `e
 (8, 18, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', 'd16a63dc43eb0a7092176c3ccb1bc7eb7462fcf875daf7e341c1f944457fc3bb', '2025-09-09 13:30:15', '2025-09-08 11:30:15'),
 (9, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', '46d99115bfc3873f011a4c69796d7974b38f4ca2bd1e41d8c1a09e0b18bd96fe', '2025-09-09 13:36:10', '2025-09-08 11:36:10'),
 (10, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', 'bd109cffdf99d78ab66ff60fda50aaed033da8e031cd4ae97fcbfe256a00857a', '2025-09-15 22:27:06', '2025-09-14 20:27:06'),
-(11, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', '183273f334169718f36a2a1347f60fa32f59a4bb4e05030a9bda58f6debbe0aa', '2025-09-15 23:03:24', '2025-09-14 21:03:24');
+(11, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', '183273f334169718f36a2a1347f60fa32f59a4bb4e05030a9bda58f6debbe0aa', '2025-09-15 23:03:24', '2025-09-14 21:03:24'),
+(12, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '7402269272b4a7637693947d410eceee1f42b07d26434eaf993ba6cc66130fb4', '2025-09-17 20:17:59', '2025-09-16 18:17:59');
 
 -- --------------------------------------------------------
 
@@ -136,6 +137,16 @@ CREATE TABLE `purchases` (
   `payment_method` enum('stripe','paypal') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- A tábla adatainak kiíratása `purchases`
+--
+
+INSERT INTO `purchases` (`id`, `user_id`, `amount`, `status`, `purchase_date`, `payment_method`) VALUES
+(6, 16, 22470.00, 'completed', '2025-09-17 20:12:26', 'stripe'),
+(7, 16, 15980.00, 'completed', '2025-09-17 20:54:49', 'paypal'),
+(8, 16, 16470.00, 'completed', '2025-09-17 20:56:29', 'stripe'),
+(9, 16, 4990.00, 'completed', '2025-09-17 21:03:38', 'paypal');
+
 -- --------------------------------------------------------
 
 --
@@ -144,12 +155,28 @@ CREATE TABLE `purchases` (
 
 CREATE TABLE `tickets` (
   `id` int(11) NOT NULL,
+  `purchase_id` int(11) NOT NULL,
   `qr_code_path` varchar(255) NOT NULL,
   `event_id` int(11) NOT NULL,
   `owner_id` int(11) DEFAULT NULL,
   `is_used` tinyint(1) DEFAULT 0,
   `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- A tábla adatainak kiíratása `tickets`
+--
+
+INSERT INTO `tickets` (`id`, `purchase_id`, `qr_code_path`, `event_id`, `owner_id`, `is_used`, `price`) VALUES
+(10, 6, 'worker_sites/qrcodes/cs_test_a1aiiPMeEfrCBpgsqiDBo6M4KebbpOv0S0LUfZT3YI4Yv3trGICECxv4Uw_3ee8736a99f67e55ffea84c926d19281.png', 21, 16, 0, 7490.00),
+(11, 6, 'worker_sites/qrcodes/cs_test_a1aiiPMeEfrCBpgsqiDBo6M4KebbpOv0S0LUfZT3YI4Yv3trGICECxv4Uw_27ab4d8a210594de848a418f2b4dbc92.png', 21, 16, 0, 7490.00),
+(12, 6, 'worker_sites/qrcodes/cs_test_a1aiiPMeEfrCBpgsqiDBo6M4KebbpOv0S0LUfZT3YI4Yv3trGICECxv4Uw_4518a0fdd0f38f4cb8cd76be3dbb8b23.png', 21, 16, 0, 7490.00),
+(13, 7, 'worker_sites/qrcodes/2VR994650R130222F_c61825527065bd4578da879a522154fc.png', 24, 16, 0, 7990.00),
+(14, 7, 'worker_sites/qrcodes/2VR994650R130222F_b8be9c46f800469b4833d6dd60dd5b45.png', 24, 16, 0, 7990.00),
+(15, 8, 'worker_sites/qrcodes/cs_test_b1p4TTKHvvf0NY7YP56llRPvIlpi5toSD698caI51seXeyMXLl0MfCw1B0_1548dfabe14057239892fad35fc0d684.png', 21, 16, 0, 4490.00),
+(16, 8, 'worker_sites/qrcodes/cs_test_b1p4TTKHvvf0NY7YP56llRPvIlpi5toSD698caI51seXeyMXLl0MfCw1B0_1367ba402e3c32939e62a3c586e58f33.png', 21, 16, 0, 4490.00),
+(17, 8, 'worker_sites/qrcodes/cs_test_b1p4TTKHvvf0NY7YP56llRPvIlpi5toSD698caI51seXeyMXLl0MfCw1B0_a2e2482be119d4db2318ccd9ef9f37c2.png', 21, 16, 0, 7490.00),
+(18, 9, 'worker_sites/qrcodes/4VJ29355P20669532_e8c8fc771e14b2ddb20de61536267ab4.png', 20, 16, 0, 4990.00);
 
 -- --------------------------------------------------------
 
@@ -324,8 +351,9 @@ ALTER TABLE `purchases`
 --
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `event_id` (`event_id`),
-  ADD KEY `owner_id` (`owner_id`);
+  ADD KEY `purchase_id` (`purchase_id`),
+  ADD KEY `tickets_ibfk_1` (`event_id`),
+  ADD KEY `tickets_ibfk_2` (`owner_id`);
 
 --
 -- A tábla indexei `ticket_types`
@@ -375,7 +403,7 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT a táblához `login_sessions`
 --
 ALTER TABLE `login_sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT a táblához `password_resets`
@@ -387,13 +415,13 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT a táblához `purchases`
 --
 ALTER TABLE `purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT a táblához `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT a táblához `ticket_types`
@@ -452,8 +480,8 @@ ALTER TABLE `purchases`
 -- Megkötések a táblához `tickets`
 --
 ALTER TABLE `tickets`
-  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `ticket_types`

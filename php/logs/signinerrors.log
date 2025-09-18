@@ -384,3 +384,11 @@
 [16-Sep-2025 20:17:59 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
 [16-Sep-2025 20:17:59 Europe/Berlin] Session cookie set: yes
 [16-Sep-2025 20:17:59 Europe/Berlin] Session variables set for user_id 16
+[18-Sep-2025 22:17:38 Europe/Berlin] ============================================================
+[18-Sep-2025 22:17:38 Europe/Berlin] Login attempt at 2025-09-18 22:17:38
+[18-Sep-2025 22:17:38 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[18-Sep-2025 22:17:38 Europe/Berlin] User lookup: found user
+[18-Sep-2025 22:17:38 Europe/Berlin] Email verified: yes
+[18-Sep-2025 22:17:38 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[18-Sep-2025 22:17:38 Europe/Berlin] Session cookie set: yes
+[18-Sep-2025 22:17:38 Europe/Berlin] Session variables set for user_id 16

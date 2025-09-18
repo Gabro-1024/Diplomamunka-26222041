@@ -204,29 +204,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                       <form id="ticketForm" method="POST" action="">
                         <?php foreach ($ticket_types as $ticket): ?>
+                        <?php
+                          $remaining = isset($ticket['remaining_tickets']) ? (int)$ticket['remaining_tickets'] : 0;
+                          $maxSelectable = max(0, min(5, $remaining));
+                          $isSoldOut = ($remaining <= 0);
+                        ?>
                         <div class="mb-4 p-4 border rounded <?php echo $ticket['ticket_type'] === 'vip' ? 'ticket-vip' : ''; ?>">
                           <div class="d-flex justify-content-between align-items-center">
                             <div>
                               <h5 class="mb-1"><?php echo strtoupper($ticket['ticket_type']); ?> TICKET</h5>
-                              <p class="mb-0 text-muted"><?php echo number_format($ticket['price'], 0, ',', ' '); ?> Ft</p>
+                              <p class="mb-0 text-muted"><?php echo number_format($ticket['price'], 0, ',', ' '); ?> Ft
+                                <?php if ($isSoldOut): ?>
+                                  <span class="badge bg-danger ms-2 text-primary">Sold out</span>
+                                <?php elseif ($remaining <= 5): ?>
+                                  <span class="badge bg-warning text-dark ms-2">Only <?php echo $remaining; ?> left</span>
+                                <?php endif; ?>
+                              </p>
                             </div>
                             <div class="text-end">
                               <div class="d-flex align-items-center">
-                                <button type="button" class="btn btn-outline-secondary btn-sm rounded-circle quantity-btn" data-type="decrease" data-ticket-type="<?php echo $ticket['ticket_type_id']; ?>">-</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm rounded-circle quantity-btn" data-type="decrease" data-ticket-type="<?php echo $ticket['ticket_type_id']; ?>" <?php echo $isSoldOut ? 'disabled' : ''; ?>>-</button>
                                 <input type="number"
                                        class="form-control mx-2 text-center ticket-quantity"
                                        id="quantity-<?php echo $ticket['ticket_type_id']; ?>"
                                        name="tickets[<?php echo $ticket['ticket_type_id']; ?>]"
                                        value="0"
                                        min="0"
-                                       max="5"
+                                       max="<?php echo $maxSelectable; ?>"
                                        data-price="<?php echo $ticket['price']; ?>"
+                                       data-remaining="<?php echo $remaining; ?>"
                                        data-name="<?php echo strtoupper($ticket['ticket_type']); ?> TICKET"
-                                       style="width: 70px;">
-                                <button type="button" class="btn btn-outline-secondary btn-sm rounded-circle quantity-btn" data-type="increase" data-ticket-type="<?php echo $ticket['ticket_type_id']; ?>">+</button>
+                                       style="width: 70px;" <?php echo $isSoldOut ? 'disabled' : ''; ?>>
+                                <button type="button" class="btn btn-outline-secondary btn-sm rounded-circle quantity-btn" data-type="increase" data-ticket-type="<?php echo $ticket['ticket_type_id']; ?>" <?php echo $isSoldOut ? 'disabled' : ''; ?>>+</button>
                               </div>
                               <small class="text-muted d-block mt-1">
-                                <?php echo $ticket['remaining_tickets']; ?> available
+                                <?php if ($isSoldOut): ?>
+                                  0 available
+                                <?php else: ?>
+                                  <?php echo $remaining; ?> available
+                                <?php endif; ?>
                               </small>
                             </div>
                           </div>
