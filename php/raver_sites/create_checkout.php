@@ -73,23 +73,25 @@ if (empty($requested)) {
 // Fetch ticket info from DB
 $placeholders = implode(',', array_fill(0, count($requested), '?'));
 $params = array_merge([(int)$eventId], array_map('intval', array_keys($requested)));
-$sql = "SELECT ticket_type_id, ticket_type, price FROM ticket_types WHERE event_id = ? AND ticket_type_id IN ($placeholders)";
+$sql = "SELECT ticket_type_id, ticket_type, price, remaining_tickets FROM ticket_types WHERE event_id = ? AND ticket_type_id IN ($placeholders)";
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Build Stripe line items using trusted DB data
 $lineItems = [];
-// Some Stripe accounts/API versions display HUF with 2 decimals. If that applies,
-// set factor to 100 so that 5990 HUF becomes 599000 "minor units".
-$hufFactor = 100; // adjust if your Stripe account treats HUF as zero-decimal
-$totalAmountHuf = 0; // real HUF total for validations
+$hufFactor = 100;
+$totalAmountHuf = 0;
+$effectiveRequested = [];
 foreach ($tickets as $t) {
     $ttid = (int)$t['ticket_type_id'];
     if (!isset($requested[$ttid])) continue;
-    $qty = (int)$requested[$ttid];
+    $reqQty = (int)$requested[$ttid];
+    $remaining = isset($t['remaining_tickets']) ? (int)$t['remaining_tickets'] : 0;
+    $cap = max(0, min(5, $remaining));
+    $qty = min($reqQty, $cap);
     if ($qty <= 0) continue;
-    $price = (int)$t['price']; // stored in HUF (major unit)
+    $effectiveRequested[$ttid] = $qty;
+    $price = (int)$t['price'];
     if ($price <= 0) continue;
     $name = strtoupper((string)$t['ticket_type']) . ' TICKET';
     $totalAmountHuf += $price * $qty;
@@ -99,7 +101,6 @@ foreach ($tickets as $t) {
             'product_data' => [
                 'name' => $name,
             ],
-            // Send amount in units Stripe expects for your account
             'unit_amount' => $price * $hufFactor,
         ],
         'quantity' => $qty,
@@ -109,7 +110,7 @@ foreach ($tickets as $t) {
 if (count($lineItems) === 0) {
     http_response_code(400);
     header('Content-Type: application/json');
-    echo json_encode(['error' => 'Invalid items for checkout']);
+    echo json_encode(['error' => 'No available tickets for the selected types.']);
     exit;
 }
 
@@ -131,6 +132,7 @@ $debugPayload = [
     'event_id' => $eventId,
     'request_body' => $body,
     'requested' => $requested,
+    'effective_requested' => $effectiveRequested,
     'db_tickets' => $tickets,
     'line_items' => $lineItems,
     'computed_total_huf' => $totalAmountHuf,
@@ -195,12 +197,12 @@ try {
                 'order_id' => $order->id,
                 'user_id' => $userId,
                 'event_id' => (int)$eventId,
-                'items' => array_map(function($t) use ($requested) {
+                'items' => array_map(function($t) use ($effectiveRequested) {
                     return [
                         'ticket_type_id' => (int)$t['ticket_type_id'],
                         'ticket_type' => (string)$t['ticket_type'],
                         'price_huf' => (int)$t['price'],
-                        'quantity' => (int)$requested[(int)$t['ticket_type_id']] ?? 0,
+                        'quantity' => (int)($effectiveRequested[(int)$t['ticket_type_id']] ?? 0),
                     ];
                 }, $tickets),
             ];
@@ -232,12 +234,12 @@ try {
             'user_id' => $userId,
             'event_id' => (int)$eventId,
             // Save trusted items with price and quantity per ticket_type_id
-            'items' => array_map(function($t) use ($requested) {
+            'items' => array_map(function($t) use ($effectiveRequested) {
                 return [
                     'ticket_type_id' => (int)$t['ticket_type_id'],
                     'ticket_type' => (string)$t['ticket_type'],
                     'price_huf' => (int)$t['price'],
-                    'quantity' => (int)$requested[(int)$t['ticket_type_id']] ?? 0,
+                    'quantity' => (int)($effectiveRequested[(int)$t['ticket_type_id']] ?? 0),
                 ];
             }, $tickets),
         ];

@@ -1,11 +1,37 @@
 <?php
 require_once __DIR__ . '/includes/auth_check.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+
+// Periodic cleanup: remove pending session JSON files older than 24 hours on every page load
+$__pendingSweepDir = __DIR__ . '/logs/pending_sessions';
+if (is_dir($__pendingSweepDir)) {
+    $__nowTs = time();
+    $__maxAgeSeconds = 86400; // 24h
+    foreach ((array)glob($__pendingSweepDir . '/*.json') as $__pf) {
+        $__mt = @filemtime($__pf);
+        if ($__mt !== false && ($__nowTs - $__mt) > $__maxAgeSeconds) {
+            @unlink($__pf);
+        }
+    }
+}
 
 if (isset($_GET['payment'])) {
     $paymentType = $_GET['payment'];
     $logDir = __DIR__ . '/logs';
     if (!is_dir($logDir)) { @mkdir($logDir, 0777, true); }
     $purchaseLog = $logDir . '/purchases.log';
+
+    // Ensure helpers are available
+    $emailHelper = __DIR__ . '/includes/send_email.php';
+    if (is_file($emailHelper)) {
+        require_once $emailHelper;
+    }
 
     // PayPal success
     if ($paymentType === 'paypal_success' && !empty($_GET['token'])) {
@@ -85,6 +111,7 @@ if (isset($_GET['payment'])) {
                                 $pdo->beginTransaction();
                                 try {
                                     $insertStmt = $pdo->prepare('INSERT INTO tickets (qr_code_path, event_id, owner_id, is_used, price, purchase_id) VALUES (?, ?, ?, 0, ?, ?)');
+                                    $generatedFiles = [];
                                     foreach ($items as $it) {
                                         $qty = (int)($it['quantity'] ?? 0);
                                         $priceHuf = (int)($it['price_huf'] ?? 0);
@@ -93,6 +120,7 @@ if (isset($_GET['payment'])) {
                                             $code = bin2hex(random_bytes(16));
                                             $qrPathRel = 'worker_sites/qrcodes/' . $orderId . '_' . $code . '.png';
                                             $qrPathAbs = __DIR__ . '/' . $qrPathRel;
+
                                             $qrPayload = json_encode([
                                                 'oid' => $orderId,
                                                 'uid' => $userId,
@@ -100,35 +128,92 @@ if (isset($_GET['payment'])) {
                                                 'c'   => $code,
                                                 'ts'  => time(),
                                             ], JSON_UNESCAPED_SLASHES);
-                                            $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($qrPayload);
-                                            $img = @file_get_contents($qrUrl);
-                                            if ($img === false && function_exists('curl_init')) {
-                                                $ch = curl_init($qrUrl);
-                                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                                                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                                                $img = curl_exec($ch);
-                                                curl_close($ch);
-                                            }
-                                            if ($img === false && function_exists('imagecreatetruecolor')) {
-                                                $im = imagecreatetruecolor(600, 600);
-                                                $bg = imagecolorallocate($im, 255, 255, 255);
-                                                $fg = imagecolorallocate($im, 0, 0, 0);
-                                                imagefilledrectangle($im, 0, 0, 600, 600, $bg);
-                                                imagestring($im, 5, 10, 10, 'QR generation failed', $fg);
-                                                imagestring($im, 3, 10, 40, $code, $fg);
-                                                imagepng($im, $qrPathAbs);
-                                                imagedestroy($im);
-                                            } else if ($img !== false) {
-                                                @file_put_contents($qrPathAbs, $img);
+                                            // Generate QR with endroid/qr-code
+                                            try {
+                                                // First try with high error correction and nice styling
+                                                $builder = new Builder(
+                                                    writer: new PngWriter(),
+                                                    data: $qrPayload,
+                                                    encoding: new Encoding('UTF-8'),
+                                                    errorCorrectionLevel: ErrorCorrectionLevel::High,
+                                                    size: 300,
+                                                    margin: 10,
+                                                    roundBlockSizeMode: RoundBlockSizeMode::Margin
+                                                );
+                                                
+                                                $qrResult = $builder->build();
+                                                $qrResult->saveToFile($qrPathAbs);
+                                                
+                                                // Verify the file was created successfully
+                                                if (!is_file($qrPathAbs) || filesize($qrPathAbs) === 0) {
+                                                    throw new Exception('Empty QR file generated');
+                                                }
+                                            } catch (Throwable $e) {
+                                                // Fallback to simpler QR if the first attempt fails
+                                                try {
+                                                    $fallbackBuilder = new Builder(
+                                                        writer: new PngWriter(),
+                                                        data: 'TICKET:' . $code, // Fallback to just the code if JSON fails
+                                                        encoding: new Encoding('UTF-8'),
+                                                        errorCorrectionLevel: ErrorCorrectionLevel::High,
+                                                        size: 300,
+                                                        margin: 10,
+                                                        roundBlockSizeMode: RoundBlockSizeMode::Margin
+                                                    );
+                                                    $qrResult = $fallbackBuilder->build();
+                                                    $qrResult->saveToFile($qrPathAbs);
+                                                } catch (Throwable $e) {
+                                                    // Last resort: create a text file with the code
+                                                    @file_put_contents($qrPathAbs, "QR Generation Failed. Code: " . $code);
+                                                }
                                             }
 
                                             $priceDecimal = number_format($priceHuf, 2, '.', '');
                                             $insertStmt->execute([$qrPathRel, $eventId, $userId, $priceDecimal, $purchaseId]);
+                                            $generatedFiles[] = $qrPathRel;
+                                        }
+                                    }
+                                    // Decrement remaining_tickets per ticket_type in this purchase (PayPal)
+                                    if (!empty($items)) {
+                                        // Aggregate quantities by ticket_type_id
+                                        $toDecrement = [];
+                                        foreach ($items as $it) {
+                                            $ttid = isset($it['ticket_type_id']) ? (int)$it['ticket_type_id'] : 0;
+                                            $qty  = isset($it['quantity']) ? (int)$it['quantity'] : 0;
+                                            if ($ttid > 0 && $qty > 0) {
+                                                $toDecrement[$ttid] = ($toDecrement[$ttid] ?? 0) + $qty;
+                                            }
+                                        }
+                                        if (!empty($toDecrement)) {
+                                            $decStmt = $pdo->prepare('UPDATE ticket_types SET remaining_tickets = GREATEST(remaining_tickets - ?, 0) WHERE ticket_type_id = ? AND event_id = ?');
+                                            foreach ($toDecrement as $ttid => $qty) {
+                                                $decStmt->execute([$qty, $ttid, $eventId]);
+                                            }
                                         }
                                     }
                                     $pdo->commit();
                                     $_SESSION['ticketed_paypal'][$orderId] = true;
                                     @unlink($pendingFile);
+
+                                    // Send tickets via email
+                                    if (!empty($generatedFiles)) {
+                                        // Prefer PayPal payer email if available, otherwise fallback to session email
+                                        $buyerEmail = null;
+                                        if (isset($captureRes->result) && isset($captureRes->result->payer) && isset($captureRes->result->payer->email_address)) {
+                                            $buyerEmail = (string) $captureRes->result->payer->email_address;
+                                        }
+                                        if (!$buyerEmail) { $buyerEmail = $_SESSION['email'] ?? null; }
+                                        if ($buyerEmail && empty($_SESSION['email'])) { $_SESSION['email'] = $buyerEmail; }
+
+                                        if ($buyerEmail) {
+                                            $meta = [
+                                                'purchase_id' => $purchaseId,
+                                                'amount' => $amountMajor,
+                                                'currency' => $currency,
+                                            ];
+                                            try { @sendTicketsEmail($buyerEmail, '', $generatedFiles, $meta); } catch (Throwable $e) {}
+                                        }
+                                    }
                                 } catch (Throwable $txe) {
                                     $pdo->rollBack();
                                     @file_put_contents($purchaseLog, json_encode([
@@ -142,6 +227,10 @@ if (isset($_GET['payment'])) {
                     }
                 }
             }
+
+            // Ensure pending file is removed even if no tickets were generated (PayPal)
+            $pf = __DIR__ . '/logs/pending_sessions/' . $orderId . '.json';
+            if (is_file($pf)) { @unlink($pf); }
 
             // Stripe success
             $_SESSION['payment_flash'] = [
@@ -227,6 +316,7 @@ if (isset($_GET['payment'])) {
                                 $pdo->beginTransaction();
                                 try {
                                     $insertStmt = $pdo->prepare('INSERT INTO tickets (qr_code_path, event_id, owner_id, is_used, price, purchase_id) VALUES (?, ?, ?, 0, ?, ?)');
+                                    $generatedFiles = [];
                                     foreach ($items as $it) {
                                         $qty = (int)($it['quantity'] ?? 0);
                                         $priceHuf = (int)($it['price_huf'] ?? 0);
@@ -235,6 +325,7 @@ if (isset($_GET['payment'])) {
                                             $code = bin2hex(random_bytes(16));
                                             $qrPathRel = 'worker_sites/qrcodes/' . $sessionId . '_' . $code . '.png';
                                             $qrPathAbs = __DIR__ . '/' . $qrPathRel;
+
                                             $qrPayload = json_encode([
                                                 'sid' => $sessionId,
                                                 'uid' => $userId,
@@ -242,35 +333,94 @@ if (isset($_GET['payment'])) {
                                                 'c'   => $code,
                                                 'ts'  => time(),
                                             ], JSON_UNESCAPED_SLASHES);
-                                            $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($qrPayload);
-                                            $img = @file_get_contents($qrUrl);
-                                            if ($img === false && function_exists('curl_init')) {
-                                                $ch = curl_init($qrUrl);
-                                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                                                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                                                $img = curl_exec($ch);
-                                                curl_close($ch);
-                                            }
-                                            if ($img === false && function_exists('imagecreatetruecolor')) {
-                                                $im = imagecreatetruecolor(600, 600);
-                                                $bg = imagecolorallocate($im, 255, 255, 255);
-                                                $fg = imagecolorallocate($im, 0, 0, 0);
-                                                imagefilledrectangle($im, 0, 0, 600, 600, $bg);
-                                                imagestring($im, 5, 10, 10, 'QR generation failed', $fg);
-                                                imagestring($im, 3, 10, 40, $code, $fg);
-                                                imagepng($im, $qrPathAbs);
-                                                imagedestroy($im);
-                                            } else if ($img !== false) {
-                                                @file_put_contents($qrPathAbs, $img);
+                                            // Generate QR with endroid/qr-code
+                                            try {
+                                                // First try with high error correction and nice styling
+                                                $builder = new Builder(
+                                                    writer: new PngWriter(),
+                                                    data: $qrPayload,
+                                                    encoding: new Encoding('UTF-8'),
+                                                    errorCorrectionLevel: ErrorCorrectionLevel::High,
+                                                    size: 300,
+                                                    margin: 10,
+                                                    roundBlockSizeMode: RoundBlockSizeMode::Margin
+                                                );
+
+                                                $qrResult = $builder->build();
+                                                $qrResult->saveToFile($qrPathAbs);
+
+                                                // Verify the file was created successfully
+                                                if (!is_file($qrPathAbs) || filesize($qrPathAbs) === 0) {
+                                                    throw new Exception('Empty QR file generated');
+                                                }
+                                            } catch (Throwable $e) {
+                                                // Fallback to simpler QR if the first attempt fails
+                                                try {
+                                                    $fallbackBuilder = new Builder(
+                                                        writer: new PngWriter(),
+                                                        data: 'TICKET:' . $code, // Fallback to just the code if JSON fails
+                                                        encoding: new Encoding('UTF-8'),
+                                                        errorCorrectionLevel: ErrorCorrectionLevel::High,
+                                                        size: 300,
+                                                        margin: 10,
+                                                        roundBlockSizeMode: RoundBlockSizeMode::Margin
+                                                    );
+                                                    $qrResult = $fallbackBuilder->build();
+                                                    $qrResult->saveToFile($qrPathAbs);
+                                                } catch (Throwable $e) {
+                                                    // Last resort: create a text file with the code
+                                                    @file_put_contents($qrPathAbs, "QR Generation Failed. Code: " . $code);
+                                                }
                                             }
 
                                             $priceDecimal = number_format($priceHuf, 2, '.', '');
                                             $insertStmt->execute([$qrPathRel, $eventId, $userId, $priceDecimal, $purchaseId]);
+                                            $generatedFiles[] = $qrPathRel;
+                                        }
+                                    }
+                                    // Decrement remaining_tickets per ticket_type in this purchase (Stripe)
+                                    if (!empty($items)) {
+                                        // Aggregate quantities by ticket_type_id
+                                        $toDecrement = [];
+                                        foreach ($items as $it) {
+                                            $ttid = isset($it['ticket_type_id']) ? (int)$it['ticket_type_id'] : 0;
+                                            $qty  = isset($it['quantity']) ? (int)$it['quantity'] : 0;
+                                            if ($ttid > 0 && $qty > 0) {
+                                                $toDecrement[$ttid] = ($toDecrement[$ttid] ?? 0) + $qty;
+                                            }
+                                        }
+                                        if (!empty($toDecrement)) {
+                                            $decStmt = $pdo->prepare('UPDATE ticket_types SET remaining_tickets = GREATEST(remaining_tickets - ?, 0) WHERE ticket_type_id = ? AND event_id = ?');
+                                            foreach ($toDecrement as $ttid => $qty) {
+                                                $decStmt->execute([$qty, $ttid, $eventId]);
+                                            }
                                         }
                                     }
                                     $pdo->commit();
                                     $_SESSION['ticketed_sessions'][$sessionId] = true;
                                     @unlink($pendingFile);
+
+                                    // Send tickets via email
+                                    if (!empty($generatedFiles)) {
+                                        // Prefer Stripe session email if available, otherwise fallback to session email
+                                        $buyerEmail = null;
+                                        if (isset($session->customer_details) && isset($session->customer_details->email)) {
+                                            $buyerEmail = (string) $session->customer_details->email;
+                                        } elseif (isset($session->customer_email)) {
+                                            $buyerEmail = (string) $session->customer_email;
+                                        }
+                                        if (!$buyerEmail) { $buyerEmail = $_SESSION['email'] ?? null; }
+                                        if ($buyerEmail && empty($_SESSION['email'])) { $_SESSION['email'] = $buyerEmail; }
+
+                                        if ($buyerEmail) {
+                                            $meta = [
+                                                'purchase_id' => $purchaseId,
+                                                'amount' => $amountMajor,
+                                                'currency' => $currency,
+                                            ];
+                                            try { @sendTicketsEmail($buyerEmail, '', $generatedFiles, $meta); } catch (Throwable $e) {}
+                                        }
+                                    }
                                 } catch (Throwable $txe) {
                                     $pdo->rollBack();
                                     @file_put_contents($purchaseLog, json_encode([
@@ -284,6 +434,11 @@ if (isset($_GET['payment'])) {
                     }
                 }
             }
+
+            // Ensure pending file is removed even if no tickets were generated (Stripe)
+            $pf = __DIR__ . '/logs/pending_sessions/' . $sessionId . '.json';
+            if (is_file($pf)) { @unlink($pf); }
+
             $_SESSION['payment_flash'] = [
                 'type' => $paid ? 'success' : 'warning',
                 'title' => $paid ? 'Payment successful (Stripe)' : 'Payment not completed (Stripe)',
@@ -443,7 +598,7 @@ if (isset($_GET['payment'])) {
                   </div>
                 </div>
               </div>
-              <a href="about-us.php" class="btn" data-aos="fade-up" data-aos-delay="500" data-aos-duration="1000">
+              <a href="about-us.php" class="btn" data-aos="fade-up" data-aos-delay="500" data-aos-duration="1000" style="z-index: 1;">
                 <span class="btn-text">More info about us</span>
                 <iconify-icon icon="lucide:arrow-up-right"
                   class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>

@@ -1,2 +1,4 @@
 .env
 .env.*
+php/worker_sites/qrcodes/*
+!php/worker_sites/qrcodes/.gitkeep
