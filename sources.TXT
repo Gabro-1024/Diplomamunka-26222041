@@ -1,8 +1,10 @@
 https://www.pexels.com - banner videó
 
 https://unsplash.com - képek
+https://pixabay.com - képek
 
 https://compressjpeg.com/ - kép kompresszió
 
 https://themewagon.com/themes/studiova/ - felhasznált kinézeti sablon
 
+packagist - packagek
