@@ -328,7 +328,7 @@ try {
                 <h3 class="fs-4 fw-bold mb-4">Venue Information</h3>
                 <div class="card border-0 shadow-sm">
                   <?php if (!empty($festival['venue_cover'])): ?>
-                  <img src="../assets/images/venues/<?php echo htmlspecialchars($festival['venue_cover']); ?>" 
+                  <img src="<?php echo htmlspecialchars($festival['venue_cover']); ?>"
                        alt="<?php echo htmlspecialchars($festival['venue_name']); ?>" 
                        class="card-img-top" style="max-height: 300px; object-fit: cover;">
                   <?php endif; ?>

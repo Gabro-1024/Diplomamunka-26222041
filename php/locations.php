@@ -4,7 +4,7 @@ require_once 'includes/db_connect.php';
 try {
     $pdo = db_connect();
     
-    // Query to get all locations ordered by name
+    // Query to get all locations ordered by name (cover_image is stored on venues table)
     $sql = "SELECT * FROM venues ORDER BY name ASC";
     $stmt = $pdo->query($sql);
     $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -72,9 +72,10 @@ try {
             $imageIndex = 1;
             $delay = 100;
             foreach ($locations as $location): 
-                // Cycle through available images (1-5)
+                // Determine image: use cover_image from DB if available, else fallback rotating image (1-5)
                 $imageNumber = $imageIndex % 5 + 1;
-                $imagePath = "../assets/images/portfolio/portfolio-img-{$imageNumber}.jpg";
+                $fallbackImagePath = "../assets/images/portfolio/portfolio-img-{$imageNumber}.jpg";
+                $imagePath = !empty($location['cover_image']) ? $location['cover_image'] : $fallbackImagePath;
                 
                 // Format capacity
                 $formattedCapacity = number_format($location['capacity']);
