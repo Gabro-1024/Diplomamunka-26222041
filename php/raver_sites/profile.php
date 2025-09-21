@@ -1,140 +1,221 @@
 <?php
-//Bejelentkezett ember profilja
+require_once __DIR__ . '/../includes/auth_check.php';
+require_once __DIR__ . '/../includes/db_connect.php';
+
+if (!isUserLoggedIn()) {
+    header('Location: http://localhost/Diplomamunka-26222041/php/sign-in.php');
+    exit;
+}
+
+// Ensure UTF-8 for output
+header('Content-Type: text/html; charset=UTF-8');
+
+// Helpers (preserve accented characters)
+function sanitize_str($s) {
+    $s = (string)$s;
+    $s = strip_tags($s);
+    $s = trim($s);
+    // Optionally limit length to avoid abuse, keep multibyte intact
+    if (function_exists('mb_substr')) {
+        $s = mb_substr($s, 0, 100, 'UTF-8');
+    } else {
+        $s = substr($s, 0, 100);
+    }
+    return $s;
+}
+
+$pdo = db_connect();
+// Make sure the connection negotiates utf8mb4
+try { $pdo->exec("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"); } catch (Throwable $e) {}
+$userId = (int)($_SESSION['user_id'] ?? 0);
+
+// Music styles available (mirror sign-up.php $allGenres)
+$allStyles = [
+    'Ambient','Bass','Breakbeat','Classical','Country','Dance','Deep House','Disco','Drum & Bass','Dubstep','EDM','Electro',
+    'Folk','Hardcore','Hardstyle','Hip-Hop','House','Indie','Jazz','K-Pop','Latin','Metal','Minimal','Pop','Progressive House',
+    'Psytrance','Punk','R&B','Rap','Reggae','Reggaeton','Rock','Soul','Tech House','Techno','Trance','Trap','Trip-Hop'
+];
+if (function_exists('sort')) { sort($allStyles, SORT_NATURAL | SORT_FLAG_CASE); }
+
+$success = null; $error = null;
+
+// Handle updates
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = $_POST['action'] ?? '';
+
+        if ($action === 'update_name') {
+            $first = sanitize_str($_POST['first_name'] ?? '');
+            $last  = sanitize_str($_POST['last_name'] ?? '');
+            if ($first === '' || $last === '') { throw new Exception('First and last name are required.'); }
+            $stmt = $pdo->prepare('UPDATE users SET first_name = ?, last_name = ? WHERE id = ?');
+            $stmt->execute([$first, $last, $userId]);
+            $_SESSION['first_name'] = $first; // reflect in header
+            $success = 'Name updated successfully.';
+        }
+
+        if ($action === 'update_music') {
+            $chosen = (array)($_POST['music_preferences'] ?? []);
+            // Normalize and filter to allowed list
+            $chosen = array_values(array_intersect($allStyles, array_map('sanitize_str', $chosen)));
+            $pdo->beginTransaction();
+            try {
+                $del = $pdo->prepare('DELETE FROM user_interests WHERE user_id = ?');
+                $del->execute([$userId]);
+                if (!empty($chosen)) {
+                    $ins = $pdo->prepare('INSERT INTO user_interests (user_id, style_name) VALUES (?, ?)');
+                    foreach ($chosen as $style) { $ins->execute([$userId, $style]); }
+                }
+                $pdo->commit();
+                $success = 'Music preferences updated.';
+            } catch (Throwable $tx) {
+                $pdo->rollBack();
+                throw $tx;
+            }
+        }
+
+        if ($action === 'update_avatar' && isset($_FILES['profile_picture'])) {
+            $f = $_FILES['profile_picture'];
+            if ($f['error'] !== UPLOAD_ERR_OK) { throw new Exception('File upload failed.'); }
+            if ($f['size'] > 2 * 1024 * 1024) { throw new Exception('File too large (max 2MB).'); }
+            $finfo = @finfo_open(FILEINFO_MIME_TYPE);
+            $mime = $finfo ? finfo_file($finfo, $f['tmp_name']) : mime_content_type($f['tmp_name']);
+            $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+            if (!isset($allowed[$mime])) { throw new Exception('Only JPG, PNG or WEBP allowed.'); }
+            $ext = $allowed[$mime];
+            $root = dirname(__DIR__, 2); // project root
+            $destDir = $root . '/assets/images/profiles';
+            if (!is_dir($destDir)) { @mkdir($destDir, 0777, true); }
+            $destPath = $destDir . '/user_' . $userId . '.' . $ext;
+            // Remove older avatars with different extensions
+            foreach (['jpg','png','webp'] as $e) { $p = $destDir . '/user_' . $userId . '.' . $e; if (is_file($p)) { @unlink($p); } }
+            if (!move_uploaded_file($f['tmp_name'], $destPath)) { throw new Exception('Failed to save uploaded file.'); }
+            $success = 'Profile picture updated.';
+        }
+    }
+} catch (Throwable $e) { $error = $e->getMessage(); }
+
+// Fetch current data
+$usr = null; $styles = [];
+try {
+    $s = $pdo->prepare('SELECT first_name, last_name, email FROM users WHERE id = ? LIMIT 1');
+    $s->execute([$userId]);
+    $usr = $s->fetch(PDO::FETCH_ASSOC) ?: ['first_name'=>'','last_name'=>'','email'=>''];
+    $si = $pdo->prepare('SELECT style_name FROM user_interests WHERE user_id = ?');
+    $si->execute([$userId]);
+    $styles = array_map(fn($r) => $r['style_name'], $si->fetchAll(PDO::FETCH_ASSOC));
+} catch (Throwable $e) { /* ignore */ }
+
+// Compute avatar path if exists
+$avatarRel = null;
+foreach (['jpg','png','webp'] as $e) {
+    $candidate = '/assets/images/profiles/user_' . $userId . '.' . $e;
+    if (is_file(dirname(__DIR__, 2) . $candidate)) { $avatarRel = $candidate; break; }
+}
+if ($avatarRel === null) { $avatarRel = '/assets/images/team/team-img-1.jpg'; }
+
 ?>
+<?php include __DIR__ . '/../header.php'; ?>
 
-<!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Studiova</title>
-  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
-</head>
-
-<body>
-
-  <!-- Header -->
-  <header class="header border-4 border-primary border-top position-fixed start-0 top-0 w-100">
-    <div class="container">
-      <div class="header-wrapper d-flex align-items-center justify-content-between">
-        <div class="logo">
-          <a href="index.html" class="logo-white">
-            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
-          </a>
-          <a href="index.html" class="logo-dark">
-            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
-          </a>
-        </div>
-        <div class="d-flex align-items-center gap-4">
-
-          <div class="btn-group">
-            <button
-              class="btn btn-secondary toggle-menu round-45 p-2 d-flex align-items-center justify-content-center bg-white rounded-circle"
-              type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-              <iconify-icon icon="solar:hamburger-menu-line-duotone" class="menu-icon fs-8 text-dark"></iconify-icon>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end p-4">
-              <div class="d-flex flex-column gap-6">
-                <div class="hstack justify-content-between border-bottom pb-6">
-                  <p class="mb-0 fs-5 text-dark">Menu</p>
-                  <button type="button" class="btn-close opacity-75" aria-label="Close"></button>
-                </div>
-                <div class="d-flex flex-column gap-3">
-                  <ul class="header-menu list-unstyled mb-0 d-flex flex-column gap-2">
-                    <li class="header-item">
-                      <a href="index.html" aria-current="true"
-                        class="header-link active hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Home</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="about-us.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">About</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="projects.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Projects</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="FAQ.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Blog</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Services</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="contact.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Contact</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Docs</a>
-                    </li>
-                  </ul>
-                  <div class="hstack gap-3">
-                    <a href="sign-in.php"
-                      class="btn btn-outline-light fs-6 bg-white px-3 py-2 text-dark w-50 hstack justify-content-center">Sign
-                      In</a>
-                    <a href="sign-up.php"
-                      class="btn btn-dark text-white fs-6 bg-dark px-3 py-2 w-50 hstack justify-content-center">Sign
-                      Up</a>
-                  </div>
-                </div>
-                <div>
-                  <a class="text-dark" href="tel:+1-212-456-7890">+1-212-456-7890</a>
-                  <a class="fs-8 text-dark fw-bold" href="mailto:info@wrappixel.com">info@wrappixel.com</a>
-                </div>
-              </div>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!--  Page Wrapper -->
-  <div class="page-wrapper overflow-hidden">
-
-    <!--  Banner Section -->
-    <section class="banner-section position-relative d-flex align-items-end min-vh-100">
-      <video class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover" autoplay muted loop playsinline>
-        <source src="../assets/images/backgrounds/banner-video.mp4" type="video/mp4" />
-      </video>
+  <div class="page-wrapper overflow-hidden" style="padding-top: 120px;">
+    <section class="py-5 py-lg-8">
       <div class="container">
-        <div class="d-flex flex-column gap-4 pb-8 position-relative z-1">
-          <div class="row align-items-center">
-            <div class="col-xl-4">
-              <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
-                data-aos-duration="1000">
-                <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                <p class="mb-0 text-white fs-5 text-opacity-70">We create <span
-                    class="text-primary">high-performing</span> digital designs that elevate brands and enhance
-                  conversions.</p>
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="card border h-100">
+              <div class="card-body d-flex flex-column align-items-center gap-3">
+                <img src="http://localhost/Diplomamunka-26222041<?php echo htmlspecialchars($avatarRel); ?>" alt="avatar" class="rounded-circle" style="width: 128px; height:128px; object-fit:cover;">
+                <div class="text-center">
+                  <h5 class="mb-1"><?php echo htmlspecialchars(($usr['first_name'] ?? '') . ' ' . ($usr['last_name'] ?? '')); ?></h5>
+                  <p class="mb-0 text-muted"><?php echo htmlspecialchars($usr['email'] ?? ''); ?></p>
+                </div>
+                <?php if ($error): ?><div class="alert alert-danger w-100 mb-0"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
+                <?php if ($success): ?><div class="alert alert-success w-100 mb-0"><?php echo htmlspecialchars($success); ?></div><?php endif; ?>
               </div>
             </div>
           </div>
-          <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-            <h1 class="mb-0 fs-16 text-white lh-1">Studiova</h1>
-            <a href="javascript:void(0)" class="p-1 ps-7 bg-primary rounded-pill">
-              <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
-                <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-              </span>
-            </a>
+          <div class="col-lg-8">
+            <div class="d-flex flex-column gap-4">
+              <div class="card border">
+                <div class="card-body">
+                  <h5 class="mb-4">Change name</h5>
+                  <form method="post" accept-charset="UTF-8" class="row g-3">
+                    <input type="hidden" name="action" value="update_name">
+                    <div class="col-md-6">
+                      <label class="form-label">First name</label>
+                      <input type="text" class="form-control" name="first_name" value="<?php echo htmlspecialchars($usr['first_name'] ?? ''); ?>" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">Last name</label>
+                      <input type="text" class="form-control" name="last_name" value="<?php echo htmlspecialchars($usr['last_name'] ?? ''); ?>" required>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-dark">Save</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="card border">
+                <div class="card-body">
+                  <h5 class="mb-4">Profile picture</h5>
+                  <form method="post" accept-charset="UTF-8" enctype="multipart/form-data" class="d-flex flex-column gap-3">
+                    <input type="hidden" name="action" value="update_avatar">
+                    <input type="file" name="profile_picture" accept="image/jpeg,image/png,image/webp" class="form-control" required>
+                    <button class="btn btn-dark align-self-start">Upload</button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="card border">
+                <div class="card-body">
+                  <h5 class="mb-4">Music preferences</h5>
+                  <form method="post" accept-charset="UTF-8" class="row g-2">
+                    <input type="hidden" name="action" value="update_music">
+                    <?php foreach ($allStyles as $style): $id = 'st_' . md5($style); $checked = in_array($style, $styles, true); ?>
+                      <div class="col-6 col-md-4">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="<?php echo $id; ?>" name="music_preferences[]" value="<?php echo htmlspecialchars($style); ?>" <?php echo $checked ? 'checked' : ''; ?>>
+                          <label class="form-check-label" for="<?php echo $id; ?>"><?php echo htmlspecialchars($style); ?></label>
+                        </div>
+                      </div>
+                    <?php endforeach; ?>
+                    <div class="col-12 mt-2">
+                      <button class="btn btn-dark">Save preferences</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
     </section>
+  </div>
+
+  <?php include __DIR__ . '/../footer.php'; ?>
+
+  <script src="http://localhost:63342/Diplomamunka-26222041/assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="http://localhost:63342/Diplomamunka-26222041/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.js"></script>
+  <script>AOS.init();</script>
+</body>
+</html>
+<?php exit; ?>
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Profile - Tickets @ Gábor</title>
+  <link rel="shortcut icon" type="image/png" href="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/favicon.svg" />
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
+  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
+  </head>
+  <body>
 
     <!--  Stats & Facts Section -->
     <section class="stats-facts py-5 py-lg-11 py-xl-12 position-relative overflow-hidden">
