@@ -105,7 +105,7 @@ try {
         }
 
         // Generate reset link
-        $resetLink = 'https' . "://$_SERVER[HTTP_HOST]/Diplomamunka-26222041/php/reset-password.php?token=" . $token;
+        $resetLink = "http://localhost/Diplomamunka-26222041/php/reset-password.php?token=" . $token;
         
         // Email content
         $subject = 'Password Reset Request - Tickets @ Gábor';
