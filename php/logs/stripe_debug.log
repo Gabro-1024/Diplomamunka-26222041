@@ -1096,3 +1096,71 @@
     "huf_factor": 100
 }
 
+{
+    "time": "2025-09-21 22:16:13",
+    "event_id": 21,
+    "request_body": {
+        "event_id": 21,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 4490,
+                "quantity": 3,
+                "ticket_type_id": "5"
+            },
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 7490,
+                "quantity": 1,
+                "ticket_type_id": "6"
+            }
+        ]
+    },
+    "requested": {
+        "5": 3,
+        "6": 1
+    },
+    "effective_requested": {
+        "5": 3,
+        "6": 1
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 5,
+            "ticket_type": "regular",
+            "price": 4490,
+            "remaining_tickets": 24996
+        },
+        {
+            "ticket_type_id": 6,
+            "ticket_type": "vip",
+            "price": 7490,
+            "remaining_tickets": 5000
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 449000
+            },
+            "quantity": 3
+        },
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 749000
+            },
+            "quantity": 1
+        }
+    ],
+    "computed_total_huf": 20960,
+    "huf_factor": 100
+}
+

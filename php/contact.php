@@ -1,10 +1,92 @@
+<?php
+require_once __DIR__ . '/includes/db_connect.php';
+
+$formErrors = [];
+$formSuccess = '';
+
+// Helper to trim and normalize
+function _contact_post($key, $default = '') { return isset($_POST[$key]) ? trim((string)$_POST[$key]) : $default; }
+
+// Simple structured logging to php/logs/contact_submissions.log
+$__logDir = __DIR__ . '/logs';
+if (!is_dir($__logDir)) { @mkdir($__logDir, 0777, true); }
+$__logFile = $__logDir . '/contact_submissions.log';
+function _mask($s) {
+    if ($s === null || $s === '') return $s === '' ? '' : 'null';
+    $s = (string)$s; $len = strlen($s); if ($len <= 12) { return substr($s,0,3) . '...' . substr($s,-2); }
+    return substr($s,0,8) . '...' . substr($s,-4);
+}
+function contact_log($event, array $ctx = []) {
+    global $__logFile;
+    $row = [
+        'time' => date('c'),
+        'event' => $event,
+        'ip' => $_SERVER['REMOTE_ADDR'] ?? null,
+        'uri' => $_SERVER['REQUEST_URI'] ?? null,
+        'method' => $_SERVER['REQUEST_METHOD'] ?? null,
+        'ctx' => $ctx,
+    ];
+    @file_put_contents($__logFile, json_encode($row, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) . "\n", FILE_APPEND);
+}
+
+$nameVal = _contact_post('name');
+$emailVal = _contact_post('email');
+$messageVal = _contact_post('message');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Log request arrival
+    contact_log('request_received', [
+        'session_active' => session_status() === PHP_SESSION_ACTIVE,
+        'session_id' => session_id(),
+        'has_cookie' => isset($_COOKIE[session_name()])
+    ]);
+        // Basic validations
+        if ($nameVal === '' || mb_strlen($nameVal) < 2 || mb_strlen($nameVal) > 50) {
+            $formErrors['name'] = 'Please enter your name (2–50 characters).';
+        }
+        if ($emailVal === '' || !filter_var($emailVal, FILTER_VALIDATE_EMAIL) || mb_strlen($emailVal) > 60) {
+            $formErrors['email'] = 'Please enter a valid email address (max 60 characters).';
+        }
+        if ($messageVal === '' || mb_strlen($messageVal) < 10 || mb_strlen($messageVal) > 2000) {
+            $formErrors['message'] = 'Please enter a message (10–2000 characters).';
+        }
+
+        if (empty($formErrors)) {
+            // Persist to DB (table: contact with columns name, mail, message)
+            try {
+                $pdo = db_connect();
+                $stmt = $pdo->prepare('INSERT INTO contact (name, mail, message) VALUES (?, ?, ?)');
+                // Ensure we respect column size limits
+                $nameDb = mb_substr($nameVal, 0, 50);
+                $emailDb = mb_substr($emailVal, 0, 60);
+                $messageDb = $messageVal; // TEXT, keep full message
+                $stmt->execute([$nameDb, $emailDb, $messageDb]);
+
+                contact_log('db_insert_success', [
+                    'name' => $nameDb,
+                    'mail' => $emailDb,
+                    'insert_id' => method_exists($pdo, 'lastInsertId') ? $pdo->lastInsertId() : null,
+                ]);
+                $nameVal = $emailVal = $messageVal = '';
+                $formSuccess = 'Thank you! Your message has been received.';
+
+            } catch (Throwable $tx) {
+                contact_log('db_insert_error', [ 'error' => $tx->getMessage() ]);
+                $formErrors['general'] = 'We could not save your message at the moment. Please try again later.';
+            }
+        }
+        else {
+            contact_log('validation_failed', [ 'errors' => $formErrors ]);
+        }
+}
+?>
 <!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Studiova</title>
+  <title>Contact - Tickets @ Gábor</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
@@ -78,23 +160,42 @@
                 ears.</p>
             </div>
             <div class="col-xl-8">
-              <form class="d-flex flex-column gap-7" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+              <form method="post" action="contact.php" class="d-flex flex-column gap-4" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" novalidate>
+                <?php if (!empty($formSuccess)): ?>
+                  <div class="alert alert-success" role="alert">
+                    <?php echo htmlspecialchars($formSuccess, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>
+                  </div>
+                <?php endif; ?>
+
+                <?php if (!empty($formErrors['general'])): ?>
+                  <div class="alert alert-danger" role="alert">
+                    <?php echo htmlspecialchars($formErrors['general'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>
+                  </div>
+                <?php endif; ?>
+
+                
+
                 <div>
-                  <input type="text" class="form-control border-bottom border-dark" id="formGroupExampleInput"
-                    placeholder="Name">
+                  <label for="contactName" class="form-label">Name</label>
+                  <input type="text" class="form-control border-bottom border-dark <?php echo isset($formErrors['name']) ? 'is-invalid' : ''; ?>" id="contactName" name="name" placeholder="Name" value="<?php echo htmlspecialchars($nameVal, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>">
+                  <?php if (isset($formErrors['name'])): ?><div class="invalid-feedback d-block"><?php echo htmlspecialchars($formErrors['name'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></div><?php endif; ?>
                 </div>
+
                 <div>
-                  <input type="email" class="form-control border-bottom border-dark" id="exampleInputEmail1"
-                    placeholder="Email" aria-describedby="emailHelp">
+                  <label for="contactEmail" class="form-label">Email</label>
+                  <input type="email" class="form-control border-bottom border-dark <?php echo isset($formErrors['email']) ? 'is-invalid' : ''; ?>" id="contactEmail" name="email" placeholder="Email" value="<?php echo htmlspecialchars($emailVal, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>" aria-describedby="emailHelp">
+                  <?php if (isset($formErrors['email'])): ?><div class="invalid-feedback d-block"><?php echo htmlspecialchars($formErrors['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></div><?php endif; ?>
                 </div>
+
                 <div>
-                  <textarea class="form-control border-bottom border-dark" id="exampleFormControlTextarea1"
-                    placeholder="Tell us about your project" rows="3"></textarea>
+                  <label for="contactMessage" class="form-label">Message</label>
+                  <textarea class="form-control border-bottom border-dark <?php echo isset($formErrors['message']) ? 'is-invalid' : ''; ?>" id="contactMessage" name="message" placeholder="Tell us about your project" rows="5"><?php echo htmlspecialchars($messageVal, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></textarea>
+                  <?php if (isset($formErrors['message'])): ?><div class="invalid-feedback d-block"><?php echo htmlspecialchars($formErrors['message'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></div><?php endif; ?>
                 </div>
-                <button type="submit" class="btn w-100 justify-content-center">
+
+                <button type="submit" class="btn btn-accent-blue w-100 justify-content-center">
                   <span class="btn-text">Submit message</span>
-                  <iconify-icon icon="lucide:arrow-up-right"
-                    class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
+                  <iconify-icon icon="lucide:arrow-up-right" class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
                 </button>
               </form>
             </div>
