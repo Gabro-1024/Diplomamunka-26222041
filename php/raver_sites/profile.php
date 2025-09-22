@@ -115,20 +115,59 @@ foreach (['jpg','png','webp'] as $e) {
 if ($avatarRel === null) { $avatarRel = '/assets/images/team/team-img-1.jpg'; }
 
 ?>
-<?php include __DIR__ . '/../header.php'; ?>
+<?php 
+$page_title = 'My Profile - Tickets @ Gábor';
+include __DIR__ . '/../header.php'; 
+?>
+  <style>
+    body{
+        background-color: #f8f9fa;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+    body.loaded {
+        opacity: 1;
+    }
+    .profile-card {
+      transition: all 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .aos-animate .profile-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .profile-card:hover {
+      transform: translateY(-5px) !important;
+      box-shadow: 0 12px 28px rgba(var(--bs-accent-blue-rgb), 0.2) !important;
+      border-color: rgba(var(--bs-accent-blue-rgb), 0.8) !important;
+      border-width: 2px !important;
+      border-radius: 12px !important;
+    }
+    .card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
 
   <div class="page-wrapper overflow-hidden" style="padding-top: 120px;">
     <section class="py-5 py-lg-8">
       <div class="container">
-        <div class="row g-4">
+        <div class="row g-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
           <div class="col-lg-4">
-            <div class="card border h-100">
+            <div class="card border border-accent-blue profile-card h-100" data-aos="fade-right" data-aos-delay="200">
               <div class="card-body d-flex flex-column align-items-center gap-3">
                 <img src="http://localhost/Diplomamunka-26222041<?php echo htmlspecialchars($avatarRel); ?>" alt="avatar" class="rounded-circle" style="width: 128px; height:128px; object-fit:cover;">
                 <div class="text-center">
                   <h5 class="mb-1"><?php echo htmlspecialchars(($usr['first_name'] ?? '') . ' ' . ($usr['last_name'] ?? '')); ?></h5>
                   <p class="mb-0 text-muted"><?php echo htmlspecialchars($usr['email'] ?? ''); ?></p>
                 </div>
+                <?php if (!empty($styles)): ?>
+                <div class="d-flex flex-wrap gap-1 justify-content-center">
+                  <?php foreach ($styles as $st): ?>
+                    <span class="badge badge-accent-blue"><?php echo htmlspecialchars($st); ?></span>
+                  <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
                 <?php if ($error): ?><div class="alert alert-danger w-100 mb-0"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
                 <?php if ($success): ?><div class="alert alert-success w-100 mb-0"><?php echo htmlspecialchars($success); ?></div><?php endif; ?>
               </div>
@@ -136,9 +175,9 @@ if ($avatarRel === null) { $avatarRel = '/assets/images/team/team-img-1.jpg'; }
           </div>
           <div class="col-lg-8">
             <div class="d-flex flex-column gap-4">
-              <div class="card border">
+              <div class="card border border-accent-blue profile-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="card-body">
-                  <h5 class="mb-4">Change name</h5>
+                  <h5 class="mb-4 text-accent-blue">Change name</h5>
                   <form method="post" accept-charset="UTF-8" class="row g-3">
                     <input type="hidden" name="action" value="update_name">
                     <div class="col-md-6">
@@ -150,26 +189,26 @@ if ($avatarRel === null) { $avatarRel = '/assets/images/team/team-img-1.jpg'; }
                       <input type="text" class="form-control" name="last_name" value="<?php echo htmlspecialchars($usr['last_name'] ?? ''); ?>" required>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-dark">Save</button>
+                      <button class="btn btn-accent-blue">Save</button>
                     </div>
                   </form>
                 </div>
               </div>
 
-              <div class="card border">
+              <div class="card border border-accent-blue profile-card" data-aos="fade-up" data-aos-delay="300">
                 <div class="card-body">
-                  <h5 class="mb-4">Profile picture</h5>
+                  <h5 class="mb-4 text-accent-blue">Profile picture</h5>
                   <form method="post" accept-charset="UTF-8" enctype="multipart/form-data" class="d-flex flex-column gap-3">
                     <input type="hidden" name="action" value="update_avatar">
                     <input type="file" name="profile_picture" accept="image/jpeg,image/png,image/webp" class="form-control" required>
-                    <button class="btn btn-dark align-self-start">Upload</button>
+                    <button class="btn btn-accent-blue align-self-start">Upload</button>
                   </form>
                 </div>
               </div>
 
-              <div class="card border">
+              <div class="card border border-accent-blue profile-card" data-aos="fade-up" data-aos-delay="400">
                 <div class="card-body">
-                  <h5 class="mb-4">Music preferences</h5>
+                  <h5 class="mb-4 text-accent-blue">Music preferences</h5>
                   <form method="post" accept-charset="UTF-8" class="row g-2">
                     <input type="hidden" name="action" value="update_music">
                     <?php foreach ($allStyles as $style): $id = 'st_' . md5($style); $checked = in_array($style, $styles, true); ?>
@@ -181,7 +220,7 @@ if ($avatarRel === null) { $avatarRel = '/assets/images/team/team-img-1.jpg'; }
                       </div>
                     <?php endforeach; ?>
                     <div class="col-12 mt-2">
-                      <button class="btn btn-dark">Save preferences</button>
+                      <button class="btn btn-accent-blue">Save preferences</button>
                     </div>
                   </form>
                 </div>
@@ -196,10 +235,25 @@ if ($avatarRel === null) { $avatarRel = '/assets/images/team/team-img-1.jpg'; }
 
   <?php include __DIR__ . '/../footer.php'; ?>
 
-  <script src="http://localhost:63342/Diplomamunka-26222041/assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="http://localhost:63342/Diplomamunka-26222041/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.js"></script>
+  <script src="http://localhost/Diplomamunka-26222041/assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="http://localhost/Diplomamunka-26222041/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="http://localhost/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.js"></script>
   <script>AOS.init();</script>
+  <script src="http://localhost/Diplomamunka-26222041/assets/js/custom.js"></script>
+  <script>
+    // Initialize AOS with custom settings
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 600,
+        easing: 'ease-out-cubic',
+        once: true,
+        mirror: false
+      });
+      
+      // Add loaded class to body to trigger fade-in
+      document.body.classList.add('loaded');
+    });
+  </script>
 </body>
 </html>
 <?php exit; ?>
@@ -210,10 +264,10 @@ if ($avatarRel === null) { $avatarRel = '/assets/images/team/team-img-1.jpg'; }
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Profile - Tickets @ Gábor</title>
-  <link rel="shortcut icon" type="image/png" href="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost/Diplomamunka-26222041/assets/images/logos/favicon.svg" />
+  <link rel="stylesheet" href="http://localhost/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="http://localhost/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
+  <link rel="stylesheet" href="http://localhost/Diplomamunka-26222041/assets/css/styles.css" />
   </head>
   <body>
 

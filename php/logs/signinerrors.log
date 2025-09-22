@@ -421,3 +421,35 @@
 [21-Sep-2025 22:04:47 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
 [21-Sep-2025 22:04:47 Europe/Berlin] Session cookie set: yes
 [21-Sep-2025 22:04:47 Europe/Berlin] Session variables set for user_id 16
+[22-Sep-2025 21:36:38 Europe/Berlin] ============================================================
+[22-Sep-2025 21:36:38 Europe/Berlin] Login attempt at 2025-09-22 21:36:38
+[22-Sep-2025 21:36:38 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[22-Sep-2025 21:36:38 Europe/Berlin] User lookup: found user
+[22-Sep-2025 21:36:38 Europe/Berlin] Email verified: yes
+[22-Sep-2025 21:36:38 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: no
+[22-Sep-2025 21:36:38 Europe/Berlin] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[2025-09-22 21:36:38] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[22-Sep-2025 21:36:42 Europe/Berlin] ============================================================
+[22-Sep-2025 21:36:42 Europe/Berlin] Login attempt at 2025-09-22 21:36:42
+[22-Sep-2025 21:36:42 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: yes
+[22-Sep-2025 21:36:42 Europe/Berlin] User lookup: found user
+[22-Sep-2025 21:36:42 Europe/Berlin] Email verified: yes
+[22-Sep-2025 21:36:42 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[22-Sep-2025 21:36:42 Europe/Berlin] Session cookie set: yes
+[22-Sep-2025 21:36:42 Europe/Berlin] Session variables set for user_id 16
+[22-Sep-2025 22:26:34 Europe/Berlin] ============================================================
+[22-Sep-2025 22:26:34 Europe/Berlin] Login attempt at 2025-09-22 22:26:34
+[22-Sep-2025 22:26:34 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[22-Sep-2025 22:26:34 Europe/Berlin] User lookup: found user
+[22-Sep-2025 22:26:34 Europe/Berlin] Email verified: yes
+[22-Sep-2025 22:26:35 Europe/Berlin] Login attempt - User: random.koala497@passinbox.com, Password match: no
+[22-Sep-2025 22:26:35 Europe/Berlin] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[2025-09-22 22:26:35] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[22-Sep-2025 22:26:36 Europe/Berlin] ============================================================
+[22-Sep-2025 22:26:36 Europe/Berlin] Login attempt at 2025-09-22 22:26:36
+[22-Sep-2025 22:26:36 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[22-Sep-2025 22:26:36 Europe/Berlin] User lookup: found user
+[22-Sep-2025 22:26:36 Europe/Berlin] Email verified: yes
+[22-Sep-2025 22:26:37 Europe/Berlin] Login attempt - User: random.koala497@passinbox.com, Password match: yes
+[22-Sep-2025 22:26:37 Europe/Berlin] Session cookie set: yes
+[22-Sep-2025 22:26:37 Europe/Berlin] Session variables set for user_id 18

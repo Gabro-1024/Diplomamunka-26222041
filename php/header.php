@@ -1,17 +1,51 @@
 <?php
 // header.php
 require_once __DIR__ . '/includes/auth_check.php';
+require_once __DIR__ . '/includes/db_connect.php';
+
 $current_page = basename($_SERVER['PHP_SELF']);
 $isLoggedIn = isUserLoggedIn();
-$userName = $isLoggedIn ? $_SESSION['first_name'] ?? 'User' : '';
+$isOrganizer = false;
+$userName = '';
+
+if ($isLoggedIn) {
+    $userName = $_SESSION['first_name'] ?? 'User';
+    $userId = $_SESSION['user_id'] ?? 0;
+    
+    // Check if user is an organizer
+    if ($userId) {
+        $pdo = db_connect();
+        $stmt = $pdo->prepare('SELECT role FROM users WHERE id = ?');
+        $stmt->execute([$userId]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $isOrganizer = ($user && $user['role'] === 'organizer');
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tickets at Gábor - Fesztiváljegyek</title>
-    <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css">
+    <title><?php echo $page_title ?? 'Tickets at Gábor - Fesztiváljegyek'; ?></title>
+    <link rel="shortcut icon" type="image/svg+xml" href="/Diplomamunka-26222041/assets/images/logos/favicon.svg">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/Diplomamunka-26222041/assets/css/styles.css">
+    
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="/Diplomamunka-26222041/assets/js/custom.js"></script>
+    
+    <?php if (isset($custom_styles)) echo $custom_styles; ?>
 </head>
 <body>
 <!-- Header -->
@@ -43,47 +77,60 @@ $userName = $isLoggedIn ? $_SESSION['first_name'] ?? 'User' : '';
                             <div class="d-flex flex-column gap-3">
                                 <ul class="header-menu list-unstyled mb-0 d-flex flex-column gap-2">
                                     <li class="header-item">
-                                        <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
+                                        <a href="http://localhost/Diplomamunka-26222041/php/index.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
                                             <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             Home
                                         </a>
                                     </li>
                                     <li class="header-item">
-                                        <a href="about-us.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'about-us.php') ? 'active' : ''; ?>">
-                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                        <a href="http://localhost/Diplomamunka-26222041/php/about-us.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'about-us.php') ? 'active' : ''; ?>">
+                                            <img src="http://localhost/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             About us
                                         </a>
                                     </li>
                                     <li class="header-item">
-                                        <a href="festivals.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'festivals.php') ? 'active' : ''; ?>">
-                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                        <a href="http://localhost/Diplomamunka-26222041/php/festivals.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'festivals.php') ? 'active' : ''; ?>">
+                                            <img src="http://localhost/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             Festivals
                                         </a>
                                     </li>
                                     <li class="header-item">
-                                        <a href="locations.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'locations.php') ? 'active' : ''; ?>">
-                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                        <a href="http://localhost/Diplomamunka-26222041/php/locations.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'locations.php') ? 'active' : ''; ?>">
+                                            <img src="http://localhost/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             Venues
                                         </a>
                                     </li>
                                     <li class="header-item">
-                                        <a href="FAQ.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'FAQ.php') ? 'active' : ''; ?>">
-                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                        <a href="http://localhost/Diplomamunka-26222041/php/FAQ.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'FAQ.php') ? 'active' : ''; ?>">
+                                            <img src="http://localhost/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             FAQ
                                         </a>
                                     </li>
                                     <li class="header-item">
-                                        <a href="contact.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>">
-                                            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
+                                        <a href="http://localhost/Diplomamunka-26222041/php/contact.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark <?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>">
+                                            <img src="http://localhost/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20" class="img-fluid animate-spin">
                                             Contact
                                         </a>
                                     </li>
                                 </ul>
                                 <?php if ($isLoggedIn): ?>
-                                <a href="http://localhost/Diplomamunka-26222041/php/logout.php" class="btn btn-danger text-white fs-6 px-3 py-2 hstack gap-2 align-items-center" style="background-color: #dc3545; border-color: #dc3545;">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span>Logout</span>
-                                </a>
+                                <div class="d-flex flex-column gap-2">
+                                    <?php if ($isOrganizer): ?>
+                                    <a href="http://localhost/Diplomamunka-26222041/php/organizer_sites/myevents.php" class="btn btn-accent-blue text-white fs-6 px-3 py-2 hstack gap-2 align-items-center">
+                                        <iconify-icon icon="lucide:calendar-days" class="fs-6"></iconify-icon>
+                                        <span>My Events</span>
+                                    </a>
+                                    <?php else: ?>
+                                    <a href="http://localhost/Diplomamunka-26222041/php/raver_sites/profile.php" class="btn btn-accent-blue text-white fs-6 px-3 py-2 hstack gap-2 align-items-center">
+                                        <iconify-icon icon="lucide:user" class="fs-6"></iconify-icon>
+                                        <span>Profile</span>
+                                    </a>
+                                    <?php endif; ?>
+                                    <a href="http://localhost/Diplomamunka-26222041/php/logout.php" class="btn btn-danger text-white fs-6 px-3 py-2 hstack gap-2 align-items-center" style="background-color: #dc3545; border-color: #dc3545;">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                </div>
                                 <?php else: ?>
                                 <div class="hstack gap-3">
                                     <a href="sign-in.php" class="btn btn-outline-light fs-6 bg-white px-3 py-2 text-dark w-50 hstack justify-content-center">Sign In</a>
