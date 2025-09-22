@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Sze 17. 21:17
+-- Létrehozás ideje: 2025. Sze 22. 22:53
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -33,6 +33,13 @@ CREATE TABLE `contact` (
   `message` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- A tábla adatainak kiíratása `contact`
+--
+
+INSERT INTO `contact` (`name`, `mail`, `message`) VALUES
+('CoolClothes', 'random.koala497@passinbox.com', 'gecimbe vagytok');
+
 -- --------------------------------------------------------
 
 --
@@ -60,9 +67,9 @@ CREATE TABLE `events` (
 
 INSERT INTO `events` (`id`, `name`, `slogan`, `lineup`, `start_date`, `end_date`, `description`, `cover_image`, `organizer_id`, `venue_id`, `total_tickets`, `remaining_tickets`) VALUES
 (19, 'Sziget Festival', 'The Island of Freedom', 'Timmy Trumpet, The Straikerz, Angerfist, Ke$ha', '2026-08-07 10:00:00', '2026-08-13 23:59:59', 'One of Europe\'s largest music and cultural festivals, held on Óbuda Island in Budapest, Hungary. Features a diverse lineup of international and local artists across multiple stages.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-1.jpg', 16, 1, 50000, 0),
-(20, 'Balaton Sound', 'The Biggest Lakeside Party', 'David Guetta, Armin van Buuren, Dimitri Vegas & Like Mike', '2026-06-26 12:00:00', '2026-06-30 23:59:59', 'Europe\'s premier open-air electronic music festival held on the shores of Lake Balaton. Known for its stunning location and world-class DJs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-4.jpg', 16, 2, 35000, 0),
-(21, 'VOLT Festival', 'Music. Love. Unity.', 'Imagine Dragons, Arctic Monkeys, Halott Pénz', '2026-06-19 14:00:00', '2026-06-23 23:59:59', 'Hungary\'s most popular music festival featuring a mix of rock, pop, electronic, and world music in the beautiful city of Sopron.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-3.jpg', 16, 3, 30000, 0),
-(22, 'EFOTT', 'Hungary\'s Biggest Student Festival', 'Majka & Curtis, Wellhello, Tankcsapda', '2026-07-10 10:00:00', '2026-07-14 23:59:59', 'A week-long festival on the shores of Lake Velence, offering music, sports, and cultural programs for students and young adults.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-5.jpg', 16, 4, 25000, 0),
+(20, 'Balaton Sound', 'The Biggest Lakeside Party', 'David Guetta, Armin van Buuren, Dimitri Vegas & Like Mike', '2025-06-26 12:00:00', '2027-06-30 23:59:59', 'Europe\'s premier open-air electronic music festival held on the shores of Lake Balaton. Known for its stunning location and world-class DJs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-4.jpg', 18, 2, 35000, 0),
+(21, 'VOLT Festival', 'Music. Love. Unity.', 'Imagine Dragons, Arctic Monkeys, Halott Pénz', '2026-06-19 14:00:00', '2026-06-23 23:59:59', 'Hungary\'s most popular music festival featuring a mix of rock, pop, electronic, and world music in the beautiful city of Sopron.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-3.jpg', 18, 3, 30000, 0),
+(22, 'EFOTT', 'Hungary\'s Biggest Student Festival', 'Majka & Curtis, Wellhello, Tankcsapda', '2026-07-10 10:00:00', '2026-07-14 23:59:59', 'A week-long festival on the shores of Lake Velence, offering music, sports, and cultural programs for students and young adults.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-5.jpg', 18, 4, 25000, 0),
 (23, 'SZIN festival', 'Zárjuk együtt a nyarat 2026-ban is!', 'Rúzsa Magdolna, Follow The Flow, Punnany Massif, Margaret Island, Carson Coma', '2026-08-06 10:00:00', '2026-08-12 23:59:59', 'The 2025 edition of Europe\'s most colorful festival, featuring an even more diverse lineup and exciting new programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-6.jpg', 16, 11, 50000, 0),
 (24, 'Fishing on Orfű', 'Zenés nyár a Mecsek lábánál', '30Y, Quimby, Bagossy Brothers Company, Blahalouisiana, Péterfy Bori & Love Band', '2026-06-19 12:00:00', '2026-06-22 23:59:59', 'One of Hungary\'s most beloved smaller festivals, held near Pécs by Lake Orfű. Known for its cozy atmosphere, lakeside concerts, and family-friendly programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-2.jpg', 16, 12, 15000, 0);
 
@@ -97,7 +104,12 @@ INSERT INTO `login_sessions` (`id`, `user_id`, `user_agent`, `session_token`, `e
 (9, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', '46d99115bfc3873f011a4c69796d7974b38f4ca2bd1e41d8c1a09e0b18bd96fe', '2025-09-09 13:36:10', '2025-09-08 11:36:10'),
 (10, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', 'bd109cffdf99d78ab66ff60fda50aaed033da8e031cd4ae97fcbfe256a00857a', '2025-09-15 22:27:06', '2025-09-14 20:27:06'),
 (11, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0', '183273f334169718f36a2a1347f60fa32f59a4bb4e05030a9bda58f6debbe0aa', '2025-09-15 23:03:24', '2025-09-14 21:03:24'),
-(12, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '7402269272b4a7637693947d410eceee1f42b07d26434eaf993ba6cc66130fb4', '2025-09-17 20:17:59', '2025-09-16 18:17:59');
+(12, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '7402269272b4a7637693947d410eceee1f42b07d26434eaf993ba6cc66130fb4', '2025-09-17 20:17:59', '2025-09-16 18:17:59'),
+(13, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '275a479b2c743c91cb8bbf2a6d9e7168b9b7931e21392a9950ce3a830d9acad5', '2025-09-19 22:17:38', '2025-09-18 20:17:38'),
+(14, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '12556511b8192d2596bd1e82d1c875ab5d65fac12371ab27c360d7a4cf34902f', '2025-09-22 22:00:22', '2025-09-21 20:00:22'),
+(15, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '2b656bdc9eb7ab991d27886975e6b977e3e01369ba1a21d0ea6399d1481e9f55', '2025-09-22 22:04:47', '2025-09-21 20:04:47'),
+(16, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '685bb8ba8ceefcef57c2580bfa95ef2ce24ac272468b5aaa205b3ed9a0a7c4fb', '2025-10-22 21:36:42', '2025-09-22 19:36:42'),
+(17, 18, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '0965d57acd6c42b8b4d888c2516345e3dee49d127db15523047927c8e4065655', '2025-09-23 22:26:37', '2025-09-22 20:26:37');
 
 -- --------------------------------------------------------
 
@@ -120,7 +132,9 @@ CREATE TABLE `password_resets` (
 
 INSERT INTO `password_resets` (`id`, `email`, `token`, `created_at`, `expires_at`, `used`) VALUES
 (6, 'random.koala497@passinbox.com', '202981623c6aa89d4f52781fcba583c4a7f41e82b0ab66b86d6c8f1fea5992aa', '2025-09-08 13:28:31', '2025-09-08 14:28:31', 1),
-(7, 'farkasgabor1024@gmail.com', '2ee16a03a931a4e4f830e9b01498f86516855f324817da11c263aaece477f400', '2025-09-08 13:34:30', '2025-09-08 14:34:30', 1);
+(7, 'farkasgabor1024@gmail.com', '2ee16a03a931a4e4f830e9b01498f86516855f324817da11c263aaece477f400', '2025-09-08 13:34:30', '2025-09-08 14:34:30', 1),
+(8, 'farkasgabor1024@gmail.com', '6601dfa19da9ef6601d41a85cbeba5bea52741356d219dc6d4ab20eb4afeb399', '2025-09-21 21:58:41', '2025-09-21 22:58:41', 1),
+(9, 'farkasgabor1024@gmail.com', 'e3b0acb7c8a9659107c466c34cf112badeb3ea069830461d42667d54add1fcad', '2025-09-21 22:03:02', '2025-09-21 22:04:00', 0);
 
 -- --------------------------------------------------------
 
@@ -142,10 +156,8 @@ CREATE TABLE `purchases` (
 --
 
 INSERT INTO `purchases` (`id`, `user_id`, `amount`, `status`, `purchase_date`, `payment_method`) VALUES
-(6, 16, 22470.00, 'completed', '2025-09-17 20:12:26', 'stripe'),
-(7, 16, 15980.00, 'completed', '2025-09-17 20:54:49', 'paypal'),
-(8, 16, 16470.00, 'completed', '2025-09-17 20:56:29', 'stripe'),
-(9, 16, 4990.00, 'completed', '2025-09-17 21:03:38', 'paypal');
+(20, 16, 17970.00, 'completed', '2025-09-18 23:33:41', 'stripe'),
+(21, 16, 20960.00, 'completed', '2025-09-21 22:16:37', 'stripe');
 
 -- --------------------------------------------------------
 
@@ -168,15 +180,13 @@ CREATE TABLE `tickets` (
 --
 
 INSERT INTO `tickets` (`id`, `purchase_id`, `qr_code_path`, `event_id`, `owner_id`, `is_used`, `price`) VALUES
-(10, 6, 'worker_sites/qrcodes/cs_test_a1aiiPMeEfrCBpgsqiDBo6M4KebbpOv0S0LUfZT3YI4Yv3trGICECxv4Uw_3ee8736a99f67e55ffea84c926d19281.png', 21, 16, 0, 7490.00),
-(11, 6, 'worker_sites/qrcodes/cs_test_a1aiiPMeEfrCBpgsqiDBo6M4KebbpOv0S0LUfZT3YI4Yv3trGICECxv4Uw_27ab4d8a210594de848a418f2b4dbc92.png', 21, 16, 0, 7490.00),
-(12, 6, 'worker_sites/qrcodes/cs_test_a1aiiPMeEfrCBpgsqiDBo6M4KebbpOv0S0LUfZT3YI4Yv3trGICECxv4Uw_4518a0fdd0f38f4cb8cd76be3dbb8b23.png', 21, 16, 0, 7490.00),
-(13, 7, 'worker_sites/qrcodes/2VR994650R130222F_c61825527065bd4578da879a522154fc.png', 24, 16, 0, 7990.00),
-(14, 7, 'worker_sites/qrcodes/2VR994650R130222F_b8be9c46f800469b4833d6dd60dd5b45.png', 24, 16, 0, 7990.00),
-(15, 8, 'worker_sites/qrcodes/cs_test_b1p4TTKHvvf0NY7YP56llRPvIlpi5toSD698caI51seXeyMXLl0MfCw1B0_1548dfabe14057239892fad35fc0d684.png', 21, 16, 0, 4490.00),
-(16, 8, 'worker_sites/qrcodes/cs_test_b1p4TTKHvvf0NY7YP56llRPvIlpi5toSD698caI51seXeyMXLl0MfCw1B0_1367ba402e3c32939e62a3c586e58f33.png', 21, 16, 0, 4490.00),
-(17, 8, 'worker_sites/qrcodes/cs_test_b1p4TTKHvvf0NY7YP56llRPvIlpi5toSD698caI51seXeyMXLl0MfCw1B0_a2e2482be119d4db2318ccd9ef9f37c2.png', 21, 16, 0, 7490.00),
-(18, 9, 'worker_sites/qrcodes/4VJ29355P20669532_e8c8fc771e14b2ddb20de61536267ab4.png', 20, 16, 0, 4990.00);
+(55, 20, 'worker_sites/qrcodes/cs_test_b1M9MmdSDkfSsNHSsiHW9J0aHpFfxB5fFuxNdO9u3g5JzNBeCePyA0ThZf_06c766e701a96aac2e51bb8d827ceef8.png', 22, 16, 0, 3990.00),
+(56, 20, 'worker_sites/qrcodes/cs_test_b1M9MmdSDkfSsNHSsiHW9J0aHpFfxB5fFuxNdO9u3g5JzNBeCePyA0ThZf_4ceca2cbc9e03c193841c00049c22ba0.png', 22, 16, 0, 6990.00),
+(57, 20, 'worker_sites/qrcodes/cs_test_b1M9MmdSDkfSsNHSsiHW9J0aHpFfxB5fFuxNdO9u3g5JzNBeCePyA0ThZf_52d20f0d6b5b0934abd9932250e71298.png', 22, 16, 0, 6990.00),
+(58, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_3f2a70b1d240976850fe11cd35c262e4.png', 21, 16, 0, 4490.00),
+(59, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_07fce709fd630c6b26be27f11536b554.png', 21, 16, 0, 4490.00),
+(60, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_73408918c67837ff25281ad5cb5de735.png', 21, 16, 0, 4490.00),
+(61, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_25b55329a62b4ac15b9d6706cb33cbd2.png', 21, 16, 0, 7490.00);
 
 -- --------------------------------------------------------
 
@@ -197,18 +207,18 @@ CREATE TABLE `ticket_types` (
 --
 
 INSERT INTO `ticket_types` (`ticket_type_id`, `event_id`, `ticket_type`, `price`, `remaining_tickets`) VALUES
-(1, 19, 'regular', 5990, 45000),
-(2, 19, 'vip', 8990, 5000),
+(1, 19, 'regular', 5990, 44999),
+(2, 19, 'vip', 8990, 4995),
 (3, 20, 'regular', 4990, 30000),
 (4, 20, 'vip', 7990, 5000),
-(5, 21, 'regular', 4490, 25000),
-(6, 21, 'vip', 7490, 5000),
-(7, 22, 'regular', 3990, 20000),
-(8, 22, 'vip', 6990, 5000),
+(5, 21, 'regular', 4490, 24993),
+(6, 21, 'vip', 7490, 4999),
+(7, 22, 'regular', 3990, 19999),
+(8, 22, 'vip', 6990, 4998),
 (9, 23, 'regular', 5990, 45000),
 (10, 23, 'vip', 8990, 5000),
-(11, 24, 'regular', 4990, 30000),
-(12, 24, 'vip', 7990, 5000);
+(11, 24, 'regular', 4990, 0),
+(12, 24, 'vip', 7990, 0);
 
 -- --------------------------------------------------------
 
@@ -237,8 +247,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `last_name`, `first_name`, `email`, `password_hash`, `city`, `birth_date`, `phone_number`, `role`, `created_at`, `reg_token`, `reg_token_expires`, `is_verified`) VALUES
-(16, 'Farkas', 'Gábor', 'farkasgabor1024@gmail.com', '$2a$12$55rGML/byY0LfH/TOgdbUexjimugkjvI9N5CGqUtMiAalSVGZecES', 'Mol', '2003-10-24', '+381621516073', 'raver', '2025-09-05 11:44:02', '', '2025-09-06 13:44:02', 1),
-(18, 'Miska', 'Fizi', 'random.koala497@passinbox.com', '$2y$10$WuIaFAi4P3dX4dK.nldIyOG2qenos2WbwLks/5maad6b6V0fWqEEi', NULL, '1979-07-09', NULL, 'raver', '2025-09-08 11:04:10', NULL, '2025-09-09 13:04:09', 1);
+(16, 'Farkas', 'Gábore', 'farkasgabor1024@gmail.com', '$2y$10$dvmce/ukNVhJICCD98yTouBE/Spgx0OG5vT2v3LDYNl8ycFCw0ZRm', 'Mol', '2003-10-24', '+381621516073', 'raver', '2025-09-05 11:44:02', '', '2025-09-06 13:44:02', 1),
+(18, 'Miska', 'Fizi', 'random.koala497@passinbox.com', '$2a$12$Lkhnyot5oB2fKZGYzrnGVOvPaMLIa7WNpbXQ4KX9L9Y2wLXXMbiQ6', NULL, '1979-07-09', NULL, 'organizer', '2025-09-08 11:04:10', NULL, '2025-09-09 13:04:09', 1);
 
 -- --------------------------------------------------------
 
@@ -257,13 +267,15 @@ CREATE TABLE `user_interests` (
 --
 
 INSERT INTO `user_interests` (`id`, `user_id`, `style_name`) VALUES
-(18, 16, 'Bass'),
-(19, 16, 'Hardcore'),
-(20, 16, 'Hardstyle'),
-(21, 16, 'Psytrance'),
-(22, 16, 'Techno'),
-(23, 16, 'Trance'),
-(26, 18, 'Bass');
+(26, 18, 'Bass'),
+(40, 16, 'Hardcore'),
+(41, 16, 'House'),
+(42, 16, 'Metal'),
+(43, 16, 'Minimal'),
+(44, 16, 'Progressive House'),
+(45, 16, 'Psytrance'),
+(46, 16, 'Reggae'),
+(47, 16, 'Trance');
 
 -- --------------------------------------------------------
 
@@ -278,26 +290,27 @@ CREATE TABLE `venues` (
   `city` varchar(50) NOT NULL,
   `country` varchar(50) NOT NULL,
   `cover_image` varchar(255) DEFAULT NULL,
-  `capacity` int(11) NOT NULL
+  `capacity` int(11) NOT NULL,
+  `story` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- A tábla adatainak kiíratása `venues`
 --
 
-INSERT INTO `venues` (`id`, `name`, `address`, `city`, `country`, `cover_image`, `capacity`) VALUES
-(1, 'Óbuda Island', 'Móricz Zsigmond 103', 'Budapest', 'Hungary', 'portfolio-img-1.jpg', 100000),
-(2, 'Zamárdi Beach', 'József Attila 86', 'Zamárdi', 'Hungary', 'portfolio-img-2.jpg', 50000),
-(3, 'Lővér Camping', 'Petőfi Sándor 94', 'Sopron', 'Hungary', 'portfolio-img-3.jpg', 40000),
-(4, 'Velencei-tó', 'Szegedi út 24', 'Velence', 'Hungary', 'portfolio-img-4.jpg', 30000),
-(5, 'Dürer Kert', 'Bartók Béla Krt. 107/A', 'Budapest', 'Hungary', 'portfolio-img-5.jpg', 2000),
-(6, 'Barba Negra', 'Kandó Kálmán 109', 'Budapest', 'Hungary', 'portfolio-img-1.jpg', 3500),
-(7, 'Akvárium Klub', 'Jókai Mór 105/B', 'Budapest', 'Hungary', 'portfolio-img-2.jpg', 2500),
-(8, 'Budapest Park', 'Nagyboldogasszony Sgt. 179', 'Budapest', 'Hungary', 'portfolio-img-3.jpg', 10000),
-(9, 'A38 Hajó', 'Pesti rakpart (1117)', 'Budapest', 'Hungary', 'portfolio-img-4.jpg', 800),
-(10, 'MVM Dome', 'Oktogon 110', 'Budapest', 'Hungary', 'portfolio-img-5.jpg', 20000),
-(11, 'Újszegedi Partfürdő és Kemping', 'Torontál tér 1', 'Szeged', 'Hungary', 'portfolio-img-6.jpg', 25000),
-(12, 'Orfűi-tó Kemping', 'Pécsi út 45', 'Orfű', 'Hungary', 'portfolio-img-7.jpg', 15000);
+INSERT INTO `venues` (`id`, `name`, `address`, `city`, `country`, `cover_image`, `capacity`, `story`) VALUES
+(1, 'Óbuda Island', 'Móricz Zsigmond 103', 'Budapest', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/obuda-island-cover.jpg', 100000, 'Óbuda Island is one of the largest open-air concert venues in Budapest, alongside Budapest Park. Previously home to the Sziget Festival, it now hosts numerous major international and domestic performers. It features excellent infrastructure, multiple stages, and easy accessibility.'),
+(2, 'Zamárdi Beach', 'József Attila 86', 'Zamárdi', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/zamardi-beach-cover.jpg', 50000, 'Zamárdi Beach annually hosts Balaton Sound, one of Europe\'s largest electronic music festivals. The lakeside venue offers a unique atmosphere where the world\'s best DJs entertain tens of thousands of attendees. The sandy shoreline and crystal-clear water provide an ideal backdrop for the party.'),
+(3, 'Lővér Camping', 'Sopron 9400', 'Sopron', 'Hungary', ' http://localhost/Diplomamunka-26222041/assets/images/venues/lover-camping-cover.jpg\r\n', 40000, 'Lővér Camping was the former home of the Volt Festival near Sopron. The picturesque forests and green meadows created a perfect environment for the multi-day music and cultural event. Although Volt ended in 2019, the venue remains open for other events.'),
+(4, 'Velencei-tó', 'Szegedi út 24', 'Velence', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/velencei-to-cover.jpg', 30000, 'The Strand Festival, held annually on the shore of Lake Velence, is one of the most popular summer music events in Hungary. The shallow lake and sandy beach offer a pleasant resort experience while domestic and international stars perform. The sunset concerts provide a special experience.'),
+(5, 'Dürer Kert', 'Bartók Béla Krt. 107/A', 'Budapest', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/durer-kert-cover.jpg', 2000, 'Dürer Kert is one of Budapest\'s most iconic independent music venues. It typically features alternative rock, punk, and indie music, and has launched the careers of many emerging artists. The garden section is open in summer, while the indoor stage takes over in winter.'),
+(6, 'Barba Negra', 'Kandó Kálmán 109', 'Budapest', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/barba-negra-cover.jpg', 3500, 'Barba Negra is one of Budapest\'s largest indoor concert venues by capacity. It primarily hosts rock and metal concerts but also organizes electronic music events. Programs run simultaneously in its two halls (Track and Music Club), and it has its own parking lot.'),
+(7, 'Akvárium Klub', 'Jókai Mór 105/B', 'Budapest', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/akvarium-klub-cover.jpg', 2500, 'Akvárium Klub is located at Deák Square and is one of the most modern concert venues in Budapest. Besides the main stage, there is a smaller, pub-like room for intimate concerts. The rooftop terrace is open in summer, offering a beautiful view of the city center.'),
+(8, 'Budapest Park', 'Nagyboldogasszony Sgt. 179', 'Budapest', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/budapest-park-cover.jpg', 10000, 'Budapest Park is an open-air, partially roofed concert venue on the Danube embankment. In summer, the biggest domestic and international artists perform here, making it one of the most popular summer entertainment spots in Budapest. The view of the Danube and excellent cuisine make it special.'),
+(9, 'A38 Hajó', 'Pesti rakpart (1117)', 'Budapest', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/a38-hajo-cover.jpg', 800, 'A38 Ship is a former Ukrainian coal carrier, now renowned as one of the best clubs in the world. The concerts on the ship\'s deck offer an intimate atmosphere in the middle of the Danube. The creative restaurant and summer terrace complement the cultural experience.'),
+(10, 'MVM Dome', 'Oktogon 110', 'Budapest', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/mvm-dome-cover.jpg', 20000, 'MVM Dome is Budapest\'s most modern and largest indoor arena by capacity. Opened in 2021, it has since hosted concerts by the biggest international stars. It boasts excellent acoustics and all modern facilities for top-tier events.'),
+(11, 'Újszegedi Partfürdő és Kemping', 'Torontál tér 1', 'Szeged', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/szegedi-partfurdo-cover.jpg', 25000, 'Újszegedi Beach and Camping, launched as a successor to the Sziget Festival in Szeged-Szabadkikötő, was home to the Szeged Youth Days. The Tisza riverside camping and beach provided an excellent venue for multi-day festivals in the southern city.'),
+(12, 'Orfűi-tó Kemping', 'Pécsi út 45', 'Orfű', 'Hungary', 'http://localhost/Diplomamunka-26222041/assets/images/venues/orfui-to-cover.jpg', 15000, 'The camping and beach by Lake Orfű host Fishing on Orfű and other smaller festivals. The crystal-clear lake at the foot of the Mecsek Mountains and the surrounding protected natural areas create a unique environment for summer concerts and cultural programs.');
 
 -- --------------------------------------------------------
 
@@ -310,6 +323,21 @@ CREATE TABLE `venue_images` (
   `venue_id` int(11) NOT NULL,
   `image_path` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- A tábla adatainak kiíratása `venue_images`
+--
+
+INSERT INTO `venue_images` (`id`, `venue_id`, `image_path`) VALUES
+(1, 7, 'http://localhost/Diplomamunka-26222041/assets/images/venues/akvarium-klub-1.jpg'),
+(2, 8, 'http://localhost/Diplomamunka-26222041/assets/images/venues/budapest-park-1.jpg'),
+(3, 11, 'http://localhost/Diplomamunka-26222041/assets/images/venues/szegedi-partfurdo-1.jpg'),
+(4, 10, 'http://localhost/Diplomamunka-26222041/assets/images/venues/mvm-dome-1.jpg'),
+(5, 8, 'http://localhost/Diplomamunka-26222041/assets/images/venues/budapest-park-2.jpg'),
+(6, 2, 'http://localhost/Diplomamunka-26222041/assets/images/venues/zamardi-beach-1.jpg'),
+(7, 12, 'http://localhost/Diplomamunka-26222041/assets/images/venues/orfui-to-1.jpg'),
+(8, 4, 'http://localhost/Diplomamunka-26222041/assets/images/venues/velencei-to-1.jpg'),
+(9, 9, 'http://localhost/Diplomamunka-26222041/assets/images/venues/a38-hajo-1.jpg');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -403,25 +431,25 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT a táblához `login_sessions`
 --
 ALTER TABLE `login_sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT a táblához `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT a táblához `purchases`
 --
 ALTER TABLE `purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT a táblához `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT a táblához `ticket_types`
@@ -439,7 +467,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT a táblához `user_interests`
 --
 ALTER TABLE `user_interests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT a táblához `venues`
@@ -451,7 +479,7 @@ ALTER TABLE `venues`
 -- AUTO_INCREMENT a táblához `venue_images`
 --
 ALTER TABLE `venue_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Megkötések a kiírt táblákhoz

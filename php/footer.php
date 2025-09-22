@@ -2,6 +2,8 @@
 // footer.php
 $current_year = date('Y');
 ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <!-- Footer section -->
 <footer class="footer bg-dark py-5 py-lg-11 py-xl-12">
     <div class="container">
@@ -24,12 +26,12 @@ $current_year = date('Y');
             </div>
             <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
                 <ul class="footer-menu list-unstyled mb-0 d-flex flex-column gap-2">
-                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="http://localhost:63342/Diplomamunka-26222041/php/index.php">Home</a></li>
-                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="about-us.php">About us</a></li>
-                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="festivals.php">Festivals</a></li>
-                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="locations.php">Venues</a></li>
-                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="FAQ.php">FAQ</a></li>
-                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="contact.php">Contact</a></li>
+                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="http://localhost/Diplomamunka-26222041/php/index.php">Home</a></li>
+                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="http://localhost/Diplomamunka-26222041/php/about-us.php">About us</a></li>
+                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="http://localhost/Diplomamunka-26222041/php/festivals.php">Festivals</a></li>
+                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="http://localhost/Diplomamunka-26222041/php/locations.php">Venues</a></li>
+                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="http://localhost/Diplomamunka-26222041/php/FAQ.php">FAQ</a></li>
+                    <li><a class="footer-link fs-5 text-white px-2 py-1 rounded-1" href="http://localhost/Diplomamunka-26222041/php/contact.php">Contact</a></li>
                 </ul>
             </div>
             <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">

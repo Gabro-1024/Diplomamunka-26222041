@@ -72,9 +72,12 @@ $(function () {
     };
 
 
-    // Aos
+    // AOS (Animate On Scroll) Initialization
 	AOS.init({
+		duration: 600,
+		easing: 'ease-out-cubic',
 		once: true,
+		mirror: false
 	});
 
 });
