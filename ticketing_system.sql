@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Sze 22. 22:53
+-- Létrehozás ideje: 2025. Sze 23. 18:28
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -57,21 +57,33 @@ CREATE TABLE `events` (
   `cover_image` varchar(255) NOT NULL,
   `organizer_id` int(11) NOT NULL,
   `venue_id` int(11) DEFAULT NULL,
-  `total_tickets` int(11) NOT NULL,
-  `remaining_tickets` int(11) NOT NULL
+  `total_tickets` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- A tábla adatainak kiíratása `events`
 --
 
-INSERT INTO `events` (`id`, `name`, `slogan`, `lineup`, `start_date`, `end_date`, `description`, `cover_image`, `organizer_id`, `venue_id`, `total_tickets`, `remaining_tickets`) VALUES
-(19, 'Sziget Festival', 'The Island of Freedom', 'Timmy Trumpet, The Straikerz, Angerfist, Ke$ha', '2026-08-07 10:00:00', '2026-08-13 23:59:59', 'One of Europe\'s largest music and cultural festivals, held on Óbuda Island in Budapest, Hungary. Features a diverse lineup of international and local artists across multiple stages.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-1.jpg', 16, 1, 50000, 0),
-(20, 'Balaton Sound', 'The Biggest Lakeside Party', 'David Guetta, Armin van Buuren, Dimitri Vegas & Like Mike', '2025-06-26 12:00:00', '2027-06-30 23:59:59', 'Europe\'s premier open-air electronic music festival held on the shores of Lake Balaton. Known for its stunning location and world-class DJs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-4.jpg', 18, 2, 35000, 0),
-(21, 'VOLT Festival', 'Music. Love. Unity.', 'Imagine Dragons, Arctic Monkeys, Halott Pénz', '2026-06-19 14:00:00', '2026-06-23 23:59:59', 'Hungary\'s most popular music festival featuring a mix of rock, pop, electronic, and world music in the beautiful city of Sopron.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-3.jpg', 18, 3, 30000, 0),
-(22, 'EFOTT', 'Hungary\'s Biggest Student Festival', 'Majka & Curtis, Wellhello, Tankcsapda', '2026-07-10 10:00:00', '2026-07-14 23:59:59', 'A week-long festival on the shores of Lake Velence, offering music, sports, and cultural programs for students and young adults.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-5.jpg', 18, 4, 25000, 0),
-(23, 'SZIN festival', 'Zárjuk együtt a nyarat 2026-ban is!', 'Rúzsa Magdolna, Follow The Flow, Punnany Massif, Margaret Island, Carson Coma', '2026-08-06 10:00:00', '2026-08-12 23:59:59', 'The 2025 edition of Europe\'s most colorful festival, featuring an even more diverse lineup and exciting new programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-6.jpg', 16, 11, 50000, 0),
-(24, 'Fishing on Orfű', 'Zenés nyár a Mecsek lábánál', '30Y, Quimby, Bagossy Brothers Company, Blahalouisiana, Péterfy Bori & Love Band', '2026-06-19 12:00:00', '2026-06-22 23:59:59', 'One of Hungary\'s most beloved smaller festivals, held near Pécs by Lake Orfű. Known for its cozy atmosphere, lakeside concerts, and family-friendly programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-2.jpg', 16, 12, 15000, 0);
+INSERT INTO `events` (`id`, `name`, `slogan`, `lineup`, `start_date`, `end_date`, `description`, `cover_image`, `organizer_id`, `venue_id`, `total_tickets`) VALUES
+(19, 'Sziget Festival', 'The Island of Freedom', 'Timmy Trumpet, The Straikerz, Angerfist, Ke$ha', '2026-08-07 10:00:00', '2026-08-13 23:59:59', 'One of Europe\'s largest music and cultural festivals, held on Óbuda Island in Budapest, Hungary. Features a diverse lineup of international and local artists across multiple stages.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-1.jpg', 18, 1, 50000),
+(20, 'Balaton Sound', 'The Biggest Lakeside Party', 'David Guetta, Armin van Buuren, Dimitri Vegas & Like Mike', '2025-06-26 12:00:00', '2027-06-30 23:59:59', 'Europe\'s premier open-air electronic music festival held on the shores of Lake Balaton. Known for its stunning location and world-class DJs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-4.jpg', 18, 2, 35000),
+(21, 'VOLT Festival', 'Music. Love. Unity.', 'Imagine Dragons, Arctic Monkeys, Halott Pénz', '2026-06-19 14:00:00', '2026-06-23 23:59:59', 'Hungary\'s most popular music festival featuring a mix of rock, pop, electronic, and world music in the beautiful city of Sopron.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-3.jpg', 18, 3, 30000),
+(22, 'EFOTT', 'Hungary\'s Biggest Student Festival', 'Majka & Curtis, Wellhello, Tankcsapda', '2026-07-10 10:00:00', '2026-07-14 23:59:59', 'A week-long festival on the shores of Lake Velence, offering music, sports, and cultural programs for students and young adults.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-5.jpg', 18, 4, 25000),
+(23, 'SZIN festival', 'Zárjuk együtt a nyarat 2026-ban is!', 'Rúzsa Magdolna, Follow The Flow, Punnany Massif, Margaret Island, Carson Coma', '2026-08-06 10:00:00', '2026-08-12 23:59:59', 'The 2025 edition of Europe\'s most colorful festival, featuring an even more diverse lineup and exciting new programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-6.jpg', 16, 11, 50000),
+(24, 'Fishing on Orfű', 'Zenés nyár a Mecsek lábánál', '30Y, Quimby, Bagossy Brothers Company, Blahalouisiana, Péterfy Bori & Love Band', '2026-06-19 12:00:00', '2026-06-22 23:59:59', 'One of Hungary\'s most beloved smaller festivals, held near Pécs by Lake Orfű. Known for its cozy atmosphere, lakeside concerts, and family-friendly programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-2.jpg', 18, 12, 15000);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `event_categories`
+--
+
+CREATE TABLE `event_categories` (
+  `id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -157,7 +169,11 @@ CREATE TABLE `purchases` (
 
 INSERT INTO `purchases` (`id`, `user_id`, `amount`, `status`, `purchase_date`, `payment_method`) VALUES
 (20, 16, 17970.00, 'completed', '2025-09-18 23:33:41', 'stripe'),
-(21, 16, 20960.00, 'completed', '2025-09-21 22:16:37', 'stripe');
+(21, 16, 20960.00, 'completed', '2025-09-21 22:16:37', 'stripe'),
+(22, 18, 19950.00, 'completed', '2025-09-23 14:20:54', 'stripe'),
+(23, 18, 28960.00, 'completed', '2025-09-23 14:27:58', 'paypal'),
+(24, 18, 27960.00, 'completed', '2025-09-23 14:29:24', 'paypal'),
+(25, 18, 44950.00, 'completed', '2025-09-23 16:47:22', 'stripe');
 
 -- --------------------------------------------------------
 
@@ -186,7 +202,25 @@ INSERT INTO `tickets` (`id`, `purchase_id`, `qr_code_path`, `event_id`, `owner_i
 (58, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_3f2a70b1d240976850fe11cd35c262e4.png', 21, 16, 0, 4490.00),
 (59, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_07fce709fd630c6b26be27f11536b554.png', 21, 16, 0, 4490.00),
 (60, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_73408918c67837ff25281ad5cb5de735.png', 21, 16, 0, 4490.00),
-(61, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_25b55329a62b4ac15b9d6706cb33cbd2.png', 21, 16, 0, 7490.00);
+(61, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_25b55329a62b4ac15b9d6706cb33cbd2.png', 21, 16, 0, 7490.00),
+(62, 22, 'worker_sites/qrcodes/cs_test_a1PtnfDPslONUUbke2SwmeyXfAAU1qKYPDqzkx47N5u8Bo7YSLVf8FCKLs_955ac7bccb80c9094bb9ee7a731e60cf.png', 22, 18, 0, 3990.00),
+(63, 22, 'worker_sites/qrcodes/cs_test_a1PtnfDPslONUUbke2SwmeyXfAAU1qKYPDqzkx47N5u8Bo7YSLVf8FCKLs_e442161e6fd297278336b53fc35f6a11.png', 22, 18, 0, 3990.00),
+(64, 22, 'worker_sites/qrcodes/cs_test_a1PtnfDPslONUUbke2SwmeyXfAAU1qKYPDqzkx47N5u8Bo7YSLVf8FCKLs_0800214b4c44c28f0ae6fd6946f76532.png', 22, 18, 0, 3990.00),
+(65, 22, 'worker_sites/qrcodes/cs_test_a1PtnfDPslONUUbke2SwmeyXfAAU1qKYPDqzkx47N5u8Bo7YSLVf8FCKLs_b192450eb857b810dc3cf22ae0d7d761.png', 22, 18, 0, 3990.00),
+(66, 22, 'worker_sites/qrcodes/cs_test_a1PtnfDPslONUUbke2SwmeyXfAAU1qKYPDqzkx47N5u8Bo7YSLVf8FCKLs_8ccf43e3db946f87f3b4342df0a8702e.png', 22, 18, 0, 3990.00),
+(67, 23, 'worker_sites/qrcodes/12M42851EU087343J_7053aa79026e80b0e2e03fb6ed9bf1ae.png', 20, 18, 0, 4990.00),
+(68, 23, 'worker_sites/qrcodes/12M42851EU087343J_e0f9b0edf71a0ea40248430402525472.png', 20, 18, 0, 7990.00),
+(69, 23, 'worker_sites/qrcodes/12M42851EU087343J_576054f0df0e2e5104f8749a4176fce0.png', 20, 18, 0, 7990.00),
+(70, 23, 'worker_sites/qrcodes/12M42851EU087343J_89323c3f56050a4c28b69f4fcb3a7475.png', 20, 18, 0, 7990.00),
+(71, 24, 'worker_sites/qrcodes/6XM912758A5105034_39d142da35ba43cb0a5a762b420ce8c1.png', 22, 18, 0, 6990.00),
+(72, 24, 'worker_sites/qrcodes/6XM912758A5105034_ee9b73b76d68510fe4a546a9d15a4133.png', 22, 18, 0, 6990.00),
+(73, 24, 'worker_sites/qrcodes/6XM912758A5105034_82c1fe6ea3f95abb782d1abcf93bc630.png', 22, 18, 0, 6990.00),
+(74, 24, 'worker_sites/qrcodes/6XM912758A5105034_db8e7f02b9f9b2d82de285b91fecfc49.png', 22, 18, 0, 6990.00),
+(75, 25, 'worker_sites/qrcodes/cs_test_a1yCyXNCvtBtFh2dykq1nVGSplPSsMUBSK9NWzZatV7JNH2x2CgHtjVABQ_0eb20592de734f4d994e5a12ef59d4bc.png', 23, 18, 0, 8990.00),
+(76, 25, 'worker_sites/qrcodes/cs_test_a1yCyXNCvtBtFh2dykq1nVGSplPSsMUBSK9NWzZatV7JNH2x2CgHtjVABQ_326f2fb5815c7e827885898b2b0fdbea.png', 23, 18, 0, 8990.00),
+(77, 25, 'worker_sites/qrcodes/cs_test_a1yCyXNCvtBtFh2dykq1nVGSplPSsMUBSK9NWzZatV7JNH2x2CgHtjVABQ_e1b9148ba19356249e6bd6f5914deede.png', 23, 18, 0, 8990.00),
+(78, 25, 'worker_sites/qrcodes/cs_test_a1yCyXNCvtBtFh2dykq1nVGSplPSsMUBSK9NWzZatV7JNH2x2CgHtjVABQ_16b56a5ede01b62dd153a7ce88c3e426.png', 23, 18, 0, 8990.00),
+(79, 25, 'worker_sites/qrcodes/cs_test_a1yCyXNCvtBtFh2dykq1nVGSplPSsMUBSK9NWzZatV7JNH2x2CgHtjVABQ_28333142b06eec89b345ffb46fab0327.png', 23, 18, 0, 8990.00);
 
 -- --------------------------------------------------------
 
@@ -209,15 +243,15 @@ CREATE TABLE `ticket_types` (
 INSERT INTO `ticket_types` (`ticket_type_id`, `event_id`, `ticket_type`, `price`, `remaining_tickets`) VALUES
 (1, 19, 'regular', 5990, 44999),
 (2, 19, 'vip', 8990, 4995),
-(3, 20, 'regular', 4990, 30000),
-(4, 20, 'vip', 7990, 5000),
+(3, 20, 'regular', 4990, 29999),
+(4, 20, 'vip', 7990, 4997),
 (5, 21, 'regular', 4490, 24993),
 (6, 21, 'vip', 7490, 4999),
-(7, 22, 'regular', 3990, 19999),
-(8, 22, 'vip', 6990, 4998),
+(7, 22, 'regular', 3990, 19994),
+(8, 22, 'vip', 6990, 4994),
 (9, 23, 'regular', 5990, 45000),
-(10, 23, 'vip', 8990, 5000),
-(11, 24, 'regular', 4990, 0),
+(10, 23, 'vip', 8990, 4995),
+(11, 24, 'regular', 4990, 457),
 (12, 24, 'vip', 7990, 0);
 
 -- --------------------------------------------------------
@@ -352,6 +386,13 @@ ALTER TABLE `events`
   ADD KEY `venue_id` (`venue_id`);
 
 --
+-- A tábla indexei `event_categories`
+--
+ALTER TABLE `event_categories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `event_id` (`event_id`);
+
+--
 -- A tábla indexei `login_sessions`
 --
 ALTER TABLE `login_sessions`
@@ -428,6 +469,12 @@ ALTER TABLE `events`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
+-- AUTO_INCREMENT a táblához `event_categories`
+--
+ALTER TABLE `event_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
 -- AUTO_INCREMENT a táblához `login_sessions`
 --
 ALTER TABLE `login_sessions`
@@ -443,13 +490,13 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT a táblához `purchases`
 --
 ALTER TABLE `purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT a táblához `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT a táblához `ticket_types`
@@ -491,6 +538,12 @@ ALTER TABLE `venue_images`
 ALTER TABLE `events`
   ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`organizer_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `events_ibfk_2` FOREIGN KEY (`venue_id`) REFERENCES `venues` (`id`);
+
+--
+-- Megkötések a táblához `event_categories`
+--
+ALTER TABLE `event_categories`
+  ADD CONSTRAINT `event_categories_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE;
 
 --
 -- Megkötések a táblához `login_sessions`

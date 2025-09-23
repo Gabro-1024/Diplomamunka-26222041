@@ -44,7 +44,15 @@ try {
     // Create Google Calendar link with minimal information
     $google_calendar_url = 'https://www.google.com/calendar/render?action=TEMPLATE';
     $google_calendar_url .= '&text=' . urlencode($festival['name']);
-    $google_calendar_url .= '&dates=' . $start_date->format('Ymd\THi00\Z') . '/' . $end_date->format('Ymd\THi00\Z');
+    
+    // Format dates without timezone indicator (Google will use the user's timezone)
+    $google_calendar_url .= '&dates=' . $start_date->format('Ymd\THi00') . '/' . $end_date->format('Ymd\THi00');
+    
+    // Add timezone parameter to ensure correct timezone handling
+    $timezone = date_default_timezone_get();
+    $google_calendar_url .= '&ctz=' . urlencode($timezone);
+    
+    // Add location
     $google_calendar_url .= '&location=' . urlencode($festival['venue_name']);
     
 } catch (Exception $e) {
@@ -420,7 +428,8 @@ try {
                   <?php
                   // Generate schedule based on festival dates
                   $interval = new DateInterval('P1D');
-                  $period = new DatePeriod($start_date, $interval, $end_date->modify('+1 day'));
+                  $periodEnd = clone $end_date;
+                  $period = new DatePeriod($start_date, $interval, $periodEnd->modify('+1 day'));
                   $dayCount = 1;
                   
                   foreach ($period as $date):
@@ -430,7 +439,7 @@ try {
                   ?>
                   <div class="accordion-item mb-3 border-0">
                     <h2 class="accordion-header" id="heading<?php echo $dayCount; ?>">
-                      <button class="accordion-button bg-light rounded-3 p-4 fw-bold collapsed" type="button"
+                      <button class="accordion-button collapsed rounded-3 p-4 fw-bold" type="button"
                               data-bs-toggle="collapse" data-bs-target="#<?php echo $dayId; ?>"
                               aria-expanded="false"
                               aria-controls="<?php echo $dayId; ?>">

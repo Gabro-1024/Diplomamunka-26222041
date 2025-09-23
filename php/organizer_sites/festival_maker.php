@@ -1,1418 +1,595 @@
 <?php
-//Fesztivál készítő oldal
+// Start the session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Check if user is logged in and is an organizer
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'organizer') {
+    var_dump($_SESSION);
+    header('Location: ../sign-in.php');
+    exit();
+}
+
+require_once __DIR__ . '/../includes/db_connect.php';
+
+$musicGenres = [
+    'Bass', 'Hardcore', 'House', 'Metal', 'Minimal', 'Pop',
+    'Progressive House', 'Psytrance', 'Reggae', 'Rock', 'Techno', 'Trance'
+];
+
+// Initialize database connection
+$pdo = db_connect();
+
+// Get all venues for the dropdown
+$venues = [];
+try {
+    $stmt = $pdo->query("SELECT id, name, city, country FROM venues ORDER BY name");
+    $venues = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log("Error fetching venues: " . $e->getMessage());
+    // Set empty array to prevent errors in the form
+    $venues = [];
+}
+
+// Check if form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        $pdo->beginTransaction();
+        
+        // Process form data
+        $name = trim($_POST['name'] ?? '');
+        $slogan = trim($_POST['slogan'] ?? '');
+        $start_date = $_POST['start_date'] ?? '';
+        $end_date = $_POST['end_date'] ?? '';
+        $venue_id = (int)($_POST['venue_id'] ?? 0);
+        $description = trim($_POST['description'] ?? '');
+        $lineup = trim($_POST['lineup'] ?? '');
+        $organizer_id = $_SESSION['user_id'] ?? 0;
+        $total_tickets = (int)($_POST['total_tickets'] ?? 0);
+        $genres = $_POST['genres'] ?? [];
+
+        // All fields required
+        $missing_fields = [];
+        if (empty($name)) $missing_fields[] = "Event name";
+        if (empty($slogan)) $missing_fields[] = "Event slogan";
+        if (empty($start_date)) $missing_fields[] = "Start date";
+        if (empty($end_date)) $missing_fields[] = "End date";
+        if ($venue_id <= 0) $missing_fields[] = "Venue";
+        if (empty($description)) $missing_fields[] = "Description";
+        if (empty($lineup)) $missing_fields[] = "Lineup";
+        if (empty($total_tickets)) $missing_fields[] = "Total tickets";
+        if (empty($genres)) $missing_fields[] = "At least one music genre";
+
+        if (!empty($missing_fields)) {
+            throw new Exception("Please fill in the following required fields: " . implode(", ", $missing_fields));
+        }
+
+        // Handle file upload
+        $cover_image = 'default-event.jpg';
+        if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] === UPLOAD_ERR_OK) {
+            $upload_dir = __DIR__ . '/../../assets/images/events/';
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+            
+            $file_extension = strtolower(pathinfo($_FILES['cover_image']['name'], PATHINFO_EXTENSION));
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+            
+            if (!in_array($file_extension, $allowed_extensions)) {
+                throw new Exception("Invalid file type. Only JPG, PNG, and GIF are allowed.");
+            }
+            
+            $cover_image = uniqid('event_') . '.' . $file_extension;
+            if (!move_uploaded_file($_FILES['cover_image']['tmp_name'], $upload_dir . $cover_image)) {
+                throw new Exception("Failed to upload image. Please try again.");
+            }
+        }
+
+        // Insert event into database
+        $stmt = $pdo->prepare("
+            INSERT INTO events (
+                name, slogan, start_date, end_date, venue_id, 
+                description, lineup, cover_image, organizer_id, total_tickets
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+        $success = $stmt->execute([
+            $name,
+            $slogan,
+            $start_date,
+            $end_date,
+            $venue_id,
+            $description,
+            $lineup,
+            $cover_image,
+            $organizer_id,
+            $total_tickets
+        ]);
+
+        if (!$success) {
+            throw new Exception("Failed to create event. Please try again.");
+        }
+
+        $event_id = $pdo->lastInsertId();
+
+        // Save genres to event_categories
+        $catStmt = $pdo->prepare("INSERT INTO event_categories (event_id, category) VALUES (?, ?)");
+        foreach ($genres as $genre) {
+            if (in_array($genre, $musicGenres)) {
+                $catStmt->execute([$event_id, $genre]);
+            }
+        }
+
+        // Process ticket types
+        if (isset($_POST['ticket_types']) && is_array($_POST['ticket_types'])) {
+            $ticketStmt = $pdo->prepare("
+                INSERT INTO ticket_types (event_id, ticket_type, price, remaining_tickets)
+                VALUES (?, ?, ?, ?)
+            ");
+
+            foreach ($_POST['ticket_types'] as $ticket) {
+                if (!empty($ticket['type']) && isset($ticket['price']) && !empty($ticket['quantity'])) {
+                    // Ensure ticket_type is either 'regular' or 'vip'
+                    $ticketType = in_array(strtolower($ticket['type']), ['regular', 'vip'])
+                        ? strtolower($ticket['type'])
+                        : 'regular';
+
+                    $ticketStmt->execute([
+                        $event_id,
+                        $ticketType,
+                        (int)$ticket['price'],
+                        (int)$ticket['quantity']  // Using quantity as remaining_tickets initially
+                    ]);
+                }
+            }
+        }
+
+        $pdo->commit();
+        header('Location: myevents.php?created=1');
+        exit();
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        error_log("Error creating event: " . $e->getMessage());
+        $_SESSION['form_errors'][] = $e->getMessage();
+        $_SESSION['form_data'] = $_POST;
+        header('Location: festival_maker.php');
+        exit();
+    }
+}
+
+// Update image path structure
+$base_url = 'http://localhost:63342/Diplomamunka-26222041';
+$image_path = $base_url . '/assets/images/portfolio/';
+?>
+
+<?php
+// Start the session and check if user is logged in as organizer
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+
+// Get any form errors from session
+$formErrors = $_SESSION['form_errors'] ?? [];
+$formData = $_SESSION['form_data'] ?? [];
+
+// Clear the errors after we've retrieved them
+unset($_SESSION['form_errors']);
+unset($_SESSION['form_data']);
 ?>
 
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Studiova</title>
-  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
+  <title>Create New Event - Tickets @ Gábor</title>
+  <link rel="shortcut icon" type="image/png" href="../../assets/images/logos/favicon.svg" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+  <style>
+    .page-wrapper {
+        padding-top: 120px;
+        padding-bottom: 60px;
+    }
+    .form-section {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        padding: 30px;
+    }
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    .required:after {
+        content: " *";
+        color: #dc3545;
+    }
+    .ticket-type {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border: 1px solid #dee2e6;
+    }
+    .preview-image {
+        max-width: 200px;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-top: 10px;
+        display: none;
+    }
+    .genre-checkbox { margin-right: 10px; }
+  </style>
 </head>
 
-<body>
-
-  <!-- Header -->
-  <header class="header border-4 border-primary border-top position-fixed start-0 top-0 w-100">
+<body class="bg-light">
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <div class="header-wrapper d-flex align-items-center justify-content-between">
-        <div class="logo">
-          <a href="index.html" class="logo-white">
-            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-white.svg" alt="logo" class="img-fluid">
-          </a>
-          <a href="index.html" class="logo-dark">
-            <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
-          </a>
-        </div>
-        <div class="d-flex align-items-center gap-4">
+      <a class="navbar-brand" href="myevents.php">
+        <iconify-icon icon="lucide:music-2" class="me-2"></iconify-icon>
+        Event Manager
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="myevents.php">My Events</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="festival_maker.php">Create Event</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../logout.php">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-          <div class="btn-group">
-            <button
-              class="btn btn-secondary toggle-menu round-45 p-2 d-flex align-items-center justify-content-center bg-white rounded-circle"
-              type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-              <iconify-icon icon="solar:hamburger-menu-line-duotone" class="menu-icon fs-8 text-dark"></iconify-icon>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end p-4">
-              <div class="d-flex flex-column gap-6">
-                <div class="hstack justify-content-between border-bottom pb-6">
-                  <p class="mb-0 fs-5 text-dark">Menu</p>
-                  <button type="button" class="btn-close opacity-75" aria-label="Close"></button>
+  <!-- Page Content -->
+  <div class="page-wrapper">
+    <div class="container py-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <!-- Page Header -->
+          <div class="mb-4">
+            <h1 class="fw-bold">Create New Event</h1>
+            <p class="text-muted">Fill in the details below to create your event</p>
+          </div>
+          
+          <?php if (!empty($formErrors)): ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill me-2"></i> Please fix the following errors:</h5>
+            <ul class="mb-0">
+              <?php foreach ($formErrors as $error): ?>
+                <li><?php echo htmlspecialchars($error); ?></li>
+              <?php endforeach; ?>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <?php endif; ?>
+          
+          <?php if (isset($successMessage)): ?>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i> <?php echo htmlspecialchars($successMessage); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <?php endif; ?>
+
+          <div class="form-section">
+            <form class="needs-validation" novalidate action="festival_maker.php" method="post" enctype="multipart/form-data">
+              <!-- Basic Information -->
+              <div class="card mb-4">
+                <div class="card-header bg-light">
+                  <h5 class="mb-0">Basic Information</h5>
                 </div>
-                <div class="d-flex flex-column gap-3">
-                  <ul class="header-menu list-unstyled mb-0 d-flex flex-column gap-2">
-                    <li class="header-item">
-                      <a href="index.html" aria-current="true"
-                        class="header-link active hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Home</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="about-us.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">About</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="projects.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Projects</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="FAQ.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Blog</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Services</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="contact.php" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Contact</a>
-                    </li>
-                    <li class="header-item">
-                      <a href="index.html" class="header-link hstack gap-2 fs-7 fw-bold text-dark"><img
-                          src="http://localhost:63342/Diplomamunka-26222041/assets/images/svgs/secondary-leaf.svg" alt="" width="20" height="20"
-                          class="img-fluid animate-spin">Docs</a>
-                    </li>
-                  </ul>
-                  <div class="hstack gap-3">
-                    <a href="sign-in.php"
-                      class="btn btn-outline-light fs-6 bg-white px-3 py-2 text-dark w-50 hstack justify-content-center">Sign
-                      In</a>
-                    <a href="sign-up.php"
-                      class="btn btn-dark text-white fs-6 bg-dark px-3 py-2 w-50 hstack justify-content-center">Sign
-                      Up</a>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="name" class="form-label required">Event Name</label>
+                      <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($formData['name'] ?? ''); ?>" required>
+                      <div class="invalid-feedback">Please provide an event name.</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="slogan" class="form-label required">Event Slogan</label>
+                      <input type="text" class="form-control" id="slogan" name="slogan" value="<?php echo htmlspecialchars($formData['slogan'] ?? ''); ?>" required>
+                      <div class="invalid-feedback">Please provide a slogan.</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label for="start_date" class="form-label required">Start Date & Time</label>
+                      <input type="datetime-local" class="form-control" id="start_date" name="start_date"
+                        value="<?php echo htmlspecialchars($formData['start_date'] ?? ''); ?>"
+                        min="<?= date('Y-m-d\TH:i') ?>" required>
+                      <div class="invalid-feedback">Please provide a valid start date and time.</div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="end_date" class="form-label required">End Date & Time</label>
+                      <input type="datetime-local" class="form-control" id="end_date" name="end_date"
+                        value="<?php echo htmlspecialchars($formData['end_date'] ?? ''); ?>"
+                        min="<?= date('Y-m-d\TH:i', strtotime('+1 day')) ?>" required>
+                      <div class="invalid-feedback">Please provide a valid end date and time.</div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="venue_id" class="form-label required">Venue</label>
+                    <select class="form-select" id="venue_id" name="venue_id" required>
+                      <option value="" disabled <?php echo !isset($formData['venue_id']) ? 'selected' : ''; ?>>Select a venue</option>
+                      <?php foreach ($venues as $venue) { ?>
+                        <option value="<?php echo $venue['id']; ?>" <?php echo (isset($formData['venue_id']) && $formData['venue_id'] == $venue['id']) ? 'selected' : ''; ?>>
+                          <?php echo htmlspecialchars($venue['name']); ?> (<?php echo $venue['city']; ?>, <?php echo $venue['country']; ?>)
+                        </option>
+                      <?php } ?>
+                    </select>
+                    <div class="invalid-feedback">Please select a venue.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="description" class="form-label required">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" required><?php echo htmlspecialchars($formData['description'] ?? ''); ?></textarea>
+                    <div class="invalid-feedback">Please provide a description.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="lineup" class="form-label required">Lineup (comma-separated)</label>
+                    <textarea class="form-control" id="lineup" name="lineup" rows="2" required><?php echo htmlspecialchars($formData['lineup'] ?? ''); ?></textarea>
+                    <div class="form-text">Separate artist names with commas</div>
+                    <div class="invalid-feedback">Please provide a lineup.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label required">Music Genres</label>
+                    <div>
+                      <?php foreach ($musicGenres as $genre): ?>
+                        <label class="form-check-label genre-checkbox">
+                          <input class="form-check-input" type="checkbox" name="genres[]" value="<?php echo $genre; ?>"
+                            <?php if (!empty($formData['genres']) && in_array($genre, $formData['genres'])) echo 'checked'; ?> required>
+                          <?php echo htmlspecialchars($genre); ?>
+                        </label>
+                      <?php endforeach; ?>
+                    </div>
+                    <div class="invalid-feedback">Please select at least one genre.</div>
                   </div>
                 </div>
-                <div>
-                  <a class="text-dark" href="tel:+1-212-456-7890">+1-212-456-7890</a>
-                  <a class="fs-8 text-dark fw-bold" href="mailto:info@wrappixel.com">info@wrappixel.com</a>
+              </div>
+
+              <!-- Cover Image -->
+              <div class="card mb-4">
+                <div class="card-header bg-light">
+                  <h5 class="mb-0">Cover Image</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="cover_image" class="form-label required">Cover Image</label>
+                    <input class="form-control" type="file" id="cover_image" name="cover_image" accept="image/jpeg, image/png, image/webp" required onchange="previewImage(this)">
+                    <div class="invalid-feedback">Please upload a valid image (JPEG, PNG, or WebP) under 5MB.</div>
+                    <div class="form-text">Recommended size: 1200x630px, max 5MB</div>
+                    <img id="imagePreview" class="preview-image" style="display:none;" />
+                  </div>
                 </div>
               </div>
-            </ul>
+
+              <!-- Ticket Types -->
+              <div class="mb-4">
+                <h5 class="mb-3">Ticket Types <span class="text-danger">*</span></h5>
+                <div id="ticketTypes">
+                  <div class="ticket-type mb-3 p-3 border rounded">
+                    <div class="row g-3">
+                      <div class="col-md-4">
+                        <label class="form-label">Ticket Type</label>
+                        <select class="form-select" name="ticket_types[0][type]" required>
+                          <option value="regular" selected>Regular</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">Price (HUF) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" name="ticket_types[0][price]" min="0" step="100"
+                          value="<?php echo htmlspecialchars($formData['ticket_types'][0]['price'] ?? ''); ?>" required>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">Quantity <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" name="ticket_types[0][quantity]" min="1"
+                          value="<?php echo htmlspecialchars($formData['ticket_types'][0]['quantity'] ?? ''); ?>" required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ticket-type mb-3 p-3 border rounded">
+                    <div class="row g-3">
+                      <div class="col-md-4">
+                        <label class="form-label">Ticket Type</label>
+                        <select class="form-select" name="ticket_types[1][type]" required>
+                          <option value="vip" selected>VIP</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">Price (HUF) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" name="ticket_types[1][price]" min="0" step="100"
+                          value="<?php echo htmlspecialchars($formData['ticket_types'][1]['price'] ?? ''); ?>" required>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">Quantity <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" name="ticket_types[1][quantity]" min="1"
+                          value="<?php echo htmlspecialchars($formData['ticket_types'][1]['quantity'] ?? ''); ?>" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-text text-muted">Both Regular and VIP ticket types are required.</div>
+              </div>
+
+              <!-- Total Tickets (hidden, auto-calculated) -->
+              <input type="hidden" id="total_tickets" name="total_tickets" value="<?php echo htmlspecialchars($formData['total_tickets'] ?? ''); ?>" required>
+
+              <!-- Submit Button -->
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="myevents.php" class="btn btn-outline-secondary me-md-2">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                  <iconify-icon icon="lucide:save" class="me-1"></iconify-icon> Create Event
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </header>
-
-  <!--  Page Wrapper -->
-  <div class="page-wrapper overflow-hidden">
-
-    <!--  Banner Section -->
-    <section class="banner-section position-relative d-flex align-items-end min-vh-100">
-      <video class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover" autoplay muted loop playsinline>
-        <source src="../assets/images/backgrounds/banner-video.mp4" type="video/mp4" />
-      </video>
-      <div class="container">
-        <div class="d-flex flex-column gap-4 pb-8 position-relative z-1">
-          <div class="row align-items-center">
-            <div class="col-xl-4">
-              <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
-                data-aos-duration="1000">
-                <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                <p class="mb-0 text-white fs-5 text-opacity-70">We create <span
-                    class="text-primary">high-performing</span> digital designs that elevate brands and enhance
-                  conversions.</p>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-            <h1 class="mb-0 fs-16 text-white lh-1">Studiova</h1>
-            <a href="javascript:void(0)" class="p-1 ps-7 bg-primary rounded-pill">
-              <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
-                <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-              </span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Stats & Facts Section -->
-    <section class="stats-facts py-5 py-lg-11 py-xl-12 position-relative overflow-hidden">
-      <div class="container">
-        <div class="row gap-7 gap-xl-0">
-          <div class="col-xl-4 col-xxl-4">
-            <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-              data-aos-duration="1000">
-              <span
-                class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">01</span>
-              <hr class="border-line">
-              <span class="badge text-bg-dark">Stats & facts</span>
-            </div>
-          </div>
-          <div class="col-xl-8 col-xxl-7">
-            <div class="d-flex flex-column gap-9">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">High quality web design solutions you can trust.</h2>
-                    <p class="fs-5 mb-0">When selecting a web design agency, it's essential to consider its reputation,
-                      experience, and the specific needs of your project.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 col-lg-4 mb-7 mb-lg-0">
-                  <div class="d-flex flex-column gap-6 pt-9 border-top" data-aos="fade-up" data-aos-delay="200"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0 fs-14"><span class="count" data-target="40">40</span>K+</h2>
-                    <p class="mb-0">People who have launched their websites</p>
-                  </div>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-7 mb-lg-0">
-                  <div class="d-flex flex-column gap-6 pt-9 border-top" data-aos="fade-up" data-aos-delay="300"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0 fs-14"><span class="count" data-target="238">238</span>+</h2>
-                    <p class="mb-0">Experienced professionals ready to assist</p>
-                  </div>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-7 mb-lg-0">
-                  <div class="d-flex flex-column gap-6 pt-9 border-top" data-aos="fade-up" data-aos-delay="400"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0 fs-14"><span class="count" data-target="3">3</span>M+</h2>
-                    <p class="mb-0">Support through messages and live consultations</p>
-                  </div>
-                </div>
-              </div>
-              <a href="about-us.php" class="btn" data-aos="fade-up" data-aos-delay="500" data-aos-duration="1000">
-                <span class="btn-text">Who we are</span>
-                <iconify-icon icon="lucide:arrow-up-right"
-                  class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="position-absolute bottom-0 start-0" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">
-        <img src="../assets/images/backgrounds/stats-facts-bg.svg" alt="" class="img-fluid">
-      </div>
-    </section>
-
-    <!--  Featured Projects Section -->
-    <section class="featured-projects py-5 py-lg-11 py-xl-12 bg-light-gray">
-      <div class="d-flex flex-column gap-5 gap-xl-11">
-        <div class="container">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">02</span>
-                <hr class="border-line">
-                <span class="badge text-bg-dark">Portfolio</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">Featured projects</h2>
-                    <p class="fs-5 mb-0">A glimpse into our creativity—exploring innovative designs, successful
-                      collaborations, and transformative digital experiences.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="featured-projects-slider px-3">
-          <div class="owl-carousel owl-theme">
-            <div class="item">
-              <div class="portfolio d-flex flex-column gap-6">
-                <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-1.jpg" alt="" class="img-fluid">
-                  <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
-                      class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                      <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-                <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">Snapclear</h3>
-                  <div class="hstack gap-2">
-                    <span class="badge text-dark border">UX Strategy</span>
-                    <span class="badge text-dark border">UI Design</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="portfolio d-flex flex-column gap-6">
-                <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-2.jpg" alt="" class="img-fluid">
-                  <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
-                      class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                      <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-                <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">Amber Bottle</h3>
-                  <div class="hstack gap-2">
-                    <span class="badge text-dark border">Web development</span>
-                    <span class="badge text-dark border">Digital design</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="portfolio d-flex flex-column gap-6">
-                <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-3.jpg" alt="" class="img-fluid">
-                  <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
-                      class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                      <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-                <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">Pixelforge</h3>
-                  <div class="hstack gap-2">
-                    <span class="badge text-dark border">UI/UX design</span>
-                    <span class="badge text-dark border">Web development</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="portfolio d-flex flex-column gap-6">
-                <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-4.jpg" alt="" class="img-fluid">
-                  <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
-                      class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                      <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-                <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">BioTrack LIMS</h3>
-                  <div class="hstack gap-2">
-                    <span class="badge text-dark border">Brand identity</span>
-                    <span class="badge text-dark border">Digital design</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="portfolio d-flex flex-column gap-6">
-                <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-5.jpg" alt="" class="img-fluid">
-                  <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
-                      class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                      <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-                <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">Amber Bottle</h3>
-                  <div class="hstack gap-2">
-                    <span class="badge text-dark border">Photography</span>
-                    <span class="badge text-dark border">Studio</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="portfolio d-flex flex-column gap-6">
-                <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-6.jpg" alt="" class="img-fluid">
-                  <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
-                      class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                      <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-                <div class="portfolio-details d-flex flex-column gap-3">
-                  <h3 class="mb-0">Digital Magazine</h3>
-                  <div class="hstack gap-2">
-                    <span class="badge text-dark border">Digital design</span>
-                    <span class="badge text-dark border">Web development</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Services Section -->
-    <section class="services py-5 py-lg-11 py-xl-12 bg-dark" id="services">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-10">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">03</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-dark bg-white">Services</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0 text-white">What we do</h2>
-                    <p class="fs-5 mb-0 text-white text-opacity-70">A glimpse into our creativity—exploring innovative
-                      designs, successful collaborations, and transformative digital experiences.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="services-tab">
-            <div class="row gap-5 gap-xl-0">
-              <div class="col-xl-4">
-                <div class="tab-content" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">
-                  <div class="tab-pane active" id="one" role="tabpanel" aria-labelledby="one-tab" tabindex="0">
-                    <img src="../assets/images/services/services-img-1.jpg" alt="services" class="img-fluid">
-                  </div>
-                  <div class="tab-pane" id="two" role="tabpanel" aria-labelledby="two-tab" tabindex="0">
-                    <img src="../assets/images/services/services-img-2.jpg" alt="services" class="img-fluid">
-                  </div>
-                  <div class="tab-pane" id="three" role="tabpanel" aria-labelledby="three-tab" tabindex="0">
-                    <img src="../assets/images/services/services-img-3.jpg" alt="services" class="img-fluid">
-                  </div>
-                  <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="four-tab" tabindex="0">
-                    <img src="../assets/images/services/services-img-4.jpg" alt="services" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-8">
-                <div class="d-flex flex-column gap-5">
-                  <ul class="nav nav-tabs" id="myTab" role="tablist" data-aos="fade-up" data-aos-delay="200"
-                    data-aos-duration="1000">
-                    <li
-                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"
-                      role="presentation">
-                      <div class="row w-100 align-items-center gx-3">
-                        <div class="col-lg-6 col-xxl-5">
-                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0 active"
-                            id="one-tab" data-bs-toggle="tab" data-bs-target="#one" type="button" role="tab"
-                            aria-controls="one" aria-selected="true">Brand identity</button>
-                        </div>
-                        <div class="col-lg-6 col-xxl-7">
-                          <p class="text-white text-opacity-70 mb-0">
-                            When selecting a web design agency, it's essential to consider its reputation, experience,
-                            and
-                            the
-                            specific needs of your project.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li
-                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"
-                      role="presentation">
-                      <div class="row w-100 align-items-center gx-3">
-                        <div class="col-lg-6 col-xxl-5">
-                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0" id="two-tab"
-                            data-bs-toggle="tab" data-bs-target="#two" type="button" role="tab" aria-controls="two"
-                            aria-selected="false">Web development</button>
-                        </div>
-                        <div class="col-lg-6 col-xxl-7">
-                          <p class="text-white text-opacity-70 mb-0">
-                            When selecting a web design agency, it's essential to consider its reputation, experience,
-                            and
-                            the
-                            specific needs of your project.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li
-                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"
-                      role="presentation">
-                      <div class="row w-100 align-items-center gx-3">
-                        <div class="col-lg-6 col-xxl-5">
-                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0"
-                            id="three-tab" data-bs-toggle="tab" data-bs-target="#three" type="button" role="tab"
-                            aria-controls="three" aria-selected="false">Content creation</button>
-                        </div>
-                        <div class="col-lg-6 col-xxl-7">
-                          <p class="text-white text-opacity-70 mb-0">
-                            When selecting a web design agency, it's essential to consider its reputation, experience,
-                            and
-                            the
-                            specific needs of your project.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li
-                      class="nav-item py-4 py-lg-8 border-top border-white border-opacity-10 d-flex align-items-center w-100"
-                      role="presentation">
-                      <div class="row w-100 align-items-center gx-3">
-                        <div class="col-lg-6 col-xxl-5">
-                          <button class="nav-link fs-10 fw-bold py-1 px-0 border-0 rounded-0 flex-shrink-0"
-                            id="four-tab" data-bs-toggle="tab" data-bs-target="#four" type="button" role="tab"
-                            aria-controls="four" aria-selected="false">Motion & 3d modeling</button>
-                        </div>
-                        <div class="col-lg-6 col-xxl-7">
-                          <p class="text-white text-opacity-70 mb-0">
-                            When selecting a web design agency, it's essential to consider its reputation, experience,
-                            and
-                            the
-                            specific needs of your project.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  <a href="projects.html" class="btn border border-white border-opacity-25" data-aos="fade-up"
-                    data-aos-delay="300" data-aos-duration="1000">
-                    <span class="btn-text">See our Work</span>
-                    <iconify-icon icon="lucide:arrow-up-right"
-                      class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Why choose us Section -->
-    <section class="why-choose-us py-5 py-lg-11 py-xl-12">
-      <div class="container">
-        <div class="row justify-content-between gap-5 gap-xl-0">
-          <div class="col-xl-3 col-xxl-3">
-            <div class="d-flex flex-column gap-7">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">04</span>
-                <hr class="border-line">
-                <span class="badge text-bg-dark">About us</span>
-              </div>
-              <h2 class="mb-0" data-aos="fade-right" data-aos-delay="200" data-aos-duration="1000">Why choose us</h2>
-              <p class="mb-0 fs-5" data-aos="fade-right" data-aos-delay="300" data-aos-duration="1000">We blend
-                creativity with strategy to craft unique digital experiences that make an
-                impact.
-                With a focus on innovation, attention to details.</p>
-            </div>
-          </div>
-          <div class="col-xl-9 col-xxl-8">
-            <div class="row">
-              <div class="col-lg-4 mb-7 mb-lg-0">
-                <div class="card position-relative overflow-hidden bg-primary h-100" data-aos="fade-up"
-                  data-aos-delay="100" data-aos-duration="1000">
-                  <div class="card-body d-flex flex-column justify-content-between">
-                    <div class="d-flex flex-column gap-3 position-relative z-1">
-                      <ul class="list-unstyled mb-0 hstack gap-1">
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
-                              class="fs-6 text-dark"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
-                              class="fs-6 text-dark"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
-                              class="fs-6 text-dark"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
-                              class="fs-6 text-dark"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-line-duotone"
-                              class="fs-6 text-dark"></iconify-icon></a></li>
-                      </ul>
-                      <p class="mb-0 fs-6 text-dark">The team exceeded our expectations with a stunning brand identity.
-                      </p>
-                    </div>
-                    <div class="position-relative z-1">
-                      <div class="pb-6 border-bottom">
-                        <h2 class="mb-0">98.6%</h2>
-                        <p class="mb-0">Customer satisfaction</p>
-                      </div>
-                      <div class="hstack gap-6 pt-6">
-                        <img src="../assets/images/profile/avatar-1.png" alt=""
-                          class="img-fluid rounded-circle overflow-hidden flex-shrink-0" width="64" height="64">
-                        <div>
-                          <h5 class="mb-0">Wade Warren</h5>
-                          <p class="mb-0">Bank of America</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="position-absolute bottom-0 end-0">
-                      <img src="../assets/images/backgrounds/customer-satisfaction-bg.svg" alt="" class="img-fluid">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 mb-7 mb-lg-0">
-                <div class="d-flex flex-column gap-7" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                  <div class="position-relative">
-                    <img src="../assets/images/services/services-img-2.jpg" alt="" class="img-fluid w-100">
-                  </div>
-
-                  <div class="card bg-dark">
-                    <div class="card-body d-flex flex-column gap-7">
-                      <div>
-                        <h2 class="mb-0 text-white">500+</h2>
-                        <p class="mb-0 text-white text-opacity-70">Successful projects completed</p>
-                      </div>
-                      <ul class="d-flex align-items-center mb-0">
-                        <li>
-                          <a href="javascript:void(0)">
-                            <img src="../assets/images/profile/user-1.jpg" width="44" height="44"
-                              class="rounded-circle border border-2 border-dark" alt="user-1">
-                          </a>
-                        </li>
-                        <li class="ms-n2">
-                          <a href="javascript:void(0)">
-                            <img src="../assets/images/profile/user-2.jpg" width="44" height="44"
-                              class="rounded-circle border border-2 border-dark" alt="user-2">
-                          </a>
-                        </li>
-                        <li class="ms-n2">
-                          <a href="javascript:void(0)">
-                            <img src="../assets/images/profile/user-3.jpg" width="44" height="44"
-                              class="rounded-circle border border-2 border-dark" alt="user-3">
-                          </a>
-                        </li>
-                        <li class="ms-n2">
-                          <a href="javascript:void(0)">
-                            <img src="../assets/images/profile/user-4.jpg" width="44" height="44"
-                              class="rounded-circle border border-2 border-dark" alt="user-4">
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 mb-7 mb-lg-0">
-                <div class="card border h-100 position-relative overflow-hidden" data-aos="fade-up" data-aos-delay="300"
-                  data-aos-duration="1000">
-                  <span
-                    class="border rounded-circle round-490 d-block position-absolute top-0 start-50 translate-middle"></span>
-                  <div class="card-body d-flex flex-column justify-content-between">
-                    <div>
-                      <h2 class="mb-0">238+</h2>
-                      <p class="mb-0 text-dark">Brands served worldwide</p>
-                    </div>
-                    <div class="d-flex flex-column gap-3">
-                      <a href="index.html" class="logo-dark">
-                        <img src="http://localhost:63342/Diplomamunka-26222041/assets/images/logos/logo-dark.svg" alt="logo" class="img-fluid">
-                      </a>
-                      <p class="mb-0 fs-5 text-dark">Our global reach allows us to create unique, culturally relevant
-                        designs for businesses across different industries.</p>
-                    </div>
-                  </div>
-                  <span
-                    class="border rounded-circle round-490 d-block position-absolute top-100 start-50 translate-middle"></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Testimonial Section -->
-    <section class="testimonial py-5 py-lg-11 py-xl-12 bg-light-gray">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-11">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">05</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">Testimonial</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">Stories from clients</h2>
-                    <p class="fs-5 mb-0 text-opacity-70">Real experiences, genuine feedback—discover how our creative
-                      solutions have transformed brands and elevated businesses.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row gap-7 gap-lg-0">
-            <div class="col-lg-4 col-xl-3 d-flex align-items-stretch">
-              <div class="card bg-primary w-100" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
-                <div class="card-body d-flex flex-column gap-5 gap-xl-11 justify-content-between">
-                  <div class="d-flex flex-column gap-4">
-                    <p class="mb-0">Hear from them</p>
-                    <h4 class="mb-0">Our website redesign was flawless. They understood our vision perfectly!</h4>
-                  </div>
-                  <div class="hstack gap-3">
-                    <img src="../assets/images/testimonial/testimonial-1.jpg" alt=""
-                      class="img-fluid rounded-circle overflow-hidden flex-shrink-0" width="60" height="60">
-                    <div>
-                      <h5 class="mb-1 fw-normal">Albert Flores</h5>
-                      <p class="mb-0">MasterCard</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-xl-6 d-flex align-items-stretch">
-              <div class="card bg-dark w-100" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                <div class="card-body d-flex flex-column gap-5 gap-xl-11 justify-content-between">
-                  <div class="d-flex flex-column gap-4">
-                    <p class="mb-0 text-white text-opacity-70">Hear from them</p>
-                    <h4 class="mb-0 text-white pe-xl-2">From concept to execution, they delivered outstanding results.
-                      Highly recommend their expertise!</h4>
-                    <div class="hstack gap-2">
-                      <ul class="list-unstyled mb-0 hstack gap-1">
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
-                              class="fs-6 text-white"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
-                              class="fs-6 text-white"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
-                              class="fs-6 text-white"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
-                              class="fs-6 text-white"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-line-duotone"
-                              class="fs-6 text-white"></iconify-icon></a></li>
-                      </ul>
-                      <h6 class="mb-0 text-white fw-medium">4.0</h6>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="hstack gap-3">
-                      <img src="../assets/images/testimonial/testimonial-2.jpg" alt=""
-                        class="img-fluid rounded-circle overflow-hidden flex-shrink-0" width="60" height="60">
-                      <div>
-                        <h5 class="mb-1 fw-normal text-white">Robert Fox</h5>
-                        <p class="mb-0 text-white text-opacity-70">Mitsubishi</p>
-                      </div>
-                    </div>
-                    <span><img src="../assets/images/testimonial/quete.svg" alt="quete"
-                        class="img-fluid flex-shrink-0"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-xl-3 d-flex align-items-stretch">
-              <div class="card w-100" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
-                <div class="card-body d-flex flex-column gap-5 gap-xl-11 justify-content-between">
-                  <div class="d-flex flex-column gap-4">
-                    <p class="mb-0">Hear from them</p>
-                    <h4 class="mb-0">Super smooth process with incredible results. highly recommend!</h4>
-                  </div>
-                  <div class="hstack gap-3">
-                    <img src="../assets/images/testimonial/testimonial-3.jpg" alt=""
-                      class="img-fluid rounded-circle overflow-hidden flex-shrink-0" width="60" height="60">
-                    <div>
-                      <h5 class="mb-1 fw-normal">Jenny Wilson</h5>
-                      <p class="mb-0">Pizza Hut</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Meet our team Section -->
-    <section class="meet-our-team py-5 py-lg-11 py-xl-12">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-11">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">06</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">The team</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">Meet our team</h2>
-                    <p class="fs-5 mb-0 text-opacity-70">Our team is committed to redefining digital experiences through
-                      innovative web solutions while fostering a diverse and collaborative environment.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="meet-team d-flex flex-column gap-4" data-aos="fade-up" data-aos-delay="100"
-                data-aos-duration="1000">
-                <div class="meet-team-img position-relative overflow-hidden">
-                  <img src="../assets/images/team/team-img-1.jpg" alt="team-img" class="img-fluid w-100">
-                  <div class="meet-team-overlay p-7 d-flex flex-column justify-content-end">
-                    <ul class="social list-unstyled mb-0 hstack gap-2 justify-content-end">
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-twitter.svg" alt="twitter"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-be.svg" alt="be"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-linkedin.svg" alt="linkedin"></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="meet-team-details">
-                  <h4 class="mb-0">Martha Finley</h4>
-                  <p class="mb-0">Creative Director</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="meet-team d-flex flex-column gap-4" data-aos="fade-up" data-aos-delay="200"
-                data-aos-duration="1000">
-                <div class="meet-team-img position-relative overflow-hidden">
-                  <img src="../assets/images/team/team-img-2.jpg" alt="team-img" class="img-fluid w-100">
-                  <div class="meet-team-overlay p-7 d-flex flex-column justify-content-end">
-                    <ul class="social list-unstyled mb-0 hstack gap-2 justify-content-end">
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-twitter.svg" alt="twitter"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-be.svg" alt="be"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-linkedin.svg" alt="linkedin"></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="meet-team-details">
-                  <h4 class="mb-0">Floyd Miles</h4>
-                  <p class="mb-0">Marketing Strategist</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="meet-team d-flex flex-column gap-4" data-aos="fade-up" data-aos-delay="300"
-                data-aos-duration="1000">
-                <div class="meet-team-img position-relative overflow-hidden">
-                  <img src="../assets/images/team/team-img-3.jpg" alt="team-img" class="img-fluid w-100">
-                  <div class="meet-team-overlay p-7 d-flex flex-column justify-content-end">
-                    <ul class="social list-unstyled mb-0 hstack gap-2 justify-content-end">
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-twitter.svg" alt="twitter"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-be.svg" alt="be"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-linkedin.svg" alt="linkedin"></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="meet-team-details">
-                  <h4 class="mb-0">Glenna Snyder</h4>
-                  <p class="mb-0">Lead Designer</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="meet-team d-flex flex-column gap-4" data-aos="fade-up" data-aos-delay="400"
-                data-aos-duration="1000">
-                <div class="meet-team-img position-relative overflow-hidden">
-                  <img src="../assets/images/team/team-img-4.jpg" alt="team-img" class="img-fluid w-100">
-                  <div class="meet-team-overlay p-7 d-flex flex-column justify-content-end">
-                    <ul class="social list-unstyled mb-0 hstack gap-2 justify-content-end">
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-twitter.svg" alt="twitter"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-be.svg" alt="be"></a></li>
-                      <li><a href="#!"
-                          class="btn bg-white p-2 round-45 rounded-circle hstack justify-content-center"><img
-                            src="../assets/images/svgs/icon-linkedin.svg" alt="linkedin"></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="meet-team-details">
-                  <h4 class="mb-0">Albert Flores</h4>
-                  <p class="mb-0">UX/UI Developer</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Pricing Section -->
-    <section class="pricing-section py-5 py-lg-11 py-xl-12 bg-light-gray">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-10">
-          <div class="d-flex flex-column gap-5 gap-xl-11">
-            <div class="row gap-7 gap-xl-0">
-              <div class="col-xl-4 col-xxl-4">
-                <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                  data-aos-duration="1000">
-                  <span
-                    class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">07</span>
-                  <hr class="border-line bg-white">
-                  <span class="badge text-bg-dark">Pricing</span>
-                </div>
-              </div>
-              <div class="col-xl-8 col-xxl-7">
-                <div class="row">
-                  <div class="col-xxl-8">
-                    <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                      data-aos-duration="1000">
-                      <h2 class="mb-0">Affordable pricing</h2>
-                      <p class="fs-5 mb-0 text-opacity-70">A glimpse into our creativity—exploring innovative designs,
-                        successful collaborations, and transformative digital experiences.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-6 col-xl-4 mb-7 mb-xl-0 d-flex align-items-stretch">
-                <div class="card w-100" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
-                  <div class="card-body p-7 p-xxl-5 d-flex flex-column gap-8">
-                    <div class="d-flex flex-column gap-6">
-                      <h5 class="mb-0 fw-medium">Launch</h5>
-                      <div class="hstack gap-2">
-                        <h3 class="mb-0">$699</h3>
-                        <p class="mb-0">/month</p>
-                      </div>
-                      <p class="mb-0">Ideal for startups and small businesses taking their first steps online.</p>
-                    </div>
-                    <div class="pt-8 border-top d-flex flex-column gap-6">
-                      <h6 class="mb-0 fw-normal">What’s Included:</h6>
-                      <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Competitive research & insights</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Wireframing and prototyping</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Basic tracking setup (Google Analytics, etc.)</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Standard contact form integration</h6>
-                        </li>
-                      </ul>
-                    </div>
-                    <a href="" class="btn w-100 justify-content-center">
-                      <span class="btn-text">Subscribe now</span>
-                      <iconify-icon icon="lucide:arrow-up-right"
-                        class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xl-4 mb-7 mb-xl-0 d-flex align-items-stretch">
-                <div class="card w-100" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                  <div class="card-body p-7 p-xxl-5 d-flex flex-column gap-8">
-                    <div class="d-flex flex-column gap-6">
-                      <div class="hstack gap-3">
-                        <h5 class="mb-0 fw-medium">Scale</h5>
-                        <span class="badge text-bg-dark hstack gap-2"><iconify-icon icon="lucide:flame"
-                            class="fs-5"></iconify-icon>Most popular</span>
-                      </div>
-                      <div class="hstack gap-2">
-                        <h3 class="mb-0 text-opacity-50 text-dark"><del>$2,199</del></h3>
-                        <h3 class="mb-0">$1,699</h3>
-                        <p class="mb-0">/month</p>
-                      </div>
-                      <p class="mb-0">Perfect for growing brands needing more customization and flexibility.</p>
-                    </div>
-                    <div class="pt-8 border-top d-flex flex-column gap-6">
-                      <h6 class="mb-0 fw-normal">What’s Included:</h6>
-                      <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Everything in the Launch Plan</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Custom design for up to 10 pages</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Seamless social media integration</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">SEO enhancements for key pages</h6>
-                        </li>
-                      </ul>
-                    </div>
-                    <a href="" class="btn w-100 justify-content-center">
-                      <span class="btn-text">Subscribe now</span>
-                      <iconify-icon icon="lucide:arrow-up-right"
-                        class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xl-4 mb-7 mb-xl-0 d-flex align-items-stretch">
-                <div class="card w-100" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
-                  <div class="card-body p-7 p-xxl-5 d-flex flex-column gap-8">
-                    <div class="d-flex flex-column gap-6">
-                      <h5 class="mb-0 fw-medium">Elevate</h5>
-                      <div class="hstack gap-2">
-                        <h3 class="mb-0">$3,499</h3>
-                        <p class="mb-0">/month</p>
-                      </div>
-                      <p class="mb-0">Best suited for established businesses wanting a fully tailored experience.</p>
-                    </div>
-                    <div class="pt-8 border-top d-flex flex-column gap-6">
-                      <h6 class="mb-0 fw-normal">What’s Included:</h6>
-                      <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Everything in the Scale Plan</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">E-commerce functionality (if needed)</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Branded email template design</h6>
-                        </li>
-                        <li class="hstack gap-3">
-                          <span
-                            class="round-32 rounded-circle bg-primary flex-shrink-0 hstack justify-content-center"><iconify-icon
-                              icon="lucide:check" class="fs-6 text-dark"></iconify-icon></span>
-                          <h6 class="mb-0 fw-normal">Priority support for six months after launch</h6>
-                        </li>
-                      </ul>
-                    </div>
-                    <a href="" class="btn w-100 justify-content-center">
-                      <span class="btn-text">Subscribe now</span>
-                      <iconify-icon icon="lucide:arrow-up-right"
-                        class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex flex-column gap-8" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
-            <p class="fs-5 mb-0 text-center text-dark">More than 320 trusted partners & clients</p>
-            <div class="marquee w-100 d-flex align-items-center overflow-hidden">
-              <div class="marquee-content d-flex align-items-center gap-8">
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-1.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-2.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-3.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-4.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-5.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-1.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-2.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-3.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-4.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-5.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-1.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-2.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-3.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-4.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-5.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-1.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-2.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-3.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-4.svg" alt="partners" class="img-fluid">
-                </div>
-                <div class="marquee-tag hstack justify-content-center">
-                  <img src="../assets/images/pricing/partners-5.svg" alt="partners" class="img-fluid">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  FAQ Section -->
-    <section class="faq py-5 py-lg-11 py-xl-12">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-11">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">08</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">FAQs</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-9">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">Frequently asked questions</h2>
-                    <p class="fs-5 mb-0 text-opacity-70">Discover how we tailor our solutions to meet unique needs,
-                      delivering impactful strategies, personalized branding, and exceptional customer experiences.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row justify-content-end">
-            <div class="col-xl-8">
-              <div class="accordion accordion-flush" id="accordionFlushExample" data-aos="fade-up" data-aos-delay="200"
-                data-aos-duration="1000">
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed fs-8 fw-bold" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                      What services does your agency offer?
-                    </button>
-                  </h2>
-                  <div id="flush-collapseOne" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body pt-0 fs-5 text-dark">Yes, we provide post-launch support to ensure smooth
-                      implementation and offer ongoing maintenance packages for clients needing regular updates or
-                      technical assistance.</div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed fs-8 fw-bold" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                      How long does a typical project take?
-                    </button>
-                  </h2>
-                  <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body pt-0 fs-5 text-dark">Yes, we provide post-launch support to ensure smooth
-                      implementation and offer ongoing maintenance packages for clients needing regular updates or
-                      technical assistance.</div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed fs-8 fw-bold" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                      Do you offer custom designs, or do you use templates?
-                    </button>
-                  </h2>
-                  <div id="flush-collapseThree" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body pt-0 fs-5 text-dark">Yes, we provide post-launch support to ensure smooth
-                      implementation and offer ongoing maintenance packages for clients needing regular updates or
-                      technical assistance.</div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed fs-8 fw-bold" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                      What’s the cost of a project?
-                    </button>
-                  </h2>
-                  <div id="flush-collapseFour" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body pt-0 fs-5 text-dark">Yes, we provide post-launch support to ensure smooth
-                      implementation and offer ongoing maintenance packages for clients needing regular updates or
-                      technical assistance.</div>
-                  </div>
-                </div>
-                <div class="accordion-item border-bottom">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed fs-8 fw-bold" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-                      Do you provide ongoing support after project completion?
-                    </button>
-                  </h2>
-                  <div id="flush-collapseFive" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body pt-0 fs-5 text-dark">Yes, we provide post-launch support to ensure smooth
-                      implementation and offer ongoing maintenance packages for clients needing regular updates or
-                      technical assistance.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Recent news Section -->
-    <section class="Recent-news bg-light-gray py-5 py-lg-11 py-xl-12">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-11">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">09</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">Resources</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">Recent news</h2>
-                    <p class="fs-5 mb-0 text-opacity-70">Explore the latest trends, bold projects, and creative insights
-                      from our agency—shaping the future of branding, digital experiences, and storytelling.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xl-6 mb-7 mb-xl-0">
-              <div class="resources d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                data-aos-duration="1000">
-                <a href="blog-detail.html"
-                  class="resources-img resources-img-first position-relative overflow-hidden d-block">
-                  <img src="../assets/images/resources/resources-1.jpg" alt="resources" class="img-fluid">
-                </a>
-                <div class="resources-details">
-                  <p class="mb-0">Dec 24, 2025</p>
-                  <h4 class="mb-0">A campaign that connects</h4>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="resources d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="200"
-                data-aos-duration="1000">
-                <a href="blog-detail.html" class="resources-img position-relative overflow-hidden d-block">
-                  <img src="../assets/images/resources/resources-2.jpg" alt="resources" class="img-fluid">
-                </a>
-                <div class="resources-details">
-                  <p class="mb-0">Dec 24, 2025</p>
-                  <h4 class="mb-0">An breaking boundaries our latest brand redesign</h4>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-3 mb-7 mb-xl-0">
-              <div class="resources d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="300"
-                data-aos-duration="1000">
-                <a href="blog-detail.html" class="resources-img position-relative overflow-hidden d-block">
-                  <img src="../assets/images/resources/resources-3.jpg" alt="resources" class="img-fluid">
-                </a>
-                <div class="resources-details">
-                  <p class="mb-0">Dec 24, 2025</p>
-                  <h4 class="mb-0">Recognized for design</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--  Get in touch Section -->
-    <section class="get-in-touch py-5 py-lg-11 py-xl-12">
-      <div class="container">
-        <div class="d-flex flex-column gap-5 gap-xl-10">
-          <div class="row gap-7 gap-xl-0">
-            <div class="col-xl-4 col-xxl-4">
-              <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                data-aos-duration="1000">
-                <span
-                  class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">10</span>
-                <hr class="border-line bg-white">
-                <span class="badge text-bg-dark">Contact us</span>
-              </div>
-            </div>
-            <div class="col-xl-8 col-xxl-7">
-              <div class="row">
-                <div class="col-xxl-8">
-                  <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <h2 class="mb-0">Get in touch</h2>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row justify-content-between gap-7 gap-xl-0">
-            <div class="col-xl-3">
-              <p class="mb-0 fs-5" data-aos="fade-right" data-aos-delay="100" data-aos-duration="1000">Let’s collaborate
-                and create something amazing! Tell me about your project—I’m all
-                ears.</p>
-            </div>
-            <div class="col-xl-8">
-              <form class="d-flex flex-column gap-7" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                <div>
-                  <input type="text" class="form-control border-bottom border-dark" id="formGroupExampleInput"
-                    placeholder="Name">
-                </div>
-                <div>
-                  <input type="email" class="form-control border-bottom border-dark" id="exampleInputEmail1"
-                    placeholder="Email" aria-describedby="emailHelp">
-                </div>
-                <div>
-                  <textarea class="form-control border-bottom border-dark" id="exampleFormControlTextarea1"
-                    placeholder="Tell us about your project" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn w-100 justify-content-center">
-                  <span class="btn-text">Submit message</span>
-                  <iconify-icon icon="lucide:arrow-up-right"
-                    class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </div>
 
-  <footer class="footer bg-dark py-5 py-lg-11 py-xl-12">
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-5">
     <div class="container">
-      <div class="row">
-        <div class="col-xl-5 mb-8 mb-xl-0">
-          <div class="d-flex flex-column gap-8 pe-xl-5">
-            <h2 class="mb-0 text-white">Build something together?</h2>
-            <div class="d-flex flex-column gap-2">
-              <a href="https://www.wrappixel.com/" target="_blank" class="link-hover hstack gap-3 text-white fs-5">
-                <iconify-icon icon="lucide:arrow-up-right" class="fs-7 text-primary"></iconify-icon>
-                info@wrappixel.com
-              </a>
-              <a href="https://maps.app.goo.gl/hpDp81fqzGt5y4bC8" target="_blank"
-                class="link-hover hstack gap-3 text-white fs-5">
-                <iconify-icon icon="lucide:map-pin" class="fs-7 text-primary"></iconify-icon>
-                info@wrappixel.com
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
-          <ul class="footer-menu list-unstyled mb-0 d-flex flex-column gap-2">
-            <li><a class="link-hover fs-5 text-white" href="index.html">Home</a></li>
-            <li><a class="link-hover fs-5 text-white" href="about-us.php">About</a></li>
-            <li><a class="link-hover fs-5 text-white" id="services" href="#services">Services</a></li>
-            <li><a class="link-hover fs-5 text-white" href="projects.html">Work</a></li>
-            <li><a class="link-hover fs-5 text-white" href="terms-and-conditions.html">Terms</a></li>
-            <li><a class="link-hover fs-5 text-white" href="privacy-policy.html">Privacy Policy</a></li>
-            <li><a class="link-hover fs-5 text-white" href="404.php">Error 404</a></li>
-          </ul>
-        </div>
-        <div class="col-md-4 col-xl-2 mb-8 mb-xl-0">
-          <ul class="footer-menu list-unstyled mb-0 d-flex flex-column gap-2">
-            <li><a class="link-hover fs-5 text-white" href="#!">Facebook</a></li>
-            <li><a class="link-hover fs-5 text-white" href="#!">Instagram</a></li>
-            <li><a class="link-hover fs-5 text-white" href="#!">Twitter</a></li>
-          </ul>
-        </div>
-        <div class="col-md-4 col-xl-3 mb-8 mb-xl-0">
-          <p class="mb-0 text-white text-opacity-70 text-md-end">© Studiova copyright 2025</p>
-        </div>
+      <div class="text-center">
+        <p class="mb-0">&copy; <?php echo date('Y'); ?> Event Manager. All rights reserved.</p>
       </div>
     </div>
-  <p class="mb-0 text-white text-opacity-70 text-md-center mt-10">Distributed by <a class="text-white" href="https://www.themewagon.com" target="_blank">ThemeWagon</a></p>
   </footer>
 
-  <div class="get-template hstack gap-2">
-    <button class="btn bg-primary p-2 round-52 rounded-circle hstack justify-content-center flex-shrink-0"
-      id="scrollToTopBtn">
-      <iconify-icon icon="lucide:arrow-up" class="fs-7 text-dark"></iconify-icon>
-    </button>
-  </div>
+  <!-- JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
 
+    // Validate dates when they change
+    function validateDates() {
+        const start = new Date(startDateInput.value);
+        const end = new Date(endDateInput.value);
+        const now = new Date();
+        const minEndDate = new Date(start);
+        minEndDate.setDate(minEndDate.getDate() + 1);
 
-  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/libs/owl.carousel/dist/owl.carousel.min.js"></script>
-  <script src="../assets/libs/aos-master/dist/aos.js"></script>
-  <script src="../assets/js/custom.js"></script>
-  <!-- solar icons -->
-  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+        // Set min attribute for start date (today)
+        const today = new Date();
+        today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+        startDateInput.min = today.toISOString().slice(0, 16);
+
+        // Set min attribute for end date (start date + 1 day)
+        if (start && start >= now) {
+            const minEnd = new Date(start);
+            minEnd.setDate(minEnd.getDate() + 1);
+            minEnd.setMinutes(minEnd.getMinutes() - minEnd.getTimezoneOffset());
+            endDateInput.min = minEnd.toISOString().slice(0, 16);
+        }
+
+        return {
+            isValid: (!start || !end) ? true : (end >= minEndDate),
+            message: 'End date must be at least 1 day after start date'
+        };
+    }
+
+    startDateInput.addEventListener('change', validateDates);
+    endDateInput.addEventListener('change', validateDates);
+
+    // Update the image preview function
+    function previewImage(input) {
+        const preview = document.getElementById('imagePreview');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            const file = input.files[0];
+            const fileExt = file.name.split('.').pop().toLowerCase();
+
+            // Validate file type
+            const validTypes = ['jpg', 'jpeg', 'png', 'webp'];
+            if (!validTypes.includes(fileExt)) {
+                alert('Please upload a valid image file (jpg, png, or webp)');
+                input.value = '';
+                preview.style.display = 'none';
+                return;
+            }
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+        }
+    }
+
+    // Auto-calculate total tickets when quantities change
+    document.querySelectorAll('input[name^="ticket_types"][name$="[quantity]"]').forEach(function(input) {
+        input.addEventListener('change', function() {
+            let total = 0;
+            document.querySelectorAll('input[name^="ticket_types"][name$="[quantity]"]').forEach(function(input) {
+                total += parseInt(input.value) || 0;
+            });
+            document.getElementById('total_tickets').value = total;
+        });
+    });
+
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        let errors = [];
+
+        // Validate dates
+        const dateValidation = validateDates();
+        if (!dateValidation.isValid) {
+            isValid = false;
+            errors.push(dateValidation.message);
+        }
+
+        // Validate file
+        const fileInput = document.getElementById('cover_image');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            const maxSize = 5 * 1024 * 1024; // 5MB
+
+            if (!validTypes.includes(file.type)) {
+                isValid = false;
+                errors.push('Please select a valid image file (JPEG, PNG, or WebP)');
+            }
+
+            if (file.size > maxSize) {
+                isValid = false;
+                errors.push('File size must be less than 5MB');
+            }
+        }
+
+        // Validate tickets
+        let regularTicketFound = false;
+        let vipTicketFound = false;
+        let totalTickets = 0;
+
+        document.querySelectorAll('input[name^="ticket_types"][name$="[quantity]"]').forEach(function(input) {
+            const quantity = parseInt(input.value) || 0;
+            const type = input.closest('.ticket-type').querySelector('select').value;
+
+            if (quantity > 0) {
+                if (type === 'regular') regularTicketFound = true;
+                if (type === 'vip') vipTicketFound = true;
+            }
+            totalTickets += quantity;
+        });
+
+        if (!regularTicketFound || !vipTicketFound) {
+            isValid = false;
+            errors.push('Both Regular and VIP ticket types are required');
+        }
+
+        if (totalTickets <= 0) {
+            isValid = false;
+            errors.push('Total ticket quantity must be greater than 0');
+        }
+
+        // Validate genres
+        const genres = document.querySelectorAll('input[name="genres[]"]:checked');
+        if (genres.length === 0) {
+            isValid = false;
+            errors.push('Please select at least one music genre');
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            alert('Please fix the following errors:\n\n' + errors.join('\n'));
+        }
+    });
+});
+  </script>
 </body>
-
 </html>

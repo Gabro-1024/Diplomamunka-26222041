@@ -56,6 +56,25 @@ $custom_styles = "
         .page-wrapper {
             padding-top: 120px;
         }
+        .stats-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #f8f9fa;
+            border-radius: 0 0 8px 8px;
+            margin: -1rem auto 0;
+            margin-top: -17px !important;
+            width: calc(100% - 2rem);
+            border: 1px solid transparent;
+            border-top: none;
+            padding: 1rem;
+        }
+        .stats-panel.active {
+            max-height: 500px;
+            padding: 1rem;
+            margin-top: -17px !important;
+            border-color: #dee2e6;
+        }
     </style>
 ";
 
@@ -113,6 +132,7 @@ include __DIR__ . '/../header.php';
 //              var_dump($now);
             ?>
               <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                <div class="event-card-wrapper">
                 <div class="card h-100 event-card">
                   <div class="position-relative">
                     <img src="<?php echo htmlspecialchars($event['cover_image']); ?>" class="event-image" alt="<?php echo htmlspecialchars($event['name']); ?>">
@@ -136,37 +156,38 @@ include __DIR__ . '/../header.php';
                       $ticketStmt = $pdo->prepare('SELECT ticket_type, price, remaining_tickets FROM ticket_types WHERE event_id = ?');
                       $ticketStmt->execute([$event['id']]);
                       $ticketTypes = $ticketStmt->fetchAll(PDO::FETCH_ASSOC);
-                      
+
                       // Group tickets by type and calculate totals
                       $ticketSummary = [
                           'regular' => ['count' => 0, 'price' => 0],
                           'vip' => ['count' => 0, 'price' => 0]
                       ];
-                      
+
                       foreach ($ticketTypes as $ticket) {
                           $type = $ticket['ticket_type'];
                           $ticketSummary[$type]['count'] += $ticket['remaining_tickets'];
                           $ticketSummary[$type]['price'] = $ticket['price']; // Store the price (assuming same price per type)
                       }
-                      
+
                       // Display ticket types that exist for this event
                       foreach (['vip', 'regular'] as $type):
-                          if ($ticketSummary[$type]['count'] > 0):
-                              $badgeClass = $type === 'vip' ? 'bg-warning text-dark' : 'bg-light text-white';
-                              $typeName = strtoupper($type);
+                          $typeName = strtoupper($type);
+                          $badgeClass = $type === 'vip' ? 'bg-warning text-dark' : 'bg-light text-white';
                       ?>
                       <div class="mb-2">
                           <span class="badge <?php echo $badgeClass; ?> me-1">
                               <iconify-icon icon="lucide:ticket" class="me-1"></iconify-icon>
-                              <?php echo $typeName; ?>: 
-                              <?php echo number_format($ticketSummary[$type]['count']); ?> 
-                              (<?php echo number_format($ticketSummary[$type]['price']); ?> HUF)
+                              <?php echo $typeName; ?>:
+                              <?php
+                              if ($ticketSummary[$type]['count'] > 0) {
+                                  echo number_format($ticketSummary[$type]['count']) . ' (' . number_format($ticketSummary[$type]['price']) . ' HUF)';
+                              } else {
+                                  echo '<strong>SOLD OUT!</strong>';
+                              }
+                              ?>
                           </span>
                       </div>
-                      <?php 
-                          endif;
-                      endforeach; 
-                      ?>
+                      <?php endforeach; ?>
                     </div>
                     <!-- Action Buttons -->
                     <div class="d-flex justify-content-center gap-2">
@@ -188,6 +209,14 @@ include __DIR__ . '/../header.php';
                     </div>
                   </div>
                 </div>
+                <div class="stats-panel" id="stats-<?php echo $event['id']; ?>">
+                    <div class="text-center py-2">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+              </div>
               </div>
             <?php endforeach; ?>
           </div>
@@ -197,7 +226,34 @@ include __DIR__ . '/../header.php';
   </div>
 
 <?php include __DIR__ . '/../footer.php'; ?>
-
+  <script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/libs/owl.carousel/dist/owl.carousel.min.js"></script>
+  <script src="../../assets/libs/aos-master/dist/aos.js"></script>
+  <script src="../../assets/js/custom.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+  <style>
+    .event-card-wrapper {
+        margin-bottom: 1rem;
+    }
+    .stats-panel {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #f8f9fa;
+        border-radius: 0 0 8px 8px;
+        margin: 0 auto;
+        width: calc(100% - 2rem);
+        padding: 0 1rem;
+        border: 1px solid transparent;
+        border-top: none;
+    }
+    .stats-panel.active {
+        max-height: 500px;
+        padding: 1rem;
+        border-color: #dee2e6;
+    }
+  </style>
 <script>
     // Initialize AOS with custom settings
     document.addEventListener('DOMContentLoaded', function() {
@@ -219,66 +275,52 @@ include __DIR__ . '/../header.php';
         // Store fetched data to prevent multiple requests
         const eventStatsCache = new Map();
 
-        // Initialize popovers with manual trigger
-        const popoverTriggerList = [].slice.call(document.querySelectorAll('.stats-btn'));
-        popoverTriggerList.forEach(button => {
-            const popover = new bootstrap.Popover(button, {
-                trigger: 'manual',
-                container: 'body',
-                placement: 'bottom',
-                html: true,
-                content: 'Loading statistics...',
-                template: `
-                    <div class="popover" role="tooltip">
-                        <div class="popover-arrow"></div>
-                        <h3 class="popover-header"></h3>
-                        <div class="popover-body"></div>
-                    </div>
-                `
-            });
-
-            // Handle click on stats button
+        // Handle stats button clicks
+        document.querySelectorAll('.stats-btn').forEach(button => {
             button.addEventListener('click', async function(e) {
                 e.preventDefault();
                 const eventId = this.getAttribute('data-event-id');
-
-                // If popover is already shown, hide it and return
-                if (this.getAttribute('aria-describedby')) {
-                    popover.hide();
-                    return;
-                }
-
-                // Show loading state
-                popover.setContent({ '.popover-body': 'Loading statistics...' });
-                popover.show();
-
-                // Check cache first
-                if (eventStatsCache.has(eventId)) {
-                    updatePopoverContent(popover, eventStatsCache.get(eventId));
-                    return;
-                }
-
-                try {
-                    // Fetch statistics
-                    const response = await fetch(`/Diplomamunka-26222041/php/api/get_event_stats.php?event_id=${eventId}`);
-                    const data = await response.json();
-
-                    if (data.success) {
-                        // Cache the result
-                        eventStatsCache.set(eventId, data);
-                        updatePopoverContent(popover, data);
+                const statsPanel = document.getElementById(`stats-${eventId}`);
+                
+                // Toggle active class
+                const isActive = statsPanel.classList.toggle('active');
+                
+                if (isActive) {
+                    // Only load data if not already in cache
+                    if (!eventStatsCache.has(eventId)) {
+                        statsPanel.innerHTML = `
+                            <div class="text-center py-2">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>`;
+                        
+                        try {
+                            const response = await fetch(`/Diplomamunka-26222041/php/api/get_event_stats.php?event_id=${eventId}`);
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                eventStatsCache.set(eventId, data);
+                                updateStatsPanel(statsPanel, data);
+                            } else {
+                                throw new Error(data.message || 'Failed to load statistics');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            statsPanel.innerHTML = `
+                                <div class="alert alert-danger m-0">
+                                    Error loading statistics: ${error.message}
+                                </div>`;
+                        }
                     } else {
-                        throw new Error(data.message || 'Failed to load statistics');
+                        updateStatsPanel(statsPanel, eventStatsCache.get(eventId));
                     }
-                } catch (error) {
-                    console.error('Error:', error);
-                    popover.setContent({ '.popover-body': 'Error loading statistics: ' + error.message });
                 }
             });
         });
 
-        // Function to update popover content
-        function updatePopoverContent(popover, data) {
+        // Function to update stats panel content
+        function updateStatsPanel(panel, data) {
             const event = data.event;
             const tickets = data.tickets;
             const payments = data.payments;
@@ -355,22 +397,9 @@ include __DIR__ . '/../header.php';
                             <strong>${formatCurrency(payments.stripe.amount)} (${payments.stripe.tickets} tix)</strong>
                         </div>` : ''}
                     </div>
-                </div>
-            `;
+                </div>`;
 
-            popover.setContent({ '.popover-body': statsHTML });
+            panel.innerHTML = statsHTML;
         }
-
-        // Close popover when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.stats-btn') && !e.target.closest('.popover')) {
-                document.querySelectorAll('.stats-btn').forEach(btn => {
-                    const popover = bootstrap.Popover.getInstance(btn);
-                    if (popover) {
-                        popover.hide();
-                    }
-                });
-            }
-        });
     });
 </script>

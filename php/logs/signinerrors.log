@@ -453,3 +453,11 @@
 [22-Sep-2025 22:26:37 Europe/Berlin] Login attempt - User: random.koala497@passinbox.com, Password match: yes
 [22-Sep-2025 22:26:37 Europe/Berlin] Session cookie set: yes
 [22-Sep-2025 22:26:37 Europe/Berlin] Session variables set for user_id 18
+[23-Sep-2025 19:30:33 Europe/Berlin] ============================================================
+[23-Sep-2025 19:30:33 Europe/Berlin] Login attempt at 2025-09-23 19:30:33
+[23-Sep-2025 19:30:33 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: yes
+[23-Sep-2025 19:30:33 Europe/Berlin] User lookup: found user
+[23-Sep-2025 19:30:33 Europe/Berlin] Email verified: yes
+[23-Sep-2025 19:30:33 Europe/Berlin] Login attempt - User: random.koala497@passinbox.com, Password match: yes
+[23-Sep-2025 19:30:33 Europe/Berlin] Session cookie set: yes
+[23-Sep-2025 19:30:33 Europe/Berlin] Session variables set for user_id 18

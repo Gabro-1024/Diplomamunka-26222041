@@ -140,12 +140,16 @@ $debugPayload = [
 ];
 @file_put_contents($debugLog, json_encode($debugPayload, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) . "\n\n", FILE_APPEND);
 
-// Build success and cancel URLs
-$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$basePath = '/Diplomamunka-26222041/php';
-$successUrl = sprintf('%s://%s%s/index.php?payment=success&session_id={CHECKOUT_SESSION_ID}%s', $scheme, $host, $basePath, $eventId ? ('&event_id=' . urlencode((string)$eventId)) : '');
-$cancelUrl = sprintf('http://localhost/Diplomamunka-26222041/php/raver_sites/ticket_cart.php?event_id=' . urlencode((string)$eventId));
+// Build success and cancel URLs with absolute paths
+$successUrl = 'http://localhost/Diplomamunka-26222041/php/index.php?payment=success&session_id={CHECKOUT_SESSION_ID}';
+if ($eventId) {
+    $successUrl .= '&event_id=' . urlencode((string)$eventId);
+}
+
+$cancelUrl = 'http://localhost/Diplomamunka-26222041/php/raver_sites/ticket_cart.php';
+if ($eventId) {
+    $cancelUrl .= '?event_id=' . urlencode((string)$eventId);
+}
 
 try {
     if ($paymentMethod === 'paypal') {

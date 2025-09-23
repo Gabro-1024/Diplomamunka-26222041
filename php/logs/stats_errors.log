@@ -1,0 +1,543 @@
+[23-Sep-2025 18:13:45 Europe/Berlin] [2025-09-23 18:13:45] Stats request received
+Data: Array
+(
+    [event_id] => 24
+    [timestamp] => 2025-09-23 18:13:45
+)
+
+
+[23-Sep-2025 18:13:45 Europe/Berlin] [2025-09-23 18:13:45] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 102
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 102
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 151
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 157
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:45 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:47 Europe/Berlin] [2025-09-23 18:13:47] Stats request received
+Data: Array
+(
+    [event_id] => 20
+    [timestamp] => 2025-09-23 18:13:47
+)
+
+
+[23-Sep-2025 18:13:47 Europe/Berlin] [2025-09-23 18:13:47] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 102
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 102
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 151
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 157
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:47 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:49 Europe/Berlin] [2025-09-23 18:13:49] Stats request received
+Data: Array
+(
+    [event_id] => 19
+    [timestamp] => 2025-09-23 18:13:49
+)
+
+
+[23-Sep-2025 18:13:49 Europe/Berlin] [2025-09-23 18:13:49] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 102
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 102
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 151
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 157
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:49 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:50 Europe/Berlin] [2025-09-23 18:13:50] Stats request received
+Data: Array
+(
+    [event_id] => 22
+    [timestamp] => 2025-09-23 18:13:50
+)
+
+
+[23-Sep-2025 18:13:50 Europe/Berlin] [2025-09-23 18:13:50] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 102
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 102
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 151
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 157
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:50 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:51 Europe/Berlin] [2025-09-23 18:13:51] Stats request received
+Data: Array
+(
+    [event_id] => 21
+    [timestamp] => 2025-09-23 18:13:51
+)
+
+
+[23-Sep-2025 18:13:51 Europe/Berlin] [2025-09-23 18:13:51] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 102
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 102
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 151
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 157
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:13:51 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:14:26 Europe/Berlin] [2025-09-23 18:14:26] Stats request received
+Data: Array
+(
+    [event_id] => 19
+    [timestamp] => 2025-09-23 18:14:26
+)
+
+
+[23-Sep-2025 18:14:26 Europe/Berlin] [2025-09-23 18:14:26] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:14:26 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 151
+[23-Sep-2025 18:14:26 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:14:26 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:14:26 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 157
+[23-Sep-2025 18:14:26 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:14:26 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:14:27 Europe/Berlin] [2025-09-23 18:14:27] Stats request received
+Data: Array
+(
+    [event_id] => 22
+    [timestamp] => 2025-09-23 18:14:27
+)
+
+
+[23-Sep-2025 18:14:27 Europe/Berlin] [2025-09-23 18:14:27] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:14:27 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 151
+[23-Sep-2025 18:14:27 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:14:27 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:14:27 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 157
+[23-Sep-2025 18:14:27 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:14:27 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:14:29 Europe/Berlin] [2025-09-23 18:14:29] Stats request received
+Data: Array
+(
+    [event_id] => 21
+    [timestamp] => 2025-09-23 18:14:29
+)
+
+
+[23-Sep-2025 18:14:29 Europe/Berlin] [2025-09-23 18:14:29] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:14:29 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 151
+[23-Sep-2025 18:14:29 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:14:29 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:14:29 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 157
+[23-Sep-2025 18:14:29 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:14:29 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:17:29 Europe/Berlin] [2025-09-23 18:17:29] Stats request received
+Data: Array
+(
+    [event_id] => 19
+    [timestamp] => 2025-09-23 18:17:29
+)
+
+
+[23-Sep-2025 18:17:29 Europe/Berlin] [2025-09-23 18:17:29] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:17:29 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 167
+[23-Sep-2025 18:17:29 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:17:29 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:17:32 Europe/Berlin] [2025-09-23 18:17:32] Stats request received
+Data: Array
+(
+    [event_id] => 22
+    [timestamp] => 2025-09-23 18:17:32
+)
+
+
+[23-Sep-2025 18:17:32 Europe/Berlin] [2025-09-23 18:17:32] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:17:32 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 167
+[23-Sep-2025 18:17:32 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:17:32 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:17:33 Europe/Berlin] [2025-09-23 18:17:33] Stats request received
+Data: Array
+(
+    [event_id] => 21
+    [timestamp] => 2025-09-23 18:17:33
+)
+
+
+[23-Sep-2025 18:17:33 Europe/Berlin] [2025-09-23 18:17:33] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:17:33 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 167
+[23-Sep-2025 18:17:33 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:17:33 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:17:36 Europe/Berlin] [2025-09-23 18:17:36] Stats request received
+Data: Array
+(
+    [event_id] => 20
+    [timestamp] => 2025-09-23 18:17:36
+)
+
+
+[23-Sep-2025 18:17:36 Europe/Berlin] [2025-09-23 18:17:36] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:17:36 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 167
+[23-Sep-2025 18:17:36 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:17:36 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:17:39 Europe/Berlin] [2025-09-23 18:17:39] Stats request received
+Data: Array
+(
+    [event_id] => 24
+    [timestamp] => 2025-09-23 18:17:39
+)
+
+
+[23-Sep-2025 18:17:39 Europe/Berlin] [2025-09-23 18:17:39] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:17:39 Europe/Berlin] PHP Warning:  Undefined array key "remaining_tickets" in C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php on line 167
+[23-Sep-2025 18:17:39 Europe/Berlin] PHP Stack trace:
+[23-Sep-2025 18:17:39 Europe/Berlin] PHP   1. {main}() C:\xampp\htdocs\Diplomamunka-26222041\php\api\get_event_stats.php:0
+[23-Sep-2025 18:30:40 Europe/Berlin] [2025-09-23 18:30:40] Stats request received
+Data: Array
+(
+    [event_id] => 19
+    [timestamp] => 2025-09-23 18:30:40
+)
+
+
+[23-Sep-2025 18:30:40 Europe/Berlin] [2025-09-23 18:30:40] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:30:42 Europe/Berlin] [2025-09-23 18:30:42] Stats request received
+Data: Array
+(
+    [event_id] => 22
+    [timestamp] => 2025-09-23 18:30:42
+)
+
+
+[23-Sep-2025 18:30:42 Europe/Berlin] [2025-09-23 18:30:42] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:30:44 Europe/Berlin] [2025-09-23 18:30:44] Stats request received
+Data: Array
+(
+    [event_id] => 21
+    [timestamp] => 2025-09-23 18:30:44
+)
+
+
+[23-Sep-2025 18:30:44 Europe/Berlin] [2025-09-23 18:30:44] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:30:46 Europe/Berlin] [2025-09-23 18:30:46] Stats request received
+Data: Array
+(
+    [event_id] => 24
+    [timestamp] => 2025-09-23 18:30:46
+)
+
+
+[23-Sep-2025 18:30:46 Europe/Berlin] [2025-09-23 18:30:46] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:30:48 Europe/Berlin] [2025-09-23 18:30:48] Stats request received
+Data: Array
+(
+    [event_id] => 20
+    [timestamp] => 2025-09-23 18:30:48
+)
+
+
+[23-Sep-2025 18:30:48 Europe/Berlin] [2025-09-23 18:30:48] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 18:42:29 Europe/Berlin] [2025-09-23 18:42:29] Stats request received
+Data: Array
+(
+    [event_id] => 25
+    [timestamp] => 2025-09-23 18:42:29
+)
+
+
+[23-Sep-2025 18:42:29 Europe/Berlin] [2025-09-23 18:42:29] Ticket types fetched
+Data: Array
+(
+    [count] => 1
+)
+
+
+[23-Sep-2025 18:59:02 Europe/Berlin] [2025-09-23 18:59:02] Stats request received
+Data: Array
+(
+    [event_id] => 22
+    [timestamp] => 2025-09-23 18:59:02
+)
+
+
+[23-Sep-2025 18:59:02 Europe/Berlin] [2025-09-23 18:59:02] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 19:00:53 Europe/Berlin] [2025-09-23 19:00:53] Stats request received
+Data: Array
+(
+    [event_id] => 26
+    [timestamp] => 2025-09-23 19:00:53
+)
+
+
+[23-Sep-2025 19:00:53 Europe/Berlin] [2025-09-23 19:00:53] Ticket types fetched
+Data: Array
+(
+    [count] => 0
+)
+
+
+[23-Sep-2025 20:13:32 Europe/Berlin] [2025-09-23 20:13:32] Stats request received
+Data: Array
+(
+    [event_id] => 28
+    [timestamp] => 2025-09-23 20:13:32
+)
+
+
+[23-Sep-2025 20:13:32 Europe/Berlin] [2025-09-23 20:13:32] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 20:13:41 Europe/Berlin] [2025-09-23 20:13:41] Stats request received
+Data: Array
+(
+    [event_id] => 24
+    [timestamp] => 2025-09-23 20:13:41
+)
+
+
+[23-Sep-2025 20:13:41 Europe/Berlin] [2025-09-23 20:13:41] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 20:14:05 Europe/Berlin] [2025-09-23 20:14:05] Stats request received
+Data: Array
+(
+    [event_id] => 20
+    [timestamp] => 2025-09-23 20:14:05
+)
+
+
+[23-Sep-2025 20:14:05 Europe/Berlin] [2025-09-23 20:14:05] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 20:14:09 Europe/Berlin] [2025-09-23 20:14:09] Stats request received
+Data: Array
+(
+    [event_id] => 22
+    [timestamp] => 2025-09-23 20:14:09
+)
+
+
+[23-Sep-2025 20:14:09 Europe/Berlin] [2025-09-23 20:14:09] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 20:14:10 Europe/Berlin] [2025-09-23 20:14:10] Stats request received
+Data: Array
+(
+    [event_id] => 21
+    [timestamp] => 2025-09-23 20:14:10
+)
+
+
+[23-Sep-2025 20:14:10 Europe/Berlin] [2025-09-23 20:14:10] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 20:14:12 Europe/Berlin] [2025-09-23 20:14:12] Stats request received
+Data: Array
+(
+    [event_id] => 19
+    [timestamp] => 2025-09-23 20:14:12
+)
+
+
+[23-Sep-2025 20:14:12 Europe/Berlin] [2025-09-23 20:14:12] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 20:18:46 Europe/Berlin] [2025-09-23 20:18:46] Stats request received
+Data: Array
+(
+    [event_id] => 29
+    [timestamp] => 2025-09-23 20:18:46
+)
+
+
+[23-Sep-2025 20:18:46 Europe/Berlin] [2025-09-23 20:18:46] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[23-Sep-2025 20:33:15 Europe/Berlin] [2025-09-23 20:33:15] Stats request received
+Data: Array
+(
+    [event_id] => 32
+    [timestamp] => 2025-09-23 20:33:15
+)
+
+
+[23-Sep-2025 20:33:15 Europe/Berlin] [2025-09-23 20:33:15] Ticket types fetched
+Data: Array
+(
+    [count] => 0
+)
+
+
+[23-Sep-2025 21:29:07 Europe/Berlin] [2025-09-23 21:29:07] Stats request received
+Data: Array
+(
+    [event_id] => 35
+    [timestamp] => 2025-09-23 21:29:07
+)
+
+
+[23-Sep-2025 21:29:07 Europe/Berlin] [2025-09-23 21:29:07] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+

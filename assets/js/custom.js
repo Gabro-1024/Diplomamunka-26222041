@@ -38,17 +38,42 @@ $(function () {
 
 
     // Count
-    $('.count').each(function () {
-		$(this).prop('Counter', 0).animate({
-			Counter: $(this).text()
-		}, {
-			duration: 1000,
-			easing: 'swing',
-			step: function (now) {
-				$(this).text(Math.ceil(now));
-			}
-		});
-	});
+    $('.count').each(function (index) {
+        const $counter = $(this);
+        const initialText = $counter.text();
+        const targetValue = $counter.attr('data-target') || initialText;
+        
+        // console.log(`[Counter #${index}] Initial setup:`, {
+        //     element: $counter[0],
+        //     initialText,
+        //     targetValue,
+        //     parsedValue: parseFloat(targetValue)
+        // });
+        
+        $counter.prop('Counter', 0).animate({
+            Counter: parseFloat(targetValue)
+        }, {
+            duration: 2000,
+            easing: 'swing',
+            step: function(now) {
+                const current = Math.ceil(now);
+                // console.log(`[Counter #${index}] Step:`, {
+                //     now,
+                //     current,
+                //     elementText: $counter.text(),
+                //     element: this
+                // });
+                $counter.text(current);
+            },
+            complete: function() {
+                // console.log(`[Counter #${index}] Complete:`, {
+                //     finalText: $counter.text(),
+                //     expectedFinal: targetValue,
+                //     element: this
+                // });
+            }
+        });
+    });
 
 
     // ScrollToTop
@@ -74,10 +99,7 @@ $(function () {
 
     // AOS (Animate On Scroll) Initialization
 	AOS.init({
-		duration: 600,
-		easing: 'ease-out-cubic',
 		once: true,
-		mirror: false
 	});
 
 });

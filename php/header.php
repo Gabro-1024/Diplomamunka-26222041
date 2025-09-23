@@ -35,12 +35,15 @@ if ($isLoggedIn) {
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/Diplomamunka-26222041/assets/css/styles.css">
-    
+
     <!-- Iconify -->
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@iconify/iconify@2.1.0/dist/iconify.min.js"></script>
     
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Custom JS -->
     <script src="/Diplomamunka-26222041/assets/js/custom.js"></script>
