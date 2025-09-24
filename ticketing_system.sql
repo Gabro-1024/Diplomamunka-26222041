@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Sze 23. 18:28
+-- Létrehozás ideje: 2025. Sze 24. 18:32
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -57,7 +57,7 @@ CREATE TABLE `events` (
   `cover_image` varchar(255) NOT NULL,
   `organizer_id` int(11) NOT NULL,
   `venue_id` int(11) DEFAULT NULL,
-  `total_tickets` int(11) NOT NULL
+  `total_tickets` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -70,7 +70,8 @@ INSERT INTO `events` (`id`, `name`, `slogan`, `lineup`, `start_date`, `end_date`
 (21, 'VOLT Festival', 'Music. Love. Unity.', 'Imagine Dragons, Arctic Monkeys, Halott Pénz', '2026-06-19 14:00:00', '2026-06-23 23:59:59', 'Hungary\'s most popular music festival featuring a mix of rock, pop, electronic, and world music in the beautiful city of Sopron.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-3.jpg', 18, 3, 30000),
 (22, 'EFOTT', 'Hungary\'s Biggest Student Festival', 'Majka & Curtis, Wellhello, Tankcsapda', '2026-07-10 10:00:00', '2026-07-14 23:59:59', 'A week-long festival on the shores of Lake Velence, offering music, sports, and cultural programs for students and young adults.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-5.jpg', 18, 4, 25000),
 (23, 'SZIN festival', 'Zárjuk együtt a nyarat 2026-ban is!', 'Rúzsa Magdolna, Follow The Flow, Punnany Massif, Margaret Island, Carson Coma', '2026-08-06 10:00:00', '2026-08-12 23:59:59', 'The 2025 edition of Europe\'s most colorful festival, featuring an even more diverse lineup and exciting new programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-6.jpg', 16, 11, 50000),
-(24, 'Fishing on Orfű', 'Zenés nyár a Mecsek lábánál', '30Y, Quimby, Bagossy Brothers Company, Blahalouisiana, Péterfy Bori & Love Band', '2026-06-19 12:00:00', '2026-06-22 23:59:59', 'One of Hungary\'s most beloved smaller festivals, held near Pécs by Lake Orfű. Known for its cozy atmosphere, lakeside concerts, and family-friendly programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-2.jpg', 18, 12, 15000);
+(24, 'Fishing on Orfű', 'Zenés nyár a Mecsek lábánál', '30Y, Quimby, Bagossy Brothers Company, Blahalouisiana, Péterfy Bori & Love Band', '2026-06-19 12:00:00', '2026-06-22 23:59:59', 'One of Hungary\'s most beloved smaller festivals, held near Pécs by Lake Orfű. Known for its cozy atmosphere, lakeside concerts, and family-friendly programs.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-2.jpg', 18, 12, 15000),
+(63, 'Ultimate Graduation Party @ Gábor', 'Nyomooddd', 'Gábor, Zlatko, Pintér, Anita, Simon, Anyu, Apu, Ildi, Dani', '2025-10-07 10:00:00', '2025-10-08 16:00:00', 'Diplomálásom eseménye, a Szabadkai Műszaki Szakfőiskolán, informatika területen.', 'http://localhost:63342/Diplomamunka-26222041/assets/images/portfolio/portfolio-img-63.jpg', 18, 11, 15);
 
 -- --------------------------------------------------------
 
@@ -84,6 +85,41 @@ CREATE TABLE `event_categories` (
   `category` varchar(50) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `event_categories`
+--
+
+INSERT INTO `event_categories` (`id`, `event_id`, `category`, `created_at`) VALUES
+(21, 19, 'Electronic', '2025-09-23 16:29:16'),
+(22, 19, 'Rock', '2025-09-23 16:29:16'),
+(23, 19, 'Pop', '2025-09-23 16:29:16'),
+(24, 19, 'Hip Hop', '2025-09-23 16:29:16'),
+(25, 20, 'EDM', '2025-09-23 16:29:16'),
+(26, 20, 'House', '2025-09-23 16:29:16'),
+(27, 20, 'Trance', '2025-09-23 16:29:16'),
+(28, 20, 'Techno', '2025-09-23 16:29:16'),
+(29, 21, 'Rock', '2025-09-23 16:29:16'),
+(30, 21, 'Indie', '2025-09-23 16:29:16'),
+(31, 21, 'Alternative', '2025-09-23 16:29:16'),
+(32, 21, 'Pop', '2025-09-23 16:29:16'),
+(33, 22, 'Rock', '2025-09-23 16:29:16'),
+(34, 22, 'Pop', '2025-09-23 16:29:16'),
+(35, 22, 'Hip Hop', '2025-09-23 16:29:16'),
+(36, 22, 'Electronic', '2025-09-23 16:29:16'),
+(37, 23, 'Pop', '2025-09-23 16:29:16'),
+(38, 23, 'Hip Hop', '2025-09-23 16:29:16'),
+(39, 23, 'Indie', '2025-09-23 16:29:16'),
+(40, 23, 'Alternative', '2025-09-23 16:29:16'),
+(41, 24, 'Rock', '2025-09-23 16:29:16'),
+(42, 24, 'Indie', '2025-09-23 16:29:16'),
+(43, 24, 'Folk', '2025-09-23 16:29:16'),
+(44, 24, 'Alternative', '2025-09-23 16:29:16'),
+(97, 63, 'EDM', '2025-09-24 14:01:22'),
+(98, 63, 'Hardcore', '2025-09-24 14:01:22'),
+(99, 63, 'Hardstyle', '2025-09-24 14:01:22'),
+(100, 63, 'Metal', '2025-09-24 14:01:22'),
+(101, 63, 'Techno', '2025-09-24 14:01:22');
 
 -- --------------------------------------------------------
 
@@ -121,7 +157,10 @@ INSERT INTO `login_sessions` (`id`, `user_id`, `user_agent`, `session_token`, `e
 (14, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '12556511b8192d2596bd1e82d1c875ab5d65fac12371ab27c360d7a4cf34902f', '2025-09-22 22:00:22', '2025-09-21 20:00:22'),
 (15, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '2b656bdc9eb7ab991d27886975e6b977e3e01369ba1a21d0ea6399d1481e9f55', '2025-09-22 22:04:47', '2025-09-21 20:04:47'),
 (16, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '685bb8ba8ceefcef57c2580bfa95ef2ce24ac272468b5aaa205b3ed9a0a7c4fb', '2025-10-22 21:36:42', '2025-09-22 19:36:42'),
-(17, 18, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '0965d57acd6c42b8b4d888c2516345e3dee49d127db15523047927c8e4065655', '2025-09-23 22:26:37', '2025-09-22 20:26:37');
+(17, 18, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '0965d57acd6c42b8b4d888c2516345e3dee49d127db15523047927c8e4065655', '2025-09-23 22:26:37', '2025-09-22 20:26:37'),
+(18, 18, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '8a524a13d0360e31adde4bacae62c6d291ed9eca4f8c8a4431bcf0d9667d2426', '2025-10-23 19:30:33', '2025-09-23 17:30:33'),
+(19, 18, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', 'fdeb911a754bbf92ea2565fd88174eae5ce99ba75026363c793c68b8e5d2079f', '2025-09-25 14:08:44', '2025-09-24 12:08:44'),
+(20, 16, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 OPR/121.0.0.0', '08201b9acb313a7ffd90f99e3cd7a2da8043f7c47a327ca076ab42201672996d', '2025-09-25 17:33:59', '2025-09-24 15:33:59');
 
 -- --------------------------------------------------------
 
@@ -173,7 +212,8 @@ INSERT INTO `purchases` (`id`, `user_id`, `amount`, `status`, `purchase_date`, `
 (22, 18, 19950.00, 'completed', '2025-09-23 14:20:54', 'stripe'),
 (23, 18, 28960.00, 'completed', '2025-09-23 14:27:58', 'paypal'),
 (24, 18, 27960.00, 'completed', '2025-09-23 14:29:24', 'paypal'),
-(25, 18, 44950.00, 'completed', '2025-09-23 16:47:22', 'stripe');
+(25, 18, 44950.00, 'completed', '2025-09-23 16:47:22', 'stripe'),
+(26, 16, 25000.00, 'completed', '2025-09-24 17:47:23', 'paypal');
 
 -- --------------------------------------------------------
 
@@ -196,31 +236,11 @@ CREATE TABLE `tickets` (
 --
 
 INSERT INTO `tickets` (`id`, `purchase_id`, `qr_code_path`, `event_id`, `owner_id`, `is_used`, `price`) VALUES
-(55, 20, 'worker_sites/qrcodes/cs_test_b1M9MmdSDkfSsNHSsiHW9J0aHpFfxB5fFuxNdO9u3g5JzNBeCePyA0ThZf_06c766e701a96aac2e51bb8d827ceef8.png', 22, 16, 0, 3990.00),
-(56, 20, 'worker_sites/qrcodes/cs_test_b1M9MmdSDkfSsNHSsiHW9J0aHpFfxB5fFuxNdO9u3g5JzNBeCePyA0ThZf_4ceca2cbc9e03c193841c00049c22ba0.png', 22, 16, 0, 6990.00),
-(57, 20, 'worker_sites/qrcodes/cs_test_b1M9MmdSDkfSsNHSsiHW9J0aHpFfxB5fFuxNdO9u3g5JzNBeCePyA0ThZf_52d20f0d6b5b0934abd9932250e71298.png', 22, 16, 0, 6990.00),
-(58, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_3f2a70b1d240976850fe11cd35c262e4.png', 21, 16, 0, 4490.00),
-(59, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_07fce709fd630c6b26be27f11536b554.png', 21, 16, 0, 4490.00),
-(60, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_73408918c67837ff25281ad5cb5de735.png', 21, 16, 0, 4490.00),
-(61, 21, 'worker_sites/qrcodes/cs_test_b1rDyFEIxtQmhJWKxZ59HBEJZW06poqGgs5zweAYRhWqsgWX47iUKa1cZy_25b55329a62b4ac15b9d6706cb33cbd2.png', 21, 16, 0, 7490.00),
-(62, 22, 'worker_sites/qrcodes/cs_test_a1PtnfDPslONUUbke2SwmeyXfAAU1qKYPDqzkx47N5u8Bo7YSLVf8FCKLs_955ac7bccb80c9094bb9ee7a731e60cf.png', 22, 18, 0, 3990.00),
-(63, 22, 'worker_sites/qrcodes/cs_test_a1PtnfDPslONUUbke2SwmeyXfAAU1qKYPDqzkx47N5u8Bo7YSLVf8FCKLs_e442161e6fd297278336b53fc35f6a11.png', 22, 18, 0, 3990.00),
-(64, 22, 'worker_sites/qrcodes/cs_test_a1PtnfDPslONUUbke2SwmeyXfAAU1qKYPDqzkx47N5u8Bo7YSLVf8FCKLs_0800214b4c44c28f0ae6fd6946f76532.png', 22, 18, 0, 3990.00),
-(65, 22, 'worker_sites/qrcodes/cs_test_a1PtnfDPslONUUbke2SwmeyXfAAU1qKYPDqzkx47N5u8Bo7YSLVf8FCKLs_b192450eb857b810dc3cf22ae0d7d761.png', 22, 18, 0, 3990.00),
-(66, 22, 'worker_sites/qrcodes/cs_test_a1PtnfDPslONUUbke2SwmeyXfAAU1qKYPDqzkx47N5u8Bo7YSLVf8FCKLs_8ccf43e3db946f87f3b4342df0a8702e.png', 22, 18, 0, 3990.00),
-(67, 23, 'worker_sites/qrcodes/12M42851EU087343J_7053aa79026e80b0e2e03fb6ed9bf1ae.png', 20, 18, 0, 4990.00),
-(68, 23, 'worker_sites/qrcodes/12M42851EU087343J_e0f9b0edf71a0ea40248430402525472.png', 20, 18, 0, 7990.00),
-(69, 23, 'worker_sites/qrcodes/12M42851EU087343J_576054f0df0e2e5104f8749a4176fce0.png', 20, 18, 0, 7990.00),
-(70, 23, 'worker_sites/qrcodes/12M42851EU087343J_89323c3f56050a4c28b69f4fcb3a7475.png', 20, 18, 0, 7990.00),
-(71, 24, 'worker_sites/qrcodes/6XM912758A5105034_39d142da35ba43cb0a5a762b420ce8c1.png', 22, 18, 0, 6990.00),
-(72, 24, 'worker_sites/qrcodes/6XM912758A5105034_ee9b73b76d68510fe4a546a9d15a4133.png', 22, 18, 0, 6990.00),
-(73, 24, 'worker_sites/qrcodes/6XM912758A5105034_82c1fe6ea3f95abb782d1abcf93bc630.png', 22, 18, 0, 6990.00),
-(74, 24, 'worker_sites/qrcodes/6XM912758A5105034_db8e7f02b9f9b2d82de285b91fecfc49.png', 22, 18, 0, 6990.00),
-(75, 25, 'worker_sites/qrcodes/cs_test_a1yCyXNCvtBtFh2dykq1nVGSplPSsMUBSK9NWzZatV7JNH2x2CgHtjVABQ_0eb20592de734f4d994e5a12ef59d4bc.png', 23, 18, 0, 8990.00),
-(76, 25, 'worker_sites/qrcodes/cs_test_a1yCyXNCvtBtFh2dykq1nVGSplPSsMUBSK9NWzZatV7JNH2x2CgHtjVABQ_326f2fb5815c7e827885898b2b0fdbea.png', 23, 18, 0, 8990.00),
-(77, 25, 'worker_sites/qrcodes/cs_test_a1yCyXNCvtBtFh2dykq1nVGSplPSsMUBSK9NWzZatV7JNH2x2CgHtjVABQ_e1b9148ba19356249e6bd6f5914deede.png', 23, 18, 0, 8990.00),
-(78, 25, 'worker_sites/qrcodes/cs_test_a1yCyXNCvtBtFh2dykq1nVGSplPSsMUBSK9NWzZatV7JNH2x2CgHtjVABQ_16b56a5ede01b62dd153a7ce88c3e426.png', 23, 18, 0, 8990.00),
-(79, 25, 'worker_sites/qrcodes/cs_test_a1yCyXNCvtBtFh2dykq1nVGSplPSsMUBSK9NWzZatV7JNH2x2CgHtjVABQ_28333142b06eec89b345ffb46fab0327.png', 23, 18, 0, 8990.00);
+(80, 26, 'worker_sites/qrcodes/0J6949920H6422137_b56bfcd5270cd9323ef2358ccd9c6926.png', 63, 16, 0, 5000.00),
+(81, 26, 'worker_sites/qrcodes/0J6949920H6422137_63d8b0f3ad057ad5649e5d537d5d96f7.png', 63, 16, 0, 5000.00),
+(82, 26, 'worker_sites/qrcodes/0J6949920H6422137_9acd3dca5325c330dbea86cd69571c2b.png', 63, 16, 1, 5000.00),
+(83, 26, 'worker_sites/qrcodes/0J6949920H6422137_7a352de02a3e15328aab9a837b5ec24c.png', 63, 16, 0, 5000.00),
+(84, 26, 'worker_sites/qrcodes/0J6949920H6422137_0468022bb6b4aafee465472109d7ae51.png', 63, 16, 0, 5000.00);
 
 -- --------------------------------------------------------
 
@@ -252,7 +272,9 @@ INSERT INTO `ticket_types` (`ticket_type_id`, `event_id`, `ticket_type`, `price`
 (9, 23, 'regular', 5990, 45000),
 (10, 23, 'vip', 8990, 4995),
 (11, 24, 'regular', 4990, 457),
-(12, 24, 'vip', 7990, 0);
+(12, 24, 'vip', 7990, 0),
+(77, 63, 'regular', 100, 10),
+(78, 63, 'vip', 5000, 0);
 
 -- --------------------------------------------------------
 
@@ -281,7 +303,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `last_name`, `first_name`, `email`, `password_hash`, `city`, `birth_date`, `phone_number`, `role`, `created_at`, `reg_token`, `reg_token_expires`, `is_verified`) VALUES
-(16, 'Farkas', 'Gábore', 'farkasgabor1024@gmail.com', '$2y$10$dvmce/ukNVhJICCD98yTouBE/Spgx0OG5vT2v3LDYNl8ycFCw0ZRm', 'Mol', '2003-10-24', '+381621516073', 'raver', '2025-09-05 11:44:02', '', '2025-09-06 13:44:02', 1),
+(16, 'Farkase', 'Gábore', 'farkasgabor1024@gmail.com', '$2y$10$dvmce/ukNVhJICCD98yTouBE/Spgx0OG5vT2v3LDYNl8ycFCw0ZRm', 'Mol', '2003-10-24', '+381621516073', 'raver', '2025-09-05 11:44:02', '', '2025-09-06 13:44:02', 1),
 (18, 'Miska', 'Fizi', 'random.koala497@passinbox.com', '$2a$12$Lkhnyot5oB2fKZGYzrnGVOvPaMLIa7WNpbXQ4KX9L9Y2wLXXMbiQ6', NULL, '1979-07-09', NULL, 'organizer', '2025-09-08 11:04:10', NULL, '2025-09-09 13:04:09', 1);
 
 -- --------------------------------------------------------
@@ -302,14 +324,16 @@ CREATE TABLE `user_interests` (
 
 INSERT INTO `user_interests` (`id`, `user_id`, `style_name`) VALUES
 (26, 18, 'Bass'),
-(40, 16, 'Hardcore'),
-(41, 16, 'House'),
-(42, 16, 'Metal'),
-(43, 16, 'Minimal'),
-(44, 16, 'Progressive House'),
-(45, 16, 'Psytrance'),
-(46, 16, 'Reggae'),
-(47, 16, 'Trance');
+(48, 16, 'Hardcore'),
+(49, 16, 'House'),
+(50, 16, 'Metal'),
+(51, 16, 'Minimal'),
+(52, 16, 'Progressive House'),
+(53, 16, 'Psytrance'),
+(54, 16, 'Reggae'),
+(55, 16, 'Rock'),
+(56, 16, 'Techno'),
+(57, 16, 'Trance');
 
 -- --------------------------------------------------------
 
@@ -466,19 +490,19 @@ ALTER TABLE `venue_images`
 -- AUTO_INCREMENT a táblához `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT a táblához `event_categories`
 --
 ALTER TABLE `event_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT a táblához `login_sessions`
 --
 ALTER TABLE `login_sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT a táblához `password_resets`
@@ -490,19 +514,19 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT a táblához `purchases`
 --
 ALTER TABLE `purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT a táblához `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT a táblához `ticket_types`
 --
 ALTER TABLE `ticket_types`
-  MODIFY `ticket_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `ticket_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT a táblához `users`
@@ -514,7 +538,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT a táblához `user_interests`
 --
 ALTER TABLE `user_interests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT a táblához `venues`
