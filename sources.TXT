@@ -8,3 +8,5 @@ https://compressjpeg.com/ - kép kompresszió
 https://themewagon.com/themes/studiova/ - felhasznált kinézeti sablon
 
 packagist - packagek
+
+Windsurf / Github copilot - AI kód generátor

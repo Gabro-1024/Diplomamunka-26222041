@@ -301,9 +301,16 @@ try {
   <div class="page-wrapper overflow-hidden">
     <!-- Banner Section -->
     <section class="banner-section banner-inner-section position-relative overflow-hidden d-flex align-items-end"
-      style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-             url('<?php echo !empty($festival['cover_image']) ? '../assets/images/portfolio/' . htmlspecialchars($festival['cover_image']) : '../assets/images/backgrounds/festivals-banner.jpg'; ?>');
-             background-size: cover; background-position: center;">
+      style="
+        <?php
+          $cover = !empty($festival['cover_image'])
+            ? htmlspecialchars($festival['cover_image'])
+            : '../assets/images/backgrounds/festivals-banner.jpg';
+        ?>
+        background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1)), url('<?php echo $cover; ?>');
+        background-size: cover;
+        background-position: center;
+      ">
       <div class="container">
         <div class="d-flex flex-column gap-4 pb-5 pb-xl-10 position-relative z-1">
           <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">

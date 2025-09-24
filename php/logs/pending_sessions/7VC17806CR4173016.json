@@ -1,0 +1,14 @@
+{
+    "time": "2025-09-24 17:46:46",
+    "order_id": "7VC17806CR4173016",
+    "user_id": 16,
+    "event_id": 63,
+    "items": [
+        {
+            "ticket_type_id": 78,
+            "ticket_type": "vip",
+            "price_huf": 5000,
+            "quantity": 4
+        }
+    ]
+}

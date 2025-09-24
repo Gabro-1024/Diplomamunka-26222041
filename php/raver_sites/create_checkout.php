@@ -160,6 +160,21 @@ try {
             throw new Exception('PayPal credentials not configured');
         }
 
+        // Build absolute URLs for PayPal
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'];
+        $basePath = dirname(dirname($_SERVER['SCRIPT_NAME'])); // /Diplomamunka-26222041/php
+
+        // Ensure no trailing slash
+        $basePath = rtrim($basePath, '/');
+
+        $returnUrl = "{$scheme}://{$host}{$basePath}/index.php?payment=paypal_success";
+        $cancelUrl = "{$scheme}://{$host}{$basePath}/raver_sites/ticket_cart.php";
+        if ($eventId) {
+            $returnUrl .= '&event_id=' . urlencode((string)$eventId);
+            $cancelUrl .= '?event_id=' . urlencode((string)$eventId);
+        }
+
         $env = new \PayPalCheckoutSdk\Core\SandboxEnvironment($clientId, $clientSecret);
         $client = new \PayPalCheckoutSdk\Core\PayPalHttpClient($env);
 
@@ -175,9 +190,8 @@ try {
                 'description' => 'Tickets purchase',
             ]],
             'application_context' => [
-                // PayPal will append token=<ORDER_ID> to return_url automatically
-                'return_url' => sprintf('%s://%s%s/index.php?payment=paypal_success%s', $scheme, $host, $basePath, $eventId ? ('&event_id=' . urlencode((string)$eventId)) : ''),
-                'cancel_url' => sprintf('%s://%s%s/raver_sites/ticket_cart.php%s', $scheme, $host, $basePath, $eventId ? ('?event_id=' . urlencode((string)$eventId)) : ''),
+                'return_url' => $returnUrl,
+                'cancel_url' => $cancelUrl,
                 'shipping_preference' => 'NO_SHIPPING',
                 'user_action' => 'PAY_NOW',
             ],
@@ -253,6 +267,9 @@ try {
         echo json_encode(['url' => $session->url]);
     }
 } catch (\Throwable $e) {
+    // Add this debug log:
+    @file_put_contents(__DIR__ . '/../logs/paypal_error.log', date('Y-m-d H:i:s') . ' ' . $e->getMessage() . "\n", FILE_APPEND);
+
     http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode(['error' => $e->getMessage()]);

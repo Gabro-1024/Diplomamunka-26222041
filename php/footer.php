@@ -46,5 +46,5 @@ $current_year = date('Y');
             </div>
         </div>
     </div>
-    <p class="mb-0 text-white text-opacity-70 text-md-center mt-10">If you're down here, you should now <a class="footer-link text-white px-1" href="sign-up.php">sign up</a></p>
+    <p class="mb-0 text-white text-opacity-70 text-md-center mt-10">If you're down here, you should now <a class="footer-link text-white px-1" href="http://localhost/Diplomamunka-26222041/php/sign-up.php">sign up</a></p>
 </footer>

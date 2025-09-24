@@ -2,6 +2,12 @@
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../includes/db_connect.php';
 
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'raver') {
+    var_dump($_SESSION);
+    header('Location: ../sign-in.php');
+    exit();
+}
+
 if (!isUserLoggedIn()) {
     header('Location: http://localhost/Diplomamunka-26222041/php/sign-in.php');
     exit;
@@ -114,6 +120,36 @@ foreach (['jpg','png','webp'] as $e) {
 }
 if ($avatarRel === null) { $avatarRel = '/assets/images/team/team-img-1.jpg'; }
 
+// Fetch user's tickets (only unused)
+$userTickets = [];
+try {
+    $stmt = $pdo->prepare(
+        "SELECT t.id, t.qr_code_path, t.event_id, t.is_used, t.price, e.name AS event_name, e.start_date, e.venue_id
+         FROM tickets t
+         INNER JOIN events e ON t.event_id = e.id
+         WHERE t.owner_id = ? AND t.is_used = 0
+         ORDER BY e.start_date DESC, t.id DESC"
+    );
+    $stmt->execute([$userId]);
+    $userTickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Fetch venue names for tickets (if needed)
+    $venueNames = [];
+    if ($userTickets) {
+        $venueIds = array_unique(array_column($userTickets, 'venue_id'));
+        if ($venueIds) {
+            $in = str_repeat('?,', count($venueIds) - 1) . '?';
+            $venueStmt = $pdo->prepare("SELECT id, name FROM venues WHERE id IN ($in)");
+            $venueStmt->execute($venueIds);
+            foreach ($venueStmt->fetchAll(PDO::FETCH_ASSOC) as $v) {
+                $venueNames[$v['id']] = $v['name'];
+            }
+        }
+    }
+} catch (Throwable $e) {
+    $userTickets = [];
+}
+
 ?>
 <?php 
 $page_title = 'My Profile - Tickets @ Gábor';
@@ -146,6 +182,113 @@ include __DIR__ . '/../header.php';
     }
     .card {
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .my-tickets-section {
+      margin-top: 48px;
+      margin-bottom: 48px;
+    }
+    .ticket-card {
+      border: 1.5px solid #1a73e8;
+      border-radius: 12px;
+      transition: box-shadow 0.2s;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(26,115,232,0.06);
+    }
+    .ticket-card:hover {
+      box-shadow: 0 6px 24px rgba(26,115,232,0.13);
+      border-color: #0d47a1;
+    }
+    .qr-img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      padding: 4px;
+    }
+    .ticket-used {
+      opacity: 0.6;
+      filter: grayscale(1);
+    }
+    .ticket-status {
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 2px 10px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+    .ticket-status.used {
+      background: #e57373;
+      color: #fff;
+    }
+    .ticket-status.valid {
+      background: #43a047;
+      color: #fff;
+    }
+    .ticket-status.upcoming {
+      background: #1a73e8;
+      color: #fff;
+    }
+    .qr-zoom-modal {
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.65);
+      animation: fadeIn 0.2s;
+    }
+    .qr-zoom-backdrop {
+      position: absolute;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: transparent;
+    }
+    .qr-zoom-content {
+      position: relative;
+      z-index: 2;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      padding: 32px 32px 24px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 95vw;
+      max-height: 90vh;
+      animation: zoomIn 0.2s;
+    }
+    .qr-zoom-content img {
+      max-width: 60vw;
+      max-height: 60vh;
+      width: auto;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(26,115,232,0.13);
+      background: #f8f9fa;
+    }
+    .qr-zoom-close {
+      position: absolute;
+      top: 10px; right: 18px;
+      background: none;
+      border: none;
+      font-size: 2.2rem;
+      color: #333;
+      cursor: pointer;
+      line-height: 1;
+      z-index: 3;
+      transition: color 0.15s;
+    }
+    .qr-zoom-close:hover {
+      color: #1a73e8;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.85);}
+      to   { transform: scale(1);}
     }
   </style>
 
@@ -233,13 +376,130 @@ include __DIR__ . '/../header.php';
     </section>
   </div>
 
+  <!-- My Tickets Section -->
+  <div class="container my-tickets-section">
+    <div class="row">
+      <div class="col-12">
+        <h3 class="mb-4 text-primary" data-aos="fade-up" data-aos-delay="100">My tickets</h3>
+      </div>
+    </div>
+    <div class="row g-4">
+      <?php if (empty($userTickets)): ?>
+        <div class="col-12">
+          <div class="alert alert-info mb-0">You have not purchased any valid (unused) tickets yet.</div>
+        </div>
+      <?php else: ?>
+        <?php foreach ($userTickets as $ticket):
+          $eventDate = date('Y.m.d. H:i', strtotime($ticket['start_date']));
+          $venue = $venueNames[$ticket['venue_id']] ?? 'Unknown venue';
+          $now = new DateTime();
+          $eventStart = new DateTime($ticket['start_date']);
+          $status = ($eventStart > $now ? 'upcoming' : 'valid');
+          $statusText = ($eventStart > $now ? 'Upcoming' : 'Valid');
+          $qrAbs = 'http://localhost/Diplomamunka-26222041/php/' . ltrim($ticket['qr_code_path']);
+        ?>
+        <div class="col-md-6 col-lg-4">
+          <div class="ticket-card p-4 d-flex flex-column gap-3" data-aos="fade-up" data-aos-delay="100">
+            <div class="d-flex align-items-center gap-3">
+              <img src="<?php echo htmlspecialchars($qrAbs); ?>" alt="QR code" class="qr-img qr-zoom-trigger" style="cursor:pointer;" data-qr="<?php echo htmlspecialchars($qrAbs); ?>">
+              <div>
+                <span class="ticket-status <?php echo $status; ?>"><?php echo $statusText; ?></span>
+                <div class="fw-bold"><?php echo htmlspecialchars($ticket['event_name']); ?></div>
+                <div class="text-muted small"><?php echo htmlspecialchars($eventDate); ?></div>
+                <div class="text-muted small"><?php echo htmlspecialchars($venue); ?></div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-medium">Ticket ID: <?php echo (int)$ticket['id']; ?></span>
+              <span class="fw-bold text-primary"><?php echo number_format($ticket['price'], 0, '', ' '); ?> Ft</span>
+            </div>
+          </div>
+        </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
+    </div>
+  </div>
+
+  <!-- QR Zoom Modal -->
+  <div id="qrZoomModal" class="qr-zoom-modal" style="display:none;">
+    <div class="qr-zoom-backdrop"></div>
+    <div class="qr-zoom-content">
+      <img src="" alt="QR code enlarged" id="qrZoomImg">
+      <button type="button" class="qr-zoom-close" aria-label="Close">&times;</button>
+    </div>
+  </div>
+
+  <style>
+    /* ...existing styles... */
+    .qr-zoom-modal {
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.65);
+      animation: fadeIn 0.2s;
+    }
+    .qr-zoom-backdrop {
+      position: absolute;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: transparent;
+    }
+    .qr-zoom-content {
+      position: relative;
+      z-index: 2;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      padding: 32px 32px 24px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 95vw;
+      max-height: 90vh;
+      animation: zoomIn 0.2s;
+    }
+    .qr-zoom-content img {
+      max-width: 60vw;
+      max-height: 60vh;
+      width: auto;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(26,115,232,0.13);
+      background: #f8f9fa;
+    }
+    .qr-zoom-close {
+      position: absolute;
+      top: 10px; right: 18px;
+      background: none;
+      border: none;
+      font-size: 2.2rem;
+      color: #333;
+      cursor: pointer;
+      line-height: 1;
+      z-index: 3;
+      transition: color 0.15s;
+    }
+    .qr-zoom-close:hover {
+      color: #1a73e8;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.85);}
+      to   { transform: scale(1);}
+    }
+  </style>
+
   <?php include __DIR__ . '/../footer.php'; ?>
 
   <script src="http://localhost/Diplomamunka-26222041/assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="http://localhost/Diplomamunka-26222041/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="http://localhost/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.js"></script>
-  <script>AOS.init();</script>
   <script src="http://localhost/Diplomamunka-26222041/assets/js/custom.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
   <script>
     // Initialize AOS with custom settings
     document.addEventListener('DOMContentLoaded', function() {
@@ -249,9 +509,27 @@ include __DIR__ . '/../header.php';
         once: true,
         mirror: false
       });
-      
-      // Add loaded class to body to trigger fade-in
       document.body.classList.add('loaded');
+
+      // QR Zoom logic
+      function closeQrZoom() {
+        document.getElementById('qrZoomModal').style.display = 'none';
+        document.getElementById('qrZoomImg').src = '';
+      }
+      document.querySelectorAll('.qr-zoom-trigger').forEach(function(img) {
+        img.addEventListener('click', function() {
+          var src = img.getAttribute('data-qr');
+          var modal = document.getElementById('qrZoomModal');
+          var modalImg = document.getElementById('qrZoomImg');
+          modalImg.src = src;
+          modal.style.display = 'flex';
+        });
+      });
+      document.querySelector('.qr-zoom-close').addEventListener('click', closeQrZoom);
+      document.querySelector('.qr-zoom-backdrop').addEventListener('click', closeQrZoom);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeQrZoom();
+      });
     });
   </script>
 </body>
@@ -638,7 +916,7 @@ include __DIR__ . '/../header.php';
                 data-aos-duration="1000">
                 <span
                   class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">04</span>
-                <hr class="border-line">
+                <hr class="border-line bg-white">
                 <span class="badge text-bg-dark">About us</span>
               </div>
               <h2 class="mb-0" data-aos="fade-right" data-aos-delay="200" data-aos-duration="1000">Why choose us</h2>
@@ -1551,3 +1829,4 @@ include __DIR__ . '/../header.php';
 </body>
 
 </html>
+
