@@ -87,7 +87,7 @@ include __DIR__ . '/../header.php';
     <section class="py-5 py-lg-8">
       <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-5">
-          <h1 class="display-5 fw-bold mb-0">My Events</h1>
+          <h1 class="display-5 fw-bold mb-0 text-primary">My Events</h1>
           <a href="festival_maker.php" class="btn btn-accent-blue">
             <iconify-icon icon="lucide:plus" class="me-2"></iconify-icon>
             Create New Event
@@ -95,7 +95,7 @@ include __DIR__ . '/../header.php';
         </div>
 
         <?php if (isset($_SESSION['success_message'])): ?>
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <div class="alert alert-dismissible fade show" role="alert" style="background-color: rgba(255, 255, 255, 0.95); color: #2210FF; border: 1px solid #dee2e6;">
             <?php 
               echo $_SESSION['success_message']; 
               unset($_SESSION['success_message']);

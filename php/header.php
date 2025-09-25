@@ -123,6 +123,10 @@ if ($isLoggedIn) {
                                         <iconify-icon icon="lucide:calendar-days" class="fs-6"></iconify-icon>
                                         <span>My Events</span>
                                     </a>
+                                    <a href="http://localhost/Diplomamunka-26222041/php/raver_sites/profile.php" class="btn btn-accent-blue text-white fs-6 px-3 py-2 hstack gap-2 align-items-center">
+                                        <iconify-icon icon="lucide:user" class="fs-6"></iconify-icon>
+                                        <span>Profile</span>
+                                    </a>
                                     <?php else: ?>
                                     <a href="http://localhost/Diplomamunka-26222041/php/raver_sites/profile.php" class="btn btn-accent-blue text-white fs-6 px-3 py-2 hstack gap-2 align-items-center">
                                         <iconify-icon icon="lucide:user" class="fs-6"></iconify-icon>

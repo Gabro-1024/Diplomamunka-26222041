@@ -601,3 +601,183 @@ Data: Array
 )
 
 
+[25-Sep-2025 17:59:33 Europe/Berlin] [2025-09-25 17:59:33] Stats request received
+Data: Array
+(
+    [event_id] => 63
+    [timestamp] => 2025-09-25 17:59:33
+)
+
+
+[25-Sep-2025 17:59:33 Europe/Berlin] [2025-09-25 17:59:33] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 17:59:44 Europe/Berlin] [2025-09-25 17:59:44] Stats request received
+Data: Array
+(
+    [event_id] => 20
+    [timestamp] => 2025-09-25 17:59:44
+)
+
+
+[25-Sep-2025 17:59:44 Europe/Berlin] [2025-09-25 17:59:44] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 18:00:15 Europe/Berlin] [2025-09-25 18:00:15] Stats request received
+Data: Array
+(
+    [event_id] => 22
+    [timestamp] => 2025-09-25 18:00:15
+)
+
+
+[25-Sep-2025 18:00:15 Europe/Berlin] [2025-09-25 18:00:15] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 18:00:18 Europe/Berlin] [2025-09-25 18:00:18] Stats request received
+Data: Array
+(
+    [event_id] => 19
+    [timestamp] => 2025-09-25 18:00:18
+)
+
+
+[25-Sep-2025 18:00:18 Europe/Berlin] [2025-09-25 18:00:18] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 18:00:22 Europe/Berlin] [2025-09-25 18:00:22] Stats request received
+Data: Array
+(
+    [event_id] => 21
+    [timestamp] => 2025-09-25 18:00:22
+)
+
+
+[25-Sep-2025 18:00:22 Europe/Berlin] [2025-09-25 18:00:22] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 18:00:24 Europe/Berlin] [2025-09-25 18:00:24] Stats request received
+Data: Array
+(
+    [event_id] => 24
+    [timestamp] => 2025-09-25 18:00:24
+)
+
+
+[25-Sep-2025 18:00:24 Europe/Berlin] [2025-09-25 18:00:24] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 18:06:31 Europe/Berlin] [2025-09-25 18:06:31] Stats request received
+Data: Array
+(
+    [event_id] => 63
+    [timestamp] => 2025-09-25 18:06:31
+)
+
+
+[25-Sep-2025 18:06:31 Europe/Berlin] [2025-09-25 18:06:31] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 18:22:06 Europe/Berlin] [2025-09-25 18:22:06] Stats request received
+Data: Array
+(
+    [event_id] => 63
+    [timestamp] => 2025-09-25 18:22:06
+)
+
+
+[25-Sep-2025 18:22:06 Europe/Berlin] [2025-09-25 18:22:06] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 21:31:44 Europe/Berlin] [2025-09-25 21:31:44] Stats request received
+Data: Array
+(
+    [event_id] => 63
+    [timestamp] => 2025-09-25 21:31:44
+)
+
+
+[25-Sep-2025 21:31:44 Europe/Berlin] [2025-09-25 21:31:44] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 21:59:12 Europe/Berlin] [2025-09-25 21:59:12] Stats request received
+Data: Array
+(
+    [event_id] => 63
+    [timestamp] => 2025-09-25 21:59:12
+)
+
+
+[25-Sep-2025 21:59:12 Europe/Berlin] [2025-09-25 21:59:12] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 22:00:02 Europe/Berlin] [2025-09-25 22:00:02] Stats request received
+Data: Array
+(
+    [event_id] => 22
+    [timestamp] => 2025-09-25 22:00:02
+)
+
+
+[25-Sep-2025 22:00:02 Europe/Berlin] [2025-09-25 22:00:02] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[25-Sep-2025 22:20:13 Europe/Berlin] [2025-09-25 22:20:13] Stats request received
+Data: Array
+(
+    [event_id] => 67
+    [timestamp] => 2025-09-25 22:20:13
+)
+
+
+[25-Sep-2025 22:20:13 Europe/Berlin] [2025-09-25 22:20:13] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+

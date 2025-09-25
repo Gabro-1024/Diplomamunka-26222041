@@ -21,7 +21,9 @@ try {
                    v.cover_image as venue_cover,
                    v.capacity as venue_capacity,
                    u.first_name as organizer_first_name,
-                   u.last_name as organizer_last_name
+                   u.last_name as organizer_last_name,
+                   u.id as organizer_id,
+                   u.email as organizer_email
             FROM events e 
             LEFT JOIN venues v ON e.venue_id = v.id 
             LEFT JOIN users u ON e.organizer_id = u.id 
@@ -403,123 +405,128 @@ try {
                 <div class="row g-4">
                   <?php 
                   $performers = explode(',', $festival['lineup']);
+                  
+                  // Show first 4 performers
                   foreach (array_slice($performers, 0, 4) as $performer): 
+                      $performer = trim($performer);
+                      if (empty($performer)) continue;
                   ?>
                   <div class="col-md-6">
                     <div class="d-flex align-items-center gap-3">
                       <div class="rounded-circle bg-light" style="width: 60px; height: 60px; overflow: hidden;">
-                        <img src="https://ui-avatars.com/api/?name=<?php echo urlencode(trim($performer)); ?>" 
-                             alt="<?php echo htmlspecialchars(trim($performer)); ?>" 
+                        <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($performer); ?>" 
+                             alt="<?php echo htmlspecialchars($performer); ?>" 
                              class="img-fluid">
                       </div>
                       <div>
-                        <h4 class="mb-0 fs-5 fw-bold"><?php echo htmlspecialchars(trim($performer)); ?></h4>
+                        <h4 class="mb-0 fs-5 fw-bold"><?php echo htmlspecialchars($performer); ?></h4>
                         <span class="text-muted">Artist</span>
                       </div>
                     </div>
                   </div>
                   <?php endforeach; ?>
-                  <?php if (count($performers) > 4): ?>
-                  <div class="col-12">
-                    <button class="btn btn-link text-primary p-0" style="padding: 5px !important;">+<?php echo (count($performers) - 4); ?> more artists</button>
+                  
+                  <?php
+                  if (count($performers) > 4):
+                      $hiddenArtists = array_slice($performers, 4);
+                      foreach ($hiddenArtists as $performer): 
+                          $performer = trim($performer);
+                          if (empty($performer)) continue;
+                  ?>
+                  <div class="col-md-6 d-none more-artists">
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="rounded-circle bg-light" style="width: 60px; height: 60px; overflow: hidden;">
+                        <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($performer); ?>" 
+                             alt="<?php echo htmlspecialchars($performer); ?>" 
+                             class="img-fluid">
+                      </div>
+                      <div>
+                        <h4 class="mb-0 fs-5 fw-bold"><?php echo htmlspecialchars($performer); ?></h4>
+                        <span class="text-muted">Artist</span>
+                      </div>
+                    </div>
                   </div>
+                  <?php 
+                      endforeach; 
+                  ?>
+                  <div class="col-12">
+                    <button id="showMoreArtists" class="btn btn-link text-primary p-0" style="padding: 5px !important;">
+                      +<?php echo count($hiddenArtists); ?> more artists
+                    </button>
+                  </div>
+                  <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      const showMoreButton = document.getElementById('showMoreArtists');
+                      if (showMoreButton) {
+                          showMoreButton.addEventListener('click', function() {
+                              const moreArtists = document.querySelectorAll('.more-artists');
+                              moreArtists.forEach(artist => {
+                                  artist.classList.remove('d-none');
+                              });
+                              this.style.display = 'none';
+                          });
+                      }
+                  });
+                  </script>
                   <?php endif; ?>
                 </div>
               </div>
               <?php endif; ?>
               
               <!-- Schedule Section -->
-              <div class="mb-5">
-                <h3 class="fs-4 fw-bold mb-4">Schedule</h3>
-                <div class="accordion" id="scheduleAccordion">
-                  <?php
-                  // Generate schedule based on festival dates
-                  $interval = new DateInterval('P1D');
-                  $periodEnd = clone $end_date;
-                  $period = new DatePeriod($start_date, $interval, $periodEnd->modify('+1 day'));
-                  $dayCount = 1;
-                  
-                  foreach ($period as $date):
-                      $dayName = $date->format('l');
-                      $formattedDate = $date->format('F j, Y');
-                      $dayId = 'day' . $dayCount;
-                  ?>
-                  <div class="accordion-item mb-3 border-0">
-                    <h2 class="accordion-header" id="heading<?php echo $dayCount; ?>">
-                      <button class="accordion-button collapsed rounded-3 p-4 fw-bold" type="button"
-                              data-bs-toggle="collapse" data-bs-target="#<?php echo $dayId; ?>"
-                              aria-expanded="false"
-                              aria-controls="<?php echo $dayId; ?>">
-                        <?php echo $dayName; ?>, <?php echo $formattedDate; ?>
-                      </button>
-                    </h2>
-                    <div id="<?php echo $dayId; ?>" 
-                         class="accordion-collapse collapse"
-                         aria-labelledby="heading<?php echo $dayCount; ?>" 
-                         data-bs-parent="#scheduleAccordion">
-                      <div class="accordion-body p-4">
-                        <div class="schedule-item mb-3">
-                          <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h5 class="mb-0 fw-bold">Main Stage</h5>
-                            <span class="badge bg-primary">12:00 PM - 11:00 PM</span>
-                          </div>
-                          <p class="mb-0">Full day of performances by various artists</p>
-                        </div>
-                        <hr>
-                        <div class="schedule-item">
-                          <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h5 class="mb-0 fw-bold">Food & Drinks</h5>
-                            <span class="badge bg-primary">11:00 AM - 12:00 AM</span>
-                          </div>
-                          <p class="mb-0">Local food trucks and bars open all day</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <?php 
-                      $dayCount++;
-                  endforeach; 
-                  ?>
-                </div>
-              </div>
-              
-              <!-- Location Section -->
-              <div id="location" class="mb-5">
-                <h3 class="fs-4 fw-bold mb-4">Location</h3>
-                <div class="card border-0 shadow-sm">
-                  <div class="card-body">
-                    <?php if (!empty($festival['venue_name'])): ?>
-                      <h4 class="fs-5 fw-bold"><?php echo htmlspecialchars($festival['venue_name']); ?></h4>
-                      <p class="mb-2">
-                        <i class="fas fa-map-marker-alt text-accent-blue"></i>
-                        <?php 
-                        $address_parts = array_filter([
-                            $festival['address'],
-                            $festival['city'],
-                            $festival['country']
-                        ]);
-                        echo htmlspecialchars(implode(', ', $address_parts));
-                        ?>
-                      </p>
-                      <?php if (!empty($festival['venue_capacity'])): ?>
-                      <p class="mb-3">
-                        <i class="fas fa-users text-muted"></i>
-                        <span class="ms-1">Capacity: <?php echo number_format($festival['venue_capacity']); ?> people</span>
-                      </p>
-                      <?php endif; ?>
-                      <a href="https://www.google.com/maps/dir//<?php echo urlencode($festival['address'] . ', ' . $festival['city'] . ', ' . $festival['country']); ?>"
-                         target="_blank" class="btn btn-accent-blue">
-                        <i class="fas fa-directions me-2"></i>Get Directions on Google Maps
-                      </a>
-                    <?php else: ?>
-                      <div class="text-center py-4">
-                        <i class="fas fa-map-marker-alt fa-3x text-muted mb-3"></i>
-                        <p class="text-muted mb-0">Venue information will be announced soon.</p>
-                      </div>
-                    <?php endif; ?>
-                  </div>
-                </div>
-              </div>
+<!--              <div class="mb-5">-->
+<!--                <h3 class="fs-4 fw-bold mb-4">Schedule</h3>-->
+<!--                <div class="accordion" id="scheduleAccordion">-->
+<!--                  --><?php
+//                  // Generate schedule based on festival dates
+//                  $interval = new DateInterval('P1D');
+//                  $periodEnd = clone $end_date;
+//                  $period = new DatePeriod($start_date, $interval, $periodEnd->modify('+1 day'));
+//                  $dayCount = 1;
+//
+//                  foreach ($period as $date):
+//                      $dayName = $date->format('l');
+//                      $formattedDate = $date->format('F j, Y');
+//                      $dayId = 'day' . $dayCount;
+//                  ?>
+<!--                  <div class="accordion-item mb-3 border-0">-->
+<!--                    <h2 class="accordion-header" id="heading--><?php //echo $dayCount; ?><!--">-->
+<!--                      <button class="accordion-button collapsed rounded-3 p-4 fw-bold" type="button"-->
+<!--                              data-bs-toggle="collapse" data-bs-target="#--><?php //echo $dayId; ?><!--"-->
+<!--                              aria-expanded="false"-->
+<!--                              aria-controls="--><?php //echo $dayId; ?><!--">-->
+<!--                        --><?php //echo $dayName; ?><!--, --><?php //echo $formattedDate; ?>
+<!--                      </button>-->
+<!--                    </h2>-->
+<!--                    <div id="--><?php //echo $dayId; ?><!--" -->
+<!--                         class="accordion-collapse collapse"-->
+<!--                         aria-labelledby="heading--><?php //echo $dayCount; ?><!--" -->
+<!--                         data-bs-parent="#scheduleAccordion">-->
+<!--                      <div class="accordion-body p-4">-->
+<!--                        <div class="schedule-item mb-3">-->
+<!--                          <div class="d-flex justify-content-between align-items-center mb-2">-->
+<!--                            <h5 class="mb-0 fw-bold">Main Stage</h5>-->
+<!--                            <span class="badge bg-primary">12:00 PM - 11:00 PM</span>-->
+<!--                          </div>-->
+<!--                          <p class="mb-0">Full day of performances by various artists</p>-->
+<!--                        </div>-->
+<!--                        <hr>-->
+<!--                        <div class="schedule-item">-->
+<!--                          <div class="d-flex justify-content-between align-items-center mb-2">-->
+<!--                            <h5 class="mb-0 fw-bold">Food & Drinks</h5>-->
+<!--                            <span class="badge bg-primary">11:00 AM - 12:00 AM</span>-->
+<!--                          </div>-->
+<!--                          <p class="mb-0">Local food trucks and bars open all day</p>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  --><?php //
+//                      $dayCount++;
+//                  endforeach;
+//                  ?>
+<!--                </div>-->
+<!--              </div>-->
             </div>
           </div>
           
@@ -622,9 +629,31 @@ try {
               <div class="card border-0 shadow-sm mt-4 p-4">
                 <h4 class="fs-5 fw-bold mb-3">Organizer</h4>
                 <div class="d-flex align-items-center gap-3">
-                  <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
-                       style="width: 60px; height: 60px;">
-                    <i class="fas fa-user-tie fs-4 text-muted"></i>
+                  <?php
+                  $basePath = 'http://localhost/Diplomamunka-26222041/assets/images/profiles/';
+                  $userId = $festival['organizer_id'];
+                  $defaultPic = $basePath . 'default_profile.jpg';
+                  
+                  // Check for different image extensions in order of preference
+                  $extensions = ['jpg', 'png', 'webp'];
+                  $profilePic = null;
+                  
+                  foreach ($extensions as $ext) {
+                      $testPath = $basePath . 'user_' . $userId . '.' . $ext;
+                      if (@getimagesize($testPath)) {
+                          $profilePic = $testPath;
+                          break;
+                      }
+                  }
+                  
+                  // If no image found, use default
+                  $profilePic = $profilePic ?? $defaultPic;
+                  ?>
+                  <div class="rounded-circle overflow-hidden" style="width: 60px; height: 60px;">
+                    <img src="<?php echo $profilePic; ?>"
+                         alt="<?php echo htmlspecialchars($festival['organizer_first_name'] . ' ' . $festival['organizer_last_name']); ?>"
+                         class="w-100 h-100 object-fit-cover"
+                         onerror="this.src='<?php echo $defaultPic; ?>'">
                   </div>
                   <div>
                     <h5 class="mb-0 fw-bold">
@@ -636,9 +665,11 @@ try {
                     <p class="mb-0 text-muted">Event Organizer</p>
                   </div>
                 </div>
-                <a href="#" class="btn btn-outline-primary btn-sm mt-3 w-100">
+                <?php if (!empty($festival['organizer_email'])): ?>
+                <a href="mailto:<?php echo htmlspecialchars($festival['organizer_email']); ?>?subject=<?php echo urlencode('Question about ' . $festival['name']); ?>" class="btn btn-outline-primary btn-sm mt-3 w-100">
                   <i class="far fa-envelope me-2"></i>Contact Organizer
                 </a>
+                <?php endif; ?>
               </div>
             </div>
           </div>
