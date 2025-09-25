@@ -151,7 +151,7 @@ function sendRegistrationEmail($toEmail, $toName, $token) {
         $mail->isHTML(true);
         $mail->Subject = 'Verify Your Email - Tickets @ Gábor';
         
-        $verificationUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . "://$_SERVER[HTTP_HOST]/Diplomamunka-26222041/php/sign-in.php?verify=$token";
+        $verificationUrl = "http://localhost/Diplomamunka-26222041/php/sign-in.php?verify=$token";
         
         $mail->Body = "
             <h2>Welcome to Tickets @ Gábor, $toName!</h2>

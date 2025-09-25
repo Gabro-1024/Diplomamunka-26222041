@@ -2,12 +2,6 @@
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../includes/db_connect.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'raver') {
-    var_dump($_SESSION);
-    header('Location: ../sign-in.php');
-    exit();
-}
-
 if (!isUserLoggedIn()) {
     header('Location: http://localhost/Diplomamunka-26222041/php/sign-in.php');
     exit;

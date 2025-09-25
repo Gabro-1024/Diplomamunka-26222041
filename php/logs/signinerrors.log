@@ -477,3 +477,43 @@
 [24-Sep-2025 17:33:59 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
 [24-Sep-2025 17:33:59 Europe/Berlin] Session cookie set: yes
 [24-Sep-2025 17:33:59 Europe/Berlin] Session variables set for user_id 16
+[25-Sep-2025 13:45:48 Europe/Berlin] ============================================================
+[25-Sep-2025 13:45:48 Europe/Berlin] Login attempt at 2025-09-25 13:45:48
+[25-Sep-2025 13:45:48 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[25-Sep-2025 13:45:48 Europe/Berlin] User lookup: found user
+[25-Sep-2025 13:45:48 Europe/Berlin] Email verified: yes
+[25-Sep-2025 13:45:48 Europe/Berlin] Login attempt - User: random.koala497@passinbox.com, Password match: yes
+[25-Sep-2025 13:45:48 Europe/Berlin] Session cookie set: yes
+[25-Sep-2025 13:45:48 Europe/Berlin] Session variables set for user_id 18
+[25-Sep-2025 21:16:23 Europe/Berlin] ============================================================
+[25-Sep-2025 21:16:23 Europe/Berlin] Login attempt at 2025-09-25 21:16:23
+[25-Sep-2025 21:16:23 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[25-Sep-2025 21:16:23 Europe/Berlin] User lookup: found user
+[25-Sep-2025 21:16:23 Europe/Berlin] Email verified: yes
+[25-Sep-2025 21:16:23 Europe/Berlin] Login attempt - User: random.koala497@passinbox.com, Password match: yes
+[25-Sep-2025 21:16:23 Europe/Berlin] Session cookie set: yes
+[25-Sep-2025 21:16:23 Europe/Berlin] Session variables set for user_id 18
+[25-Sep-2025 22:18:23 Europe/Berlin] ============================================================
+[25-Sep-2025 22:18:23 Europe/Berlin] Login attempt at 2025-09-25 22:18:23
+[25-Sep-2025 22:18:23 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[25-Sep-2025 22:18:23 Europe/Berlin] User lookup: found user
+[25-Sep-2025 22:18:23 Europe/Berlin] Email verified: yes
+[25-Sep-2025 22:18:23 Europe/Berlin] Login attempt - User: random.koalaa497@passinbox.com, Password match: yes
+[25-Sep-2025 22:18:23 Europe/Berlin] Session cookie set: yes
+[25-Sep-2025 22:18:23 Europe/Berlin] Session variables set for user_id 21
+[25-Sep-2025 22:55:07 Europe/Berlin] ============================================================
+[25-Sep-2025 22:55:07 Europe/Berlin] Login attempt at 2025-09-25 22:55:07
+[25-Sep-2025 22:55:07 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[25-Sep-2025 22:55:07 Europe/Berlin] User lookup: found user
+[25-Sep-2025 22:55:07 Europe/Berlin] Email verified: yes
+[25-Sep-2025 22:55:07 Europe/Berlin] Login attempt - User: random.koala497@passinbox.com, Password match: yes
+[25-Sep-2025 22:55:07 Europe/Berlin] Session cookie set: yes
+[25-Sep-2025 22:55:07 Europe/Berlin] Session variables set for user_id 18
+[25-Sep-2025 23:17:36 Europe/Berlin] ============================================================
+[25-Sep-2025 23:17:36 Europe/Berlin] Login attempt at 2025-09-25 23:17:36
+[25-Sep-2025 23:17:36 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[25-Sep-2025 23:17:36 Europe/Berlin] User lookup: found user
+[25-Sep-2025 23:17:36 Europe/Berlin] Email verified: yes
+[25-Sep-2025 23:17:36 Europe/Berlin] Login attempt - User: farkasgabor102403@gmail.com, Password match: yes
+[25-Sep-2025 23:17:36 Europe/Berlin] Session cookie set: yes
+[25-Sep-2025 23:17:36 Europe/Berlin] Session variables set for user_id 22
