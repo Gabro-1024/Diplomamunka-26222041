@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/db_connect.php';
 require_once __DIR__ . '/../includes/auth_check.php';
 
 // Check if user is admin
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('HTTP/1.0 403 Forbidden');
     die('Access Denied');
 }
@@ -15,7 +15,7 @@ $allInterests = [];
 
 // Fetch all available interests
 $interestResult = $conn->query("SELECT DISTINCT style_name FROM user_interests ORDER BY style_name");
-while ($row = $interestResult->fetch_assoc()) {
+while ($row = $interestResult->fetch(PDO::FETCH_ASSOC)) {
     $allInterests[] = $row['style_name'];
 }
 
@@ -37,24 +37,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     // Check if email already exists (for new users or when email is changed)
-    $email = $conn->real_escape_string($_POST['email']);
-    $checkEmailQuery = "SELECT id FROM users WHERE email = '$email' AND id != $userId";
-    if ($conn->query($checkEmailQuery)->num_rows > 0) {
+    $email = $_POST['email'];
+    $checkEmailStmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
+    $checkEmailStmt->execute([$email, $userId]);
+    if ($checkEmailStmt->rowCount() > 0) {
         $errors[] = 'This email is already registered';
     }
     
     if (empty($errors)) {
-        $conn->begin_transaction();
-        
         try {
+            $conn->beginTransaction();
+            
             // Prepare user data
-            $firstName = $conn->real_escape_string($_POST['first_name']);
-            $lastName = $conn->real_escape_string($_POST['last_name']);
-            $email = $conn->real_escape_string($_POST['email']);
-            $phone = $conn->real_escape_string($_POST['phone'] ?? '');
-            $city = $conn->real_escape_string($_POST['city'] ?? '');
-            $birthDate = !empty($_POST['birth_date']) ? "'" . $conn->real_escape_string($_POST['birth_date']) . "'" : 'NULL';
-            $role = $conn->real_escape_string($_POST['role']);
+            $firstName = $_POST['first_name'];
+            $lastName = $_POST['last_name'];
+            $email = $_POST['email'];
+            $phone = $_POST['phone'] ?? '';
+            $city = $_POST['city'] ?? '';
+            $birthDate = !empty($_POST['birth_date']) ? $_POST['birth_date'] : null;
+            $role = $_POST['role'];
             
             // Handle password update if provided
             $passwordUpdate = '';
@@ -68,21 +69,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($userId > 0) {
                 // Update existing user
-                $updateQuery = "UPDATE users SET 
-                                first_name = '$firstName',
-                                last_name = '$lastName',
-                                email = '$email',
-                                phone_number = " . ($phone ? "'$phone'" : 'NULL') . ",
-                                city = " . ($city ? "'$city'" : 'NULL') . ",
-                                birth_date = $birthDate,
-                                role = '$role'
-                                $passwordUpdate
-                                WHERE id = $userId";
+                $query = "UPDATE users SET 
+                            first_name = :first_name, 
+                            last_name = :last_name, 
+                            email = :email, 
+                            phone_number = :phone, 
+                            city = :city, 
+                            birth_date = :birth_date,
+                            role = :role" . (!empty($passwordUpdate) ? ", password_hash = :password" : "") . " 
+                            WHERE id = :id";
                 
-                $conn->query($updateQuery);
+                $stmt = $conn->prepare($query);
+                $params = [
+                    ':first_name' => $firstName,
+                    ':last_name' => $lastName,
+                    ':email' => $email,
+                    ':phone' => $phone,
+                    ':city' => $city,
+                    ':birth_date' => !empty($_POST['birth_date']) ? $_POST['birth_date'] : null,
+                    ':role' => $role,
+                    ':id' => $userId
+                ];
+                
+                if (!empty($passwordUpdate)) {
+                    $params[':password'] = $hashedPassword;
+                }
+                
+                if (!$stmt->execute($params)) {
+                    throw new Exception('Failed to update user');
+                }
                 
                 // Delete existing interests
-                $conn->query("DELETE FROM user_interests WHERE user_id = $userId");
+                $conn->exec("DELETE FROM user_interests WHERE user_id = " . (int)$userId);
                 
                 $successMessage = 'User updated successfully!';
             } else {
@@ -93,26 +111,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
                 
-                $insertQuery = "INSERT INTO users (first_name, last_name, email, phone_number, city, birth_date, role, password_hash, is_verified) 
-                                VALUES ('$firstName', '$lastName', '$email', " . 
-                                ($phone ? "'$phone'" : 'NULL') . ", " . 
-                                ($city ? "'$city'" : 'NULL') . ", 
-                                $birthDate, 
-                                '$role', 
-                                '$hashedPassword',
-                                1)";
+                $query = "INSERT INTO users (first_name, last_name, email, phone_number, city, birth_date, role, password_hash, is_verified) 
+                         VALUES (:first_name, :last_name, :email, :phone, :city, :birth_date, :role, :password, 1)";
                 
-                $conn->query($insertQuery);
-                $userId = $conn->insert_id;
+                $stmt = $conn->prepare($query);
+                $result = $stmt->execute([
+                    ':first_name' => $firstName,
+                    ':last_name' => $lastName,
+                    ':email' => $email,
+                    ':phone' => $phone,
+                    ':city' => $city,
+                    ':birth_date' => !empty($_POST['birth_date']) ? $_POST['birth_date'] : null,
+                    ':role' => $role,
+                    ':password' => $hashedPassword
+                ]);
+                
+                if (!$result) {
+                    throw new Exception('Failed to create user');
+                }
+                
+                $userId = $conn->lastInsertId();
                 
                 $successMessage = 'User created successfully!';
             }
             
             // Add interests
-            if (isset($_POST['interests']) && is_array($_POST['interests'])) {
+            if (isset($_POST['interests'])) {
+                // Delete existing interests
+                $conn->exec("DELETE FROM user_interests WHERE user_id = " . (int)$userId);
+                
+                // Insert new interests
+                $interestStmt = $conn->prepare("INSERT INTO user_interests (user_id, style_name) VALUES (:user_id, :style_name)");
                 foreach ($_POST['interests'] as $interest) {
-                    $interest = $conn->real_escape_string($interest);
-                    $conn->query("INSERT INTO user_interests (user_id, style_name) VALUES ($userId, '$interest')");
+                    $interestStmt->execute([
+                        ':user_id' => $userId,
+                        ':style_name' => $interest
+                    ]);
                 }
             }
             
@@ -130,14 +164,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // If editing, load the user data
 if ($userId > 0) {
-    $user = $conn->query("SELECT * FROM users WHERE id = $userId")->fetch_assoc();
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = :user_id");
+    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if ($user) {
         // Load user interests
-        $interestResult = $conn->query("SELECT style_name FROM user_interests WHERE user_id = $userId");
-        while ($row = $interestResult->fetch_assoc()) {
-            $userInterests[] = $row['style_name'];
-        }
+        $stmt = $conn->prepare("SELECT style_name FROM user_interests WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        $userInterests = $stmt->fetchAll(PDO::FETCH_COLUMN);
     } else {
         $userId = 0; // Reset if user not found
     }

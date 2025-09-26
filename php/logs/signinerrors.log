@@ -517,3 +517,138 @@
 [25-Sep-2025 23:17:36 Europe/Berlin] Login attempt - User: farkasgabor102403@gmail.com, Password match: yes
 [25-Sep-2025 23:17:36 Europe/Berlin] Session cookie set: yes
 [25-Sep-2025 23:17:36 Europe/Berlin] Session variables set for user_id 22
+[26-Sep-2025 16:50:33 Europe/Berlin] ============================================================
+[26-Sep-2025 16:50:33 Europe/Berlin] Login attempt at 2025-09-26 16:50:33
+[26-Sep-2025 16:50:33 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 16:50:33 Europe/Berlin] User lookup: found user
+[26-Sep-2025 16:50:33 Europe/Berlin] Email verified: yes
+[26-Sep-2025 16:50:34 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[26-Sep-2025 16:50:34 Europe/Berlin] Session cookie set: yes
+[26-Sep-2025 16:50:34 Europe/Berlin] Session variables set for user_id 16
+[26-Sep-2025 16:54:53 Europe/Berlin] ============================================================
+[26-Sep-2025 16:54:53 Europe/Berlin] Login attempt at 2025-09-26 16:54:53
+[26-Sep-2025 16:54:53 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 16:54:53 Europe/Berlin] User lookup: found user
+[26-Sep-2025 16:54:53 Europe/Berlin] Email verified: yes
+[26-Sep-2025 16:54:53 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[26-Sep-2025 16:54:53 Europe/Berlin] Session cookie set: yes
+[26-Sep-2025 16:54:53 Europe/Berlin] Session variables set for user_id 16
+[26-Sep-2025 16:56:49 Europe/Berlin] ============================================================
+[26-Sep-2025 16:56:49 Europe/Berlin] Login attempt at 2025-09-26 16:56:49
+[26-Sep-2025 16:56:49 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 16:56:49 Europe/Berlin] User lookup: found user
+[26-Sep-2025 16:56:49 Europe/Berlin] Email verified: yes
+[26-Sep-2025 16:56:49 Europe/Berlin] Login attempt - User is blocked: random.koala497@passinbox.com
+[26-Sep-2025 16:56:49 Europe/Berlin] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[2025-09-26 16:56:49] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[26-Sep-2025 16:56:57 Europe/Berlin] ============================================================
+[26-Sep-2025 16:56:57 Europe/Berlin] Login attempt at 2025-09-26 16:56:57
+[26-Sep-2025 16:56:57 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 16:56:57 Europe/Berlin] User lookup: found user
+[26-Sep-2025 16:56:57 Europe/Berlin] Email verified: yes
+[26-Sep-2025 16:56:57 Europe/Berlin] Login attempt - User is blocked: random.koala497@passinbox.com
+[26-Sep-2025 16:56:57 Europe/Berlin] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[2025-09-26 16:56:57] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[26-Sep-2025 16:59:52 Europe/Berlin] ============================================================
+[26-Sep-2025 16:59:52 Europe/Berlin] Login attempt at 2025-09-26 16:59:52
+[26-Sep-2025 16:59:52 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 16:59:52 Europe/Berlin] User lookup: found user
+[26-Sep-2025 16:59:52 Europe/Berlin] Email verified: yes
+[26-Sep-2025 16:59:52 Europe/Berlin] Login attempt - User is blocked: random.koala497@passinbox.com
+[26-Sep-2025 16:59:52 Europe/Berlin] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[2025-09-26 16:59:52] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[26-Sep-2025 16:59:53 Europe/Berlin] ============================================================
+[26-Sep-2025 16:59:53 Europe/Berlin] Login attempt at 2025-09-26 16:59:53
+[26-Sep-2025 16:59:53 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 16:59:53 Europe/Berlin] User lookup: found user
+[26-Sep-2025 16:59:53 Europe/Berlin] Email verified: yes
+[26-Sep-2025 16:59:53 Europe/Berlin] Login attempt - User is blocked: random.koala497@passinbox.com
+[26-Sep-2025 16:59:53 Europe/Berlin] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[2025-09-26 16:59:53] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[26-Sep-2025 17:00:07 Europe/Berlin] ============================================================
+[26-Sep-2025 17:00:07 Europe/Berlin] Login attempt at 2025-09-26 17:00:07
+[26-Sep-2025 17:00:07 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 17:00:07 Europe/Berlin] User lookup: found user
+[26-Sep-2025 17:00:07 Europe/Berlin] Email verified: yes
+[26-Sep-2025 17:00:07 Europe/Berlin] Login attempt - User is blocked: random.koala497@passinbox.com
+[26-Sep-2025 17:00:07 Europe/Berlin] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[2025-09-26 17:00:07] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[26-Sep-2025 17:01:13 Europe/Berlin] ============================================================
+[26-Sep-2025 17:01:13 Europe/Berlin] Login attempt at 2025-09-26 17:01:13
+[26-Sep-2025 17:01:13 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 17:01:14 Europe/Berlin] User lookup: found user
+[26-Sep-2025 17:01:14 Europe/Berlin] Email verified: yes
+[26-Sep-2025 17:01:14 Europe/Berlin] Login attempt - User is blocked: random.koalaa497@passinbox.com
+[26-Sep-2025 17:01:14 Europe/Berlin] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[2025-09-26 17:01:14] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[26-Sep-2025 17:02:03 Europe/Berlin] ============================================================
+[26-Sep-2025 17:02:03 Europe/Berlin] Login attempt at 2025-09-26 17:02:03
+[26-Sep-2025 17:02:03 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 17:02:03 Europe/Berlin] User lookup: found user
+[26-Sep-2025 17:02:03 Europe/Berlin] Email verified: yes
+[26-Sep-2025 17:02:03 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[26-Sep-2025 17:02:03 Europe/Berlin] Session cookie set: yes
+[26-Sep-2025 17:02:03 Europe/Berlin] Session variables set for user_id 16
+[26-Sep-2025 17:21:48 Europe/Berlin] ============================================================
+[26-Sep-2025 17:21:48 Europe/Berlin] Login attempt at 2025-09-26 17:21:48
+[26-Sep-2025 17:21:48 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 17:21:48 Europe/Berlin] User lookup: found user
+[26-Sep-2025 17:21:48 Europe/Berlin] Email verified: yes
+[26-Sep-2025 17:21:48 Europe/Berlin] Login attempt - User: random.koala497@passinbox.com, Password match: yes
+[26-Sep-2025 17:21:48 Europe/Berlin] Session cookie set: yes
+[26-Sep-2025 17:21:48 Europe/Berlin] Session variables set for user_id 18
+[26-Sep-2025 17:29:02 Europe/Berlin] ============================================================
+[26-Sep-2025 17:29:02 Europe/Berlin] Login attempt at 2025-09-26 17:29:02
+[26-Sep-2025 17:29:02 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 17:29:02 Europe/Berlin] User lookup: found user
+[26-Sep-2025 17:29:02 Europe/Berlin] Email verified: yes
+[26-Sep-2025 17:29:02 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[26-Sep-2025 17:29:02 Europe/Berlin] Session cookie set: yes
+[26-Sep-2025 17:29:02 Europe/Berlin] Session variables set for user_id 16
+[26-Sep-2025 21:58:02 Europe/Berlin] ============================================================
+[26-Sep-2025 21:58:02 Europe/Berlin] Login attempt at 2025-09-26 21:58:02
+[26-Sep-2025 21:58:02 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[26-Sep-2025 21:58:02 Europe/Berlin] User lookup: found user
+[26-Sep-2025 21:58:02 Europe/Berlin] Email verified: yes
+[26-Sep-2025 21:58:02 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[26-Sep-2025 21:58:02 Europe/Berlin] Session cookie set: yes
+[26-Sep-2025 21:58:02 Europe/Berlin] Session variables set for user_id 16
+[27-Sep-2025 00:09:42 Europe/Berlin] ============================================================
+[27-Sep-2025 00:09:42 Europe/Berlin] Login attempt at 2025-09-27 00:09:42
+[27-Sep-2025 00:09:42 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 00:09:42 Europe/Berlin] User lookup: found user
+[27-Sep-2025 00:09:42 Europe/Berlin] Email verified: no
+[27-Sep-2025 00:09:42 Europe/Berlin] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[2025-09-27 00:09:42] Login error: Please verify your email before logging in. Check your inbox. [Code: not_verified]
+[27-Sep-2025 00:09:54 Europe/Berlin] ============================================================
+[27-Sep-2025 00:09:54 Europe/Berlin] Login attempt at 2025-09-27 00:09:54
+[27-Sep-2025 00:09:54 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 00:09:54 Europe/Berlin] User lookup: found user
+[27-Sep-2025 00:09:54 Europe/Berlin] Email verified: yes
+[27-Sep-2025 00:09:54 Europe/Berlin] Login attempt - User is blocked: farkasg00abor102403@gmail.com
+[27-Sep-2025 00:09:54 Europe/Berlin] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[2025-09-27 00:09:54] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[27-Sep-2025 00:09:59 Europe/Berlin] ============================================================
+[27-Sep-2025 00:09:59 Europe/Berlin] Login attempt at 2025-09-27 00:09:59
+[27-Sep-2025 00:09:59 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 00:09:59 Europe/Berlin] User lookup: found user
+[27-Sep-2025 00:09:59 Europe/Berlin] Email verified: yes
+[27-Sep-2025 00:09:59 Europe/Berlin] Login attempt - User is blocked: farkasg00abor102403@gmail.com
+[27-Sep-2025 00:09:59 Europe/Berlin] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[2025-09-27 00:09:59] Login error: This account has been blocked. Please contact support for assistance. [Code: account_blocked]
+[27-Sep-2025 00:10:27 Europe/Berlin] ============================================================
+[27-Sep-2025 00:10:27 Europe/Berlin] Login attempt at 2025-09-27 00:10:27
+[27-Sep-2025 00:10:27 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 00:10:27 Europe/Berlin] User lookup: found user
+[27-Sep-2025 00:10:27 Europe/Berlin] Email verified: yes
+[27-Sep-2025 00:10:27 Europe/Berlin] Login attempt - User: farkasg00abor102403@gmail.com, Password match: yes
+[27-Sep-2025 00:10:27 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 00:10:27 Europe/Berlin] Session variables set for user_id 24
+[27-Sep-2025 00:42:57 Europe/Berlin] ============================================================
+[27-Sep-2025 00:42:57 Europe/Berlin] Login attempt at 2025-09-27 00:42:57
+[27-Sep-2025 00:42:57 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 00:42:57 Europe/Berlin] User lookup: found user
+[27-Sep-2025 00:42:57 Europe/Berlin] Email verified: yes
+[27-Sep-2025 00:42:57 Europe/Berlin] Login attempt - User: farkasg00abor102403@gmail.com, Password match: yes
+[27-Sep-2025 00:42:57 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 00:42:57 Europe/Berlin] Session variables set for user_id 24

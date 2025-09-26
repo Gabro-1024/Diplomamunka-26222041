@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/auth_check.php';
 // Check if user is admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('HTTP/1.0 403 Forbidden');
-    var_dump($_SESSION);
+//    var_dump($_SESSION);
     die('Access Denied');
 }
 
@@ -46,35 +46,7 @@ $ticketsSold = $ticketsStmt->fetch(PDO::FETCH_ASSOC)['count'];
 <body>
     <div class="d-flex">
         <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h3 class="text-white">Tickets @ Gábor</h3>
-                <p class="text-muted">Admin Panel</p>
-            </div>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a href="dashboard.php" class="nav-link active">
-                        <i class='bx bxs-dashboard'></i> Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="events.php" class="nav-link">
-                        <i class='bx bxs-calendar-event'></i> Events
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="users.php" class="nav-link">
-                        <i class='bx bxs-user'></i> Users
-                    </a>
-                </li>
-                <li class="nav-item mt-4">
-                    <a href="../logout.php" class="nav-link text-danger">
-                        <i class='bx bx-log-out'></i> Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
-
+        <?php include 'includes/sidebar.php'; ?>
         <!-- Main Content -->
         <div class="main-content">
             <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">

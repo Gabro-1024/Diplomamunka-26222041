@@ -119,7 +119,7 @@ try {
             </div>
           </div>
           <div class="blog-detail-img" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
-            <img src="<?php echo htmlspecialchars(!empty($venue['cover_image']) ? $venue['cover_image'] : '../assets/images/portfolio/portfolio-img-1.jpg'); ?>" alt="<?php echo htmlspecialchars($venue['name']); ?>" class="img-fluid">
+            <img src="<?php echo htmlspecialchars(!empty($venue['cover_image']) ? $venue['cover_image'] : '../assets/images/portfolio/portfolio-img-19.jpg'); ?>" alt="<?php echo htmlspecialchars($venue['name']); ?>" class="img-fluid">
           </div>
         </div>
         <?php endif; ?>

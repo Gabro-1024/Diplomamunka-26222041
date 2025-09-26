@@ -78,7 +78,15 @@ try {
         error_log($errorMsg);
         file_put_contents($logFile, date('[Y-m-d H:i:s] ') . $errorMsg . "\n", FILE_APPEND);
         $response['code'] = 'auth_error';
-        throw new Exception('An error occurred during authentication. Please try again later.');
+        switch ($response['code']) {
+            case 'auth_error':
+                $errorMessage = 'An authentication error occurred. Please try again later.';
+                break;
+            case 'account_blocked':
+                $errorMessage = 'This account has been blocked. Please contact support for assistance.';
+                break;
+        }
+        throw new Exception($errorMessage);
     }
 
     // First check if user exists
@@ -96,7 +104,17 @@ try {
         throw new Exception('Please verify your email before logging in. Check your inbox.');
     }
 
-    // Finally, verify the password
+    // Check if user is blocked (unless they're an admin)
+    $isAdmin = isset($user['role']) && $user['role'] === 'admin';
+    $isBlocked = (int)$user['is_blocked'];
+    
+    if ($isBlocked && !$isAdmin) {
+        error_log('Login attempt - User is blocked: ' . $email);
+        $response['code'] = 'account_blocked';
+        throw new Exception('This account has been blocked. Please contact support for assistance.');
+    }
+    
+    // Verify the password
     $pwdOk = password_verify($password, $user['password_hash'] ?? '');
     error_log('Login attempt - User: ' . $email . ', Password match: ' . ($pwdOk ? 'yes' : 'no'));
     
@@ -153,7 +171,12 @@ try {
         $pdo->commit();
 
         $response['success'] = true;
-        $response['redirect'] = 'http://localhost:63342/Diplomamunka-26222041/php/index.php';
+        // Redirect workers to ticket management, others to home page
+        if (isset($user['role']) && $user['role'] === 'worker') {
+            $response['redirect'] = 'http://localhost/Diplomamunka-26222041/php/worker_sites/ticket_management.php';
+        } else {
+            $response['redirect'] = 'http://localhost/Diplomamunka-26222041/php/index.php';
+        }
         $response['message'] = 'Login successful!';
 
     } catch (Throwable $e) {
