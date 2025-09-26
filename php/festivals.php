@@ -96,7 +96,7 @@ try {
                   }
                   
                   // Get the event's cover image from the database
-                  $imagePath = !empty($row['cover_image']) ? htmlspecialchars($row['cover_image']) : "../assets/images/portfolio/portfolio-img-1.jpg";
+                  $imagePath = !empty($row['cover_image']) ? htmlspecialchars($row['cover_image']) : "../assets/images/portfolio/portfolio-img-19.jpg";
                   
                   // Output the festival card
                   echo '<div class="col-lg-6 mb-7">

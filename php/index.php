@@ -646,7 +646,7 @@ if (isset($_GET['payment'])) {
             <div class="item">
               <div class="portfolio d-flex flex-column gap-6">
                 <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-1.jpg" alt="" class="img-fluid">
+                  <img src="../assets/images/portfolio/portfolio-img-19.jpg" alt="" class="img-fluid">
                   <div class="portfolio-overlay">
                     <a href="projects-detail.html"
                       class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
@@ -686,7 +686,7 @@ if (isset($_GET['payment'])) {
             <div class="item">
               <div class="portfolio d-flex flex-column gap-6">
                 <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-3.jpg" alt="" class="img-fluid">
+                  <img src="../assets/images/portfolio/portfolio-img-21.jpg" alt="" class="img-fluid">
                   <div class="portfolio-overlay">
                     <a href="projects-detail.html"
                       class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
@@ -706,7 +706,7 @@ if (isset($_GET['payment'])) {
             <div class="item">
               <div class="portfolio d-flex flex-column gap-6">
                 <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-4.jpg" alt="" class="img-fluid">
+                  <img src="../assets/images/portfolio/portfolio-img-20.jpg" alt="" class="img-fluid">
                   <div class="portfolio-overlay">
                     <a href="projects-detail.html"
                       class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
@@ -726,7 +726,7 @@ if (isset($_GET['payment'])) {
             <div class="item">
               <div class="portfolio d-flex flex-column gap-6">
                 <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-5.jpg" alt="" class="img-fluid">
+                  <img src="../assets/images/portfolio/portfolio-img-22.jpg" alt="" class="img-fluid">
                   <div class="portfolio-overlay">
                     <a href="projects-detail.html"
                       class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">

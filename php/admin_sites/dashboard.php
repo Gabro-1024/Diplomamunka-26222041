@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/auth_check.php';
 // Check if user is admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('HTTP/1.0 403 Forbidden');
-    var_dump($_SESSION);
+//    var_dump($_SESSION);
     die('Access Denied');
 }
 

@@ -19,15 +19,32 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $conn->beginTransaction();
     
     try {
-        // Delete related records first using prepared statements
-        $conn->prepare("DELETE FROM event_categories WHERE event_id = ?")->execute([$eventId]);
-        $conn->prepare("DELETE FROM ticket_types WHERE event_id = ?")->execute([$eventId]);
+        // First, get the event to find the cover image path
+        $eventStmt = $conn->prepare("SELECT cover_image FROM events WHERE id = ?");
+        $eventStmt->execute([$eventId]);
+        $event = $eventStmt->fetch(PDO::FETCH_ASSOC);
         
-        // Delete the event
-        $conn->prepare("DELETE FROM events WHERE id = ?")->execute([$eventId]);
-        
-        $conn->commit();
-        $_SESSION['success_message'] = 'Event deleted successfully!';
+        if ($event) {
+            // Delete the cover image if it exists
+            if (!empty($event['cover_image'])) {
+                $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/Diplomamunka-26222041/' . ltrim($event['cover_image'], '/');
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+            
+            // Delete related records first using prepared statements
+            $conn->prepare("DELETE FROM event_categories WHERE event_id = ?")->execute([$eventId]);
+            $conn->prepare("DELETE FROM ticket_types WHERE event_id = ?")->execute([$eventId]);
+            
+            // Delete the event
+            $conn->prepare("DELETE FROM events WHERE id = ?")->execute([$eventId]);
+            
+            $conn->commit();
+            $_SESSION['success_message'] = 'Event and associated data deleted successfully!';
+        } else {
+            throw new Exception('Event not found');
+        }
     } catch (Exception $e) {
         $conn->rollBack();
         $_SESSION['error_message'] = 'Error deleting event: ' . $e->getMessage();
@@ -112,8 +129,21 @@ $events = $conn->query("
                                             <td><?php echo $counter++; ?></td>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <?php if (!empty($event['cover_image'])): ?>
-                                                        <img src="<?php echo htmlspecialchars($event['cover_image']); ?>" 
+                                                    <?php 
+                                                    $coverImage = '';
+                                                    if (!empty($event['cover_image'])) {
+                                                        // If it's a full URL, use it directly
+                                                        if (filter_var($event['cover_image'], FILTER_VALIDATE_URL)) {
+                                                            $coverImage = $event['cover_image'];
+                                                        } 
+                                                        // If it's a relative path, use the specified base URL
+                                                        else {
+                                                            $coverImage = 'http://localhost:63342/Diplomamunka-26222041/' . ltrim($event['cover_image']);
+                                                        }
+                                                    }
+                                                    ?>
+                                                    <?php if (!empty($coverImage)): ?>
+                                                        <img src="<?php echo htmlspecialchars($coverImage); ?>" 
                                                              alt="<?php echo htmlspecialchars($event['name']); ?>" 
                                                              class="rounded me-3" width="50" height="50" style="object-fit: cover;">
                                                     <?php endif; ?>
@@ -131,8 +161,8 @@ $events = $conn->query("
                                                     <a href="event_edit.php?id=<?php echo $event['id']; ?>" class="btn btn-sm btn-outline-primary">
                                                         <i class='bx bx-edit text-white'></i>
                                                     </a>
-                                                    <a href="#" onclick="confirmDelete(<?php echo $event['id']; ?>)" class="btn btn-sm btn-outline-danger">
-                                                        <i class='bx bx-trash'></i>
+                                                    <a href="#" onclick="confirmDelete(<?php echo $event['id']; ?>)" class="btn btn-sm btn-outline-danger" title="Delete Event">
+                                                        <i class='bx bx-trash'></i> Delete
                                                     </a>
                                                 </div>
                                             </td>
