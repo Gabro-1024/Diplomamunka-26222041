@@ -2,76 +2,92 @@
 require_once __DIR__ . '/../includes/db_connect.php';
 require_once __DIR__ . '/../includes/auth_check.php';
 
-// Initialize database connection
-$conn = db_connect();
-
 // Check if user is admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('HTTP/1.0 403 Forbidden');
     die('Access Denied');
 }
 
-// Handle user deletion
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $userId = (int)$_GET['delete'];
-    
-    // Prevent deleting own account
-    if ($userId === $_SESSION['user_id']) {
-        $_SESSION['error_message'] = 'You cannot delete your own account!';
-    } else {
-        // Start transaction
-        $conn->beginTransaction();
-        
-        try {
-            // Delete related records first (simplified example - adjust based on your database constraints)
-            $conn->prepare("DELETE FROM user_interests WHERE user_id = ?")->execute([$userId]);
-            
-            // Delete the user
-            $conn->prepare("DELETE FROM users WHERE id = ?")->execute([$userId]);
-            
-            $conn->commit();
-            $_SESSION['success_message'] = 'User deleted successfully!';
-        } catch (Exception $e) {
-            $conn->rollBack();
-            $_SESSION['error_message'] = 'Error deleting user: ' . $e->getMessage();
-        }
-    }
-    
-    header('Location: users.php');
-    exit();
+// Get PDO connection
+try {
+    $pdo = db_connect();
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
 }
 
-// Handle role update
-if (isset($_POST['update_role']) && is_numeric($_POST['user_id'])) {
+// Define valid roles
+$validRoles = ['raver', 'organizer', 'worker', 'admin'];
+
+// Handle user role update
+if (isset($_POST['update_role']) && isset($_POST['user_id']) && isset($_POST['role'])) {
     $userId = (int)$_POST['user_id'];
-    $newRole = $_POST['role'];
+    $newRole = in_array($_POST['role'], $validRoles) ? $_POST['role'] : 'raver';
     
-    // Prevent changing own role
-    if ($userId === $_SESSION['user_id']) {
-        $_SESSION['error_message'] = 'You cannot change your own role!';
-    } else {
-        $stmt = $conn->prepare("UPDATE users SET role = ? WHERE id = ?");
-        $stmt->execute([$newRole, $userId]);
+    try {
+        $stmt = $pdo->prepare("UPDATE users SET role = :role WHERE id = :id");
+        $stmt->execute([':role' => $newRole, ':id' => $userId]);
         
         if ($stmt->rowCount() > 0) {
             $_SESSION['success_message'] = 'User role updated successfully!';
         } else {
-            $_SESSION['error_message'] = 'Failed to update user role or no changes were made.';
+            $_SESSION['error_message'] = 'No changes were made to the user role.';
         }
+    } catch (PDOException $e) {
+        $_SESSION['error_message'] = 'Error updating user role: ' . $e->getMessage();
     }
     
-    header('Location: users.php');
+    header('Location: ' . $_SERVER['PHP_SELF']);
     exit();
 }
 
-// Fetch all users with their ticket counts
-$users = $conn->query("
-    SELECT u.*, 
-           (SELECT COUNT(*) FROM tickets t WHERE t.owner_id = u.id) as ticket_count,
-           (SELECT COUNT(*) FROM events e WHERE e.organizer_id = u.id) as events_organized
-    FROM users u
-    ORDER BY u.created_at DESC
-")->fetchAll(PDO::FETCH_ASSOC);
+// Handle user blocking/unblocking
+if (isset($_POST['toggle_block_user'])) {
+    $userId = (int)$_POST['toggle_block_user'];
+    
+    // Prevent blocking own account
+    if (isset($_SESSION['user_id']) && $userId === (int)$_SESSION['user_id']) {
+        $_SESSION['error_message'] = 'You cannot block your own account!';
+    } else {
+        try {
+            // Toggle the block status
+            $stmt = $pdo->prepare("UPDATE users SET is_blocked = NOT is_blocked WHERE id = :id");
+            $stmt->execute([':id' => $userId]);
+            
+            if ($stmt->rowCount() > 0) {
+                // Get the new status to show in the message
+                $stmt = $pdo->prepare("SELECT is_blocked FROM users WHERE id = :id");
+                $stmt->execute([':id' => $userId]);
+                $newStatus = $stmt->fetchColumn();
+                
+                $action = $newStatus ? 'blocked' : 'unblocked';
+                $_SESSION['success_message'] = "User has been $action successfully!";
+            } else {
+                $_SESSION['error_message'] = 'User not found or no changes were made.';
+            }
+        } catch (PDOException $e) {
+            $_SESSION['error_message'] = 'Error updating user status: ' . $e->getMessage();
+        }
+    }
+    
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+// Fetch all users with their ticket counts (excluding the current admin)
+try {
+    $stmt = $pdo->prepare("
+        SELECT u.*, 
+               (SELECT COUNT(*) FROM tickets t WHERE t.owner_id = u.id) as ticket_count,
+               (SELECT COUNT(*) FROM events e WHERE e.organizer_id = u.id) as events_organized
+        FROM users u
+        WHERE u.id != :current_user_id
+        ORDER BY u.created_at DESC
+    ");
+    $stmt->execute([':current_user_id' => $_SESSION['user_id']]);
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error fetching users: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,12 +98,13 @@ $users = $conn->query("
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link href="../../assets/css/admin.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../../assets/images/logos/favicon.svg">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
     <div class="d-flex">
         <!-- Sidebar -->
-        <?php include 'includes/sidebar.php'; ?>
+        <?php include 'includes/sidebar.php';?>
 
         <!-- Main Content -->
         <div class="main-content">
@@ -95,9 +112,7 @@ $users = $conn->query("
                 <div class="container-fluid">
                     <h4 class="mb-0">Manage Users</h4>
                     <div class="d-flex align-items-center">
-                        <a href="user_add.php" class="btn btn-primary">
-                            <i class='bx bx-user-plus'></i> Add New User
-                        </a>
+                        <!-- User management actions can be added here in the future -->
                     </div>
                 </div>
             </nav>
@@ -136,7 +151,8 @@ $users = $conn->query("
                                         <th>Tickets</th>
                                         <th>Events</th>
                                         <th>Joined</th>
-                                        <th>Actions</th>
+                                        <th>Status</th>
+                                        <th class="text-end">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -158,7 +174,7 @@ $users = $conn->query("
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
+                                                <td><?php echo htmlspecialchars($user['email']); ?></td>
                                                 <td>
                                                     <span class="badge bg-<?php echo $user['role'] === 'admin' ? 'primary' : 'secondary'; ?>">
                                                         <?php echo ucfirst($user['role']); ?>
@@ -166,30 +182,39 @@ $users = $conn->query("
                                                 </td>
                                                 <td><?php echo $user['ticket_count']; ?></td>
                                                 <td><?php echo $user['events_organized']; ?></td>
+                                                <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
                                                 <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" 
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                            Actions
+                                                    <span class="badge bg-<?php echo $user['role'] === 'admin' ? 'primary' : 'secondary'; ?>">
+                                                        <?php echo ucfirst($user['role']); ?>
+                                                    </span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <div class="btn-group btn-group-sm" role="group">
+                                                        <button type="button" 
+                                                                class="btn btn-outline-secondary"
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#roleModal"
+                                                                data-user-id="<?php echo $user['id']; ?>"
+                                                                data-user-name="<?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>"
+                                                                data-current-role="<?php echo $user['role']; ?>"
+                                                                style="background-color: #f8f9fa !important; border-radius: 20%; margin: 3px;">
+                                                            <i class='bx <?php echo $user['role'] === 'admin' ? 'bx-shield-x' : 'bx-shield'; ?>'></i>
                                                         </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li>
-                                                                <form method="post" class="d-inline">
-                                                                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                                                    <input type="hidden" name="role" value="<?php echo $user['role'] === 'admin' ? 'user' : 'admin'; ?>">
-                                                                    <button type="submit" name="update_role" class="dropdown-item">
-                                                                        <?php echo $user['role'] === 'admin' ? 'Remove Admin' : 'Make Admin'; ?>
-                                                                    </button>
-                                                                </form>
-                                                            </li>
-                                                            <li><hr class="dropdown-divider"></li>
-                                                            <li>
-                                                                <a href="#" class="dropdown-item text-danger" 
-                                                                   onclick="return confirmDelete(<?php echo $user['id']; ?>, '<?php echo addslashes($user['first_name'] . ' ' . $user['last_name']); ?>')">
-                                                                    Delete User
-                                                                </a>
-                                                            </li>
-                                                        </ul>
+                                                        <?php if ($user['is_blocked']): ?>
+                                                            <form method="post" class="d-inline">
+                                                                <input type="hidden" name="toggle_block_user" value="<?php echo $user['id']; ?>">
+                                                                <button type="submit" class="btn btn-sm" title="Unblock User" style="background-color: #f8f9fa !important; color: #198754;">
+                                                                    <i class='bx bx-lock-open-alt me-1'></i> Unblock
+                                                                </button>
+                                                            </form>
+                                                        <?php else: ?>
+                                                            <form method="post" class="d-inline">
+                                                                <input type="hidden" name="toggle_block_user" value="<?php echo $user['id']; ?>">
+                                                                <button type="submit" class="btn btn-sm" title="Block User" onclick="return confirm('Are you sure you want to block this user? They will be logged out and unable to log in again until unblocked.');" style="background-color: #f8f9fa !important; color: #dc3545;">
+                                                                    <i class='bx bx-lock me-1'></i> Block
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -210,8 +235,188 @@ $users = $conn->query("
         </div>
     </div>
 
+    <!-- Role Change Modal -->
+    <div class="modal fade" id="roleModal" tabindex="-1" aria-labelledby="roleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" id="roleForm">
+                    <input type="hidden" name="update_role" value="1">
+                    <input type="hidden" name="user_id" id="modalUserId">
+                    <input type="hidden" name="role" id="modalNewRole">
+                    
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="roleModalLabel">Change User Role</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Change role for <strong id="userNameDisplay"></strong> from <span id="currentRole" class="badge"></span> to:</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="button" class="btn btn-outline-primary flex-fill role-option mb-2" data-role="raver">
+                                <i class='bx bx-user'></i> Raver
+                            </button>
+                            <button type="button" class="btn btn-outline-success flex-fill role-option mb-2" data-role="organizer">
+                                <i class='bx bx-calendar-event'></i> Organizator
+                            </button>
+                            <button type="button" class="btn btn-outline-info flex-fill role-option mb-2" data-role="worker">
+                                <i class='bx bx-briefcase'></i> Worker
+                            </button>
+                            <button type="button" class="btn btn-outline-warning flex-fill role-option" data-role="admin">
+                                <i class='bx bx-shield'></i> Admin
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" name="update_role" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Role change modal handling
+        const roleModal = document.getElementById('roleModal');
+        if (roleModal) {
+            roleModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const userId = button.getAttribute('data-user-id');
+                const userName = button.getAttribute('data-user-name');
+                const currentRole = button.getAttribute('data-current-role');
+
+                // Update the modal's content
+                const modalTitle = roleModal.querySelector('.modal-title');
+                const userNameDisplay = roleModal.querySelector('#userNameDisplay');
+                const currentRoleBadge = roleModal.querySelector('#currentRole');
+                const userIdInput = roleModal.querySelector('#modalUserId');
+                const roleInput = roleModal.querySelector('#modalNewRole');
+
+                modalTitle.textContent = `Change Role for ${userName}`;
+                userNameDisplay.textContent = userName;
+                
+                // Format current role display
+                const roleNames = {
+                    'raver': 'Raver',
+                    'organizator': 'Organizator',
+                    'worker': 'Worker',
+                    'admin': 'Admin'
+                };
+                const roleColors = {
+                    'raver': 'primary',
+                    'organizator': 'success',
+                    'worker': 'info',
+                    'admin': 'warning'
+                };
+                
+                currentRoleBadge.className = 'badge bg-' + (roleColors[currentRole] || 'secondary') + ' text-capitalize';
+                currentRoleBadge.textContent = roleNames[currentRole] || currentRole;
+                
+                userIdInput.value = userId;
+                roleInput.value = currentRole;
+
+                // Update active state of role buttons
+                roleModal.querySelectorAll('.role-option').forEach(btn => {
+                    btn.classList.remove('active', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning');
+                    if (btn.dataset.role === currentRole) {
+                        btn.classList.add('active', 'btn-' + (roleColors[currentRole] || 'primary'));
+                    } else {
+                        btn.classList.add('btn-outline-' + (roleColors[btn.dataset.role] || 'secondary'));
+                    }
+                });
+            });
+            
+            // Handle role selection
+            document.querySelectorAll('.role-option').forEach(button => {
+                button.addEventListener('click', function() {
+                    const role = this.dataset.role;
+                    const roleColors = {
+                        'raver': 'primary',
+                        'organizator': 'success',
+                        'worker': 'info',
+                        'admin': 'warning'
+                    };
+                    
+                    document.getElementById('modalNewRole').value = role;
+                    
+                    // Update button states
+                    document.querySelectorAll('.role-option').forEach(btn => {
+                        const btnRole = btn.dataset.role;
+                        btn.classList.remove('active', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 
+                                          'btn-outline-primary', 'btn-outline-success', 'btn-outline-info', 'btn-outline-warning');
+                        if (btn === this) {
+                            btn.classList.add('active', 'btn-' + (roleColors[role] || 'primary'));
+                        } else {
+                            btn.classList.add('btn-outline-' + (roleColors[btnRole] || 'secondary'));
+                        }
+                    });
+                });
+            });
+
+            // Form submission
+            const roleForm = document.getElementById('roleForm');
+            if (roleForm) {
+                roleForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    
+                    fetch(window.location.href, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while updating the user role.');
+                    });
+                });
+            }
+        }
+        
+        // Confirm delete function
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle action rows
+            document.querySelectorAll('.toggle-actions').forEach(button => {
+                    const userId = this.getAttribute('data-user-id');
+                    const actionRow = document.getElementById(`action-row-${userId}`);
+                    const isVisible = actionRow.style.display === 'table-row';
+                    
+                    // Hide all other open action rows
+                    document.querySelectorAll('.action-row').forEach(row => {
+                        if (row.id !== `action-row-${userId}`) {
+                            row.style.display = 'none';
+                            const btn = row.previousElementSibling.querySelector('.toggle-actions');
+                            if (btn) btn.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current row
+                    actionRow.style.display = isVisible ? 'none' : 'table-row';
+                    this.classList.toggle('active', !isVisible);
+                });
+            });
+            
+            // Close action rows when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.toggle-actions') && !e.target.closest('.action-buttons')) {
+                    document.querySelectorAll('.action-row').forEach(row => {
+                        row.style.display = 'none';
+                    });
+                    document.querySelectorAll('.toggle-actions').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                }
+            });
+        });
+    </script>
     <script>
         function confirmDelete(userId) {
             Swal.fire({
