@@ -1,0 +1,20 @@
+{
+    "time": "2025-09-27 16:03:16",
+    "session_id": "cs_test_b1Xw9rgxT9PJcMEZdkejcyFWreGlKnmFxKmQMc64pCiAclhZqkSWcTSJ20",
+    "user_id": 16,
+    "event_id": 69,
+    "items": [
+        {
+            "ticket_type_id": 219,
+            "ticket_type": "regular",
+            "price_huf": 10000,
+            "quantity": 1
+        },
+        {
+            "ticket_type_id": 220,
+            "ticket_type": "vip",
+            "price_huf": 15000,
+            "quantity": 3
+        }
+    ]
+}

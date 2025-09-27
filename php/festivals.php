@@ -27,6 +27,38 @@ try {
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
+  <style>
+    .portfolio-details h3 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    
+    .portfolio-details .badge {
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    
+    .portfolio-details p.text-muted {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: 3em; /* 2 lines of text */
+    }
+    
+    /* Ensure badges wrap properly on small screens */
+    .hstack.gap-2 {
+      flex-wrap: wrap;
+      gap: 0.5rem !important;
+    }
+  </style>
 </head>
 
 <body>

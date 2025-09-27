@@ -82,12 +82,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($formData['birth_date'])) {
         $birthDate = new DateTime($formData['birth_date']);
         $today = new DateTime();
-        $minAgeDate = (new DateTime())->modify('-16 years');
+        $minAgeDate = (new DateTime())->modify('-18 years');
+        $maxAgeDate = (new DateTime())->modify('-100 years');
 
         if ($birthDate > $today) {
             $errors['birth_date'] = 'Birth date cannot be in the future.';
         } elseif ($birthDate > $minAgeDate) {
-            $errors['birth_date'] = 'You must be at least 16 years old.';
+            $errors['birth_date'] = 'You must be at least 18 years old to register.';
+        } elseif ($birthDate < $maxAgeDate) {
+            $errors['birth_date'] = 'You must be under 100 years old to register.';
         }
     }
 
@@ -308,16 +311,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <!-- Password -->
                             <div class="col-md-6">
                                 <label for="password" class="form-label text-graphite">Password</label>
-                                <input type="password"
-                                       name="password"
-                                       id="password"
-                                       class="form-control border-bottom <?php echo isset($errors['password']) ? 'is-invalid' : ''; ?>"
-                                       minlength="8"
-                                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"
-                                       title="Must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number"
-                                       required>
-                                <div class="invalid-feedback">
-                                    <?php echo $errors['password'] ?? ''; ?>
+                                <div class="position-relative">
+                                    <input type="password"
+                                           name="password"
+                                           id="password"
+                                           class="form-control border-bottom <?php echo isset($errors['password']) ? 'is-invalid' : ''; ?>"
+                                           aria-describedby="passwordHelp"
+                                           minlength="8"
+                                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"
+                                           title=""
+                                           required>
+                                    <div class="invalid-feedback">
+                                        <?php echo $errors['password'] ?? ''; ?>
+                                    </div>
+                                    <div id="passwordHelp" class="form-text small text-muted">
+                                        <div id="length" class="text-danger">• At least 8 characters</div>
+                                        <div id="uppercase" class="text-danger">• At least one uppercase letter</div>
+                                        <div id="lowercase" class="text-danger">• At least one lowercase letter</div>
+                                        <div id="number" class="text-danger">• At least one number</div>
+                                    </div>
+                                    <button type="button" class="btn btn-link p-0 position-absolute end-0 top-0 mt-2 me-2 text-decoration-none" id="togglePassword">
+                                        <i class="far fa-eye"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -343,6 +358,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                        id="birth_date"
                                        class="form-control border-bottom <?php echo isset($errors['birth_date']) ? 'is-invalid' : ''; ?>"
                                        value="<?php echo htmlspecialchars($formData['birth_date']); ?>"
+                                       min="<?php echo date('Y-m-d', strtotime('-100 years')); ?>"
                                        max="<?php echo date('Y-m-d', strtotime('-16 years')); ?>">
                                 <div class="invalid-feedback">
                                     <?php echo $errors['birth_date'] ?? ''; ?>
@@ -403,8 +419,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <p class="text-center mb-1 d-block fw-medium">
                         By creating an account, you agree with our
-                        <a class="link-accent-blue" href="privacy-policy.html">Privacy</a> and
-                        <a class="link-accent-blue" href="terms.html">Terms</a>.
+                        <a class="link-accent-blue" href="privacy-policy.php">Privacy</a> and
+                        <a class="link-accent-blue" href="terms.php">Terms</a>.
                     </p>
                     <p class="mb-0 fw-medium text-center">
                         Already have an account?
@@ -417,6 +433,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <script>
+    // Password visibility toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+        
+        if (togglePassword && password) {
+            togglePassword.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+        }
+    });
+
+    // Password validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password');
+        const length = document.getElementById('length');
+        const uppercase = document.getElementById('uppercase');
+        const lowercase = document.getElementById('lowercase');
+        const number = document.getElementById('number');
+
+        if (passwordInput) {
+            passwordInput.addEventListener('input', function() {
+                const value = this.value;
+                
+                // Check length
+                if (value.length >= 8) {
+                    length.classList.remove('text-danger');
+                    length.classList.add('text-success');
+                } else {
+                    length.classList.remove('text-success');
+                    length.classList.add('text-danger');
+                }
+                
+                // Check uppercase
+                if (/[A-Z]/.test(value)) {
+                    uppercase.classList.remove('text-danger');
+                    uppercase.classList.add('text-success');
+                } else {
+                    uppercase.classList.remove('text-success');
+                    uppercase.classList.add('text-danger');
+                }
+                
+                // Check lowercase
+                if (/[a-z]/.test(value)) {
+                    lowercase.classList.remove('text-danger');
+                    lowercase.classList.add('text-success');
+                } else {
+                    lowercase.classList.remove('text-success');
+                    lowercase.classList.add('text-danger');
+                }
+                
+                // Check number
+                if (/\d/.test(value)) {
+                    number.classList.remove('text-danger');
+                    number.classList.add('text-success');
+                } else {
+                    number.classList.remove('text-success');
+                    number.classList.add('text-danger');
+                }
+            });
+        }
+    });
+
     // Client-side validation
     (function() {
         'use strict';

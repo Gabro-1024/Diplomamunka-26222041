@@ -648,7 +648,7 @@ if (isset($_GET['payment'])) {
                 <div class="portfolio-img position-relative overflow-hidden">
                   <img src="../assets/images/portfolio/portfolio-img-19.jpg" alt="" class="img-fluid">
                   <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
+                    <a href="festival-detail.php?id=19"
                       class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
                       <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
                     </a>
@@ -666,9 +666,9 @@ if (isset($_GET['payment'])) {
             <div class="item">
               <div class="portfolio d-flex flex-column gap-6">
                 <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-2.jpg" alt="" class="img-fluid">
+                  <img src="../assets/images/portfolio/portfolio-img-20.jpg" alt="" class="img-fluid">
                   <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
+                    <a href="festival-detail.php?id=20"
                       class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
                       <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
                     </a>
@@ -688,7 +688,7 @@ if (isset($_GET['payment'])) {
                 <div class="portfolio-img position-relative overflow-hidden">
                   <img src="../assets/images/portfolio/portfolio-img-21.jpg" alt="" class="img-fluid">
                   <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
+                    <a href="festival-detail.php?id=21"
                       class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
                       <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
                     </a>
@@ -706,9 +706,9 @@ if (isset($_GET['payment'])) {
             <div class="item">
               <div class="portfolio d-flex flex-column gap-6">
                 <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-20.jpg" alt="" class="img-fluid">
+                  <img src="../assets/images/portfolio/portfolio-img-22.jpg" alt="" class="img-fluid">
                   <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
+                    <a href="festival-detail.php?id=22"
                       class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
                       <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
                     </a>
@@ -726,9 +726,9 @@ if (isset($_GET['payment'])) {
             <div class="item">
               <div class="portfolio d-flex flex-column gap-6">
                 <div class="portfolio-img position-relative overflow-hidden">
-                  <img src="../assets/images/portfolio/portfolio-img-22.jpg" alt="" class="img-fluid">
+                  <img src="../assets/images/portfolio/portfolio-img-23.jpg" alt="" class="img-fluid">
                   <div class="portfolio-overlay">
-                    <a href="projects-detail.html"
+                    <a href="festival-detail.php?id=23"
                       class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
                       <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
                     </a>
@@ -774,15 +774,15 @@ if (isset($_GET['payment'])) {
                   <div class="card-body d-flex flex-column justify-content-between">
                     <div class="d-flex flex-column gap-3 position-relative z-1">
                       <ul class="list-unstyled mb-0 hstack gap-1">
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
+                        <li><a class="hstack" ><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-dark"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
+                        <li><a class="hstack" ><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-dark"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
+                        <li><a class="hstack" ><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-dark"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
+                        <li><a class="hstack" ><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-dark"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
+                        <li><a class="hstack" ><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-dark"></iconify-icon></a></li>
                       </ul>
                       <p class="mb-0 fs-6 text-dark">Fast and hassle-free ticket purchase with instant e-ticket delivery.</p>
@@ -821,25 +821,25 @@ if (isset($_GET['payment'])) {
                       </div>
                       <ul class="d-flex align-items-center mb-0">
                         <li>
-                          <a href="javascript:void(0)">
+                          <a >
                             <img src="../assets/images/profile/user-1.jpg" width="44" height="44"
                               class="rounded-circle border border-2 border-dark" alt="user-1">
                           </a>
                         </li>
                         <li class="ms-n2">
-                          <a href="javascript:void(0)">
+                          <a >
                             <img src="../assets/images/profile/user-2.jpg" width="44" height="44"
                               class="rounded-circle border border-2 border-dark" alt="user-2">
                           </a>
                         </li>
                         <li class="ms-n2">
-                          <a href="javascript:void(0)">
+                          <a >
                             <img src="../assets/images/profile/user-3.jpg" width="44" height="44"
                               class="rounded-circle border border-2 border-dark" alt="user-3">
                           </a>
                         </li>
                         <li class="ms-n2">
-                          <a href="javascript:void(0)">
+                          <a >
                             <img src="../assets/images/profile/user-4.jpg" width="44" height="44"
                               class="rounded-circle border border-2 border-dark" alt="user-4">
                           </a>
@@ -931,15 +931,15 @@ if (isset($_GET['payment'])) {
                         and the customer service was excellent when I had a question.</h4>
                     <div class="hstack gap-2">
                       <ul class="list-unstyled mb-0 hstack gap-1">
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
+                        <li><a class="hstack" ><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-white"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
+                        <li><a class="hstack" ><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-white"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
+                        <li><a class="hstack" ><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-white"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
+                        <li><a class="hstack" ><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-white"></iconify-icon></a></li>
-                        <li><a class="hstack" href="javascript:void(0)"><iconify-icon icon="solar:star-bold"
+                        <li><a class="hstack" ><iconify-icon icon="solar:star-bold"
                               class="fs-6 text-white"></iconify-icon></a></li>
                       </ul>
                       <h6 class="mb-0 text-white fw-medium">5.0</h6>

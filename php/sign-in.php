@@ -54,11 +54,29 @@ redirectIfLoggedIn();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Studiova</title>
+  <title>Sign-in - Tickets @ Gábor</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
+  <style>
+    .form-control {
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .form-control:focus {
+      border-color: #2210FF;
+      box-shadow: 0 0 0 0.2rem rgba(34, 16, 255, 0.25);
+    }
+    .input-group .form-control {
+      border-radius: 4px 0 0 4px;
+    }
+    .input-group .btn {
+      border-radius: 0 4px 4px 0;
+    }
+  </style>
 </head>
 
 <body>
@@ -112,7 +130,7 @@ redirectIfLoggedIn();
                   <input type="email"
                          name="email"
                          id="email"
-                         class="form-control border-bottom"
+                         class="form-control border-1"
                          placeholder="Enter your email"
                          required>
                   <div class="invalid-feedback">
@@ -126,7 +144,7 @@ redirectIfLoggedIn();
                     <input type="password"
                            name="password"
                            id="password"
-                           class="form-control py-2"
+                           class="form-control border-1"
                            placeholder="Enter your password"
                            required>
                     <div class="invalid-feedback">

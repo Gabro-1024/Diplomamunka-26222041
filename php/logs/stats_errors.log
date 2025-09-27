@@ -781,3 +781,48 @@ Data: Array
 )
 
 
+[27-Sep-2025 16:35:10 Europe/Berlin] [2025-09-27 16:35:10] Stats request received
+Data: Array
+(
+    [event_id] => 69
+    [timestamp] => 2025-09-27 16:35:10
+)
+
+
+[27-Sep-2025 16:35:11 Europe/Berlin] [2025-09-27 16:35:11] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[27-Sep-2025 16:52:06 Europe/Berlin] [2025-09-27 16:52:06] Stats request received
+Data: Array
+(
+    [event_id] => 72
+    [timestamp] => 2025-09-27 16:52:06
+)
+
+
+[27-Sep-2025 16:52:06 Europe/Berlin] [2025-09-27 16:52:06] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+
+[27-Sep-2025 16:52:08 Europe/Berlin] [2025-09-27 16:52:08] Stats request received
+Data: Array
+(
+    [event_id] => 63
+    [timestamp] => 2025-09-27 16:52:08
+)
+
+
+[27-Sep-2025 16:52:08 Europe/Berlin] [2025-09-27 16:52:08] Ticket types fetched
+Data: Array
+(
+    [count] => 2
+)
+
+

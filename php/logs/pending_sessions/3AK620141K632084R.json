@@ -1,0 +1,14 @@
+{
+    "time": "2025-09-27 16:03:33",
+    "order_id": "3AK620141K632084R",
+    "user_id": 16,
+    "event_id": 69,
+    "items": [
+        {
+            "ticket_type_id": 220,
+            "ticket_type": "vip",
+            "price_huf": 15000,
+            "quantity": 3
+        }
+    ]
+}

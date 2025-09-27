@@ -179,6 +179,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validate genres
         if (empty($genres)) $missing_fields[] = "At least one music genre";
 
+        // Validate name length
+        if (mb_strlen($name) > 50) {
+            throw new Exception("Event name cannot exceed 50 characters.");
+        }
+        
+        // Validate slogan length
+        if (mb_strlen($slogan) > 60) {
+            throw new Exception("Slogan cannot exceed 60 characters.");
+        }
+
         // Validate required fields
         if (empty($name) || empty($slogan) || empty($start_date) || empty($end_date) || empty($venue_id) || empty($description) || empty($lineup) || !isset($_POST['genres']) || empty($_POST['genres'])) {
             throw new Exception("All fields are required.");
@@ -720,15 +730,19 @@ include '../header.php';
                                             <label for="name" class="form-label required">Event Name</label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                    value="<?php echo htmlspecialchars($formData['name'] ?? ''); ?>"
-                                                   required>
-                                            <div class="invalid-feedback">Please provide an event name.</div>
+                                                   maxlength="70" required
+                                                   oninput="updateCharCounter(this, 'name-char-count')">
+                                            <div class="invalid-feedback">Please provide an event name (max 50 characters).</div>
+                                            <div class="form-text text-end text-danger"><span id="name-char-count">50</span> characters limit</div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="slogan" class="form-label required">Event Slogan</label>
                                             <input type="text" class="form-control" id="slogan" name="slogan"
                                                    value="<?php echo htmlspecialchars($formData['slogan'] ?? ''); ?>"
-                                                   required>
-                                            <div class="invalid-feedback">Please provide a slogan.</div>
+                                                   maxlength="60" required
+                                                   oninput="updateCharCounter(this, 'slogan-char-count')">
+                                            <div class="invalid-feedback">Please provide a slogan (max 60 characters).</div>
+                                            <div class="form-text text-end text-danger"><span id="slogan-char-count">60</span> characters limit</div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1328,6 +1342,46 @@ include '../header.php';
             }
         }
         )
+
+        // Update character counter for input fields
+        function updateCharCounter(input, counterId) {
+            const maxLength = parseInt(input.getAttribute('maxlength')) || 0;
+            const remaining = maxLength - input.value.length;
+            const counter = document.getElementById(counterId);
+            if (counter) {
+                counter.textContent = remaining;
+                counter.className = remaining < 10 ? 'text-danger fw-bold' : '';
+            }
+        }
+
+        // Initialize character counters on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize name counter
+            const nameInput = document.getElementById('name');
+            if (nameInput) {
+                const maxLength = parseInt(nameInput.getAttribute('maxlength')) || 0;
+                const currentLength = nameInput.value.length;
+                const remaining = maxLength - currentLength;
+                const counter = document.getElementById('name-char-count');
+                if (counter) {
+                    counter.textContent = remaining;
+                    counter.className = remaining < 10 ? 'text-danger fw-bold' : '';
+                }
+            }
+            
+            // Initialize slogan counter
+            const sloganInput = document.getElementById('slogan');
+            if (sloganInput) {
+                const maxLength = parseInt(sloganInput.getAttribute('maxlength')) || 0;
+                const currentLength = sloganInput.value.length;
+                const remaining = maxLength - currentLength;
+                const counter = document.getElementById('slogan-char-count');
+                if (counter) {
+                    counter.textContent = remaining;
+                    counter.className = remaining < 10 ? 'text-danger fw-bold' : '';
+                }
+            }
+        });
 
         // Function to show alert messages
         function showAlert(type, message) {

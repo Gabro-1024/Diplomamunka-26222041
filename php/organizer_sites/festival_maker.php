@@ -55,7 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $missing_fields = [];
         if (empty($name)) $missing_fields[] = "Event name";
+        if (mb_strlen($name) > 50) $missing_fields[] = "Event name cannot exceed 50 characters";
         if (empty($slogan)) $missing_fields[] = "Event slogan";
+        if (mb_strlen($slogan) > 60) $missing_fields[] = "Slogan cannot exceed 60 characters";
         if (empty($start_date)) $missing_fields[] = "Start date";
         if (empty($end_date)) $missing_fields[] = "End date";
         if ($venue_id <= 0) $missing_fields[] = "Venue";
@@ -260,12 +262,22 @@ include '../header.php';
                   <div class="row">
                     <div class="col-md-6 mb-3">
                       <label for="name" class="form-label required">Event Name</label>
-                      <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($formData['name'] ?? ''); ?>" required>
+                      <input type="text" class="form-control" id="name" name="name" 
+                             value="<?php echo htmlspecialchars($formData['name'] ?? ''); ?>" 
+                             maxlength="50" required
+                             oninput="updateCharCounter(this, 'name-char-count')">
+                      <div class="invalid-feedback">Please provide an event name (max 50 characters).</div>
+                      <div class="form-text text-end text-danger"><span id="name-char-count">50</span> characters limit</div>
                       <div class="invalid-feedback">Please provide an event name.</div>
                     </div>
                     <div class="col-md-6 mb-3">
                       <label for="slogan" class="form-label required">Event Slogan</label>
-                      <input type="text" class="form-control" id="slogan" name="slogan" value="<?php echo htmlspecialchars($formData['slogan'] ?? ''); ?>" required>
+                      <input type="text" class="form-control" id="slogan" name="slogan" 
+                             value="<?php echo htmlspecialchars($formData['slogan'] ?? ''); ?>" 
+                             maxlength="60" required
+                             oninput="updateCharCounter(this, 'slogan-char-count')">
+                      <div class="invalid-feedback">Please provide a slogan (max 60 characters).</div>
+                      <div class="form-text text-end text-danger"><span id="slogan-char-count">60</span> characters limit</div>
                       <div class="invalid-feedback">Please provide a slogan.</div>
                     </div>
                   </div>
@@ -468,7 +480,42 @@ include '../header.php';
 </style>
 
 <script>
+// Function to update character counters
+function updateCharCounter(input, counterId) {
+    const maxLength = input.maxLength;
+    const remaining = maxLength - input.value.length;
+    const counter = document.getElementById(counterId);
+    if (counter) {
+        counter.textContent = remaining;
+        counter.className = remaining < 10 ? 'text-danger fw-bold' : '';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize character counters
+    const nameInput = document.getElementById('name');
+    if (nameInput) {
+        const maxLength = parseInt(nameInput.getAttribute('maxlength')) || 0;
+        const currentLength = nameInput.value.length;
+        const remaining = maxLength - currentLength;
+        const counter = document.getElementById('name-char-count');
+        if (counter) {
+            counter.textContent = remaining;
+            counter.className = remaining < 10 ? 'text-danger fw-bold' : '';
+        }
+    }
+    
+    const sloganInput = document.getElementById('slogan');
+    if (sloganInput) {
+        const maxLength = parseInt(sloganInput.getAttribute('maxlength')) || 0;
+        const currentLength = sloganInput.value.length;
+        const remaining = maxLength - currentLength;
+        const counter = document.getElementById('slogan-char-count');
+        if (counter) {
+            counter.textContent = remaining;
+            counter.className = remaining < 10 ? 'text-danger fw-bold' : '';
+        }
+    }
     const form = document.querySelector('form');
     const startDateInput = document.getElementById('start_date');
     const endDateInput = document.getElementById('end_date');

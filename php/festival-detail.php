@@ -77,6 +77,67 @@ try {
   <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
+    /* Text overflow prevention */
+    .festival-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    
+    .festival-slogan {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: 3em; /* 2 lines of text */
+    }
+    
+    .festival-location, .festival-date {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      display: inline-block;
+    }
+    
+    .festival-description {
+      display: -webkit-box;
+      -webkit-line-clamp: 10; /* Show more lines for description */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: 20em; /* Adjust based on your needs */
+    }
+    
+    /* Ensure badges and tags don't break layout */
+    .badge, .tag {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 767.98px) {
+      .festival-title {
+        font-size: 1.75rem;
+      }
+      
+      .festival-slogan {
+        -webkit-line-clamp: 3;
+        max-height: 4.5em;
+      }
+      
+      .festival-description {
+        -webkit-line-clamp: 8;
+        max-height: 16em;
+      }
+    }
+    
     /* Color Variables */
     :root {
       --primary: #FF6F61;
@@ -316,7 +377,7 @@ try {
       <div class="container">
         <div class="d-flex flex-column gap-4 pb-5 pb-xl-10 position-relative z-1">
           <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-            <h1 class="mb-0 fs-15 text-white lh-1"><?php echo htmlspecialchars($festival['name']); ?></h1>
+            <h1 class="display-4 fw-bold text-white mb-3 festival-title"><?php echo htmlspecialchars($festival['name']); ?></h1>
             <a href="#about" class="p-1 ps-7 bg-primary rounded-pill">
               <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
                 <iconify-icon icon="lucide:arrow-down" class="fs-8 text-dark" id="about"></iconify-icon>
@@ -335,7 +396,7 @@ try {
           <div class="col-lg-8">
             <div class="pe-lg-5">
               <h2 class="fs-3 fw-bold mb-4">About the Festival</h2>
-              <div class="mb-5">
+              <div class="mb-5 festival-description">
                 <?php echo nl2br(htmlspecialchars($festival['description'])); ?>
               </div>
               
@@ -360,7 +421,7 @@ try {
                         </div>
                         <div>
                           <p class="mb-0 fw-medium">Location</p>
-                          <p class="mb-0"><?php echo htmlspecialchars($festival['address']); ?></p>
+                          <p class="mb-0 festival-location"><?php echo htmlspecialchars($festival['address']); ?></p>
                           <p class="mb-0 text-muted">
                             <?php 
                             $location_parts = [];
@@ -540,9 +601,10 @@ try {
                 <div class="mb-4">
                   <div class="d-flex align-items-center gap-2 mb-2">
                     <i class="far fa-calendar-alt"></i>
-                    <span class="fw-medium">Date & Time</span>
+                    <h3 class="fs-5 fw-bold mb-3">Date & Time</h3>
                   </div>
-                  <p class="mb-0">
+                  <p class="mb-0 festival-date">
+                    <i class="far fa-calendar-alt me-2"></i>
                     <?php if ($start_date->format('Y-m-d') === $end_date->format('Y-m-d')): ?>
                       <?php echo $start_date->format('l, F j, Y'); ?><br>
                       <?php echo $start_date->format('g:i A'); ?> - <?php echo $end_date->format('g:i A'); ?>

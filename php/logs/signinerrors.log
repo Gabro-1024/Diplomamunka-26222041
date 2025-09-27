@@ -652,3 +652,116 @@
 [27-Sep-2025 00:42:57 Europe/Berlin] Login attempt - User: farkasg00abor102403@gmail.com, Password match: yes
 [27-Sep-2025 00:42:57 Europe/Berlin] Session cookie set: yes
 [27-Sep-2025 00:42:57 Europe/Berlin] Session variables set for user_id 24
+[27-Sep-2025 15:13:54 Europe/Berlin] ============================================================
+[27-Sep-2025 15:13:54 Europe/Berlin] Login attempt at 2025-09-27 15:13:54
+[27-Sep-2025 15:13:54 Europe/Berlin] Input received -> email valid: yes, password provided: no, rememberMe: yes
+[27-Sep-2025 15:13:54 Europe/Berlin] Login error: Please provide both email and password. [Code: missing_fields]
+[2025-09-27 15:13:54] Login error: Please provide both email and password. [Code: missing_fields]
+[27-Sep-2025 15:14:47 Europe/Berlin] ============================================================
+[27-Sep-2025 15:14:47 Europe/Berlin] Login attempt at 2025-09-27 15:14:47
+[27-Sep-2025 15:14:47 Europe/Berlin] Input received -> email valid: yes, password provided: no, rememberMe: yes
+[27-Sep-2025 15:14:47 Europe/Berlin] Login error: Please provide both email and password. [Code: missing_fields]
+[2025-09-27 15:14:47] Login error: Please provide both email and password. [Code: missing_fields]
+[27-Sep-2025 15:15:11 Europe/Berlin] ============================================================
+[27-Sep-2025 15:15:11 Europe/Berlin] Login attempt at 2025-09-27 15:15:11
+[27-Sep-2025 15:15:11 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: yes
+[27-Sep-2025 15:15:11 Europe/Berlin] User lookup: found user
+[27-Sep-2025 15:15:11 Europe/Berlin] Email verified: yes
+[27-Sep-2025 15:15:11 Europe/Berlin] Login attempt - User: anitastrobl04@gmail.com, Password match: no
+[27-Sep-2025 15:15:11 Europe/Berlin] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[2025-09-27 15:15:11] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[27-Sep-2025 15:15:25 Europe/Berlin] ============================================================
+[27-Sep-2025 15:15:25 Europe/Berlin] Login attempt at 2025-09-27 15:15:25
+[27-Sep-2025 15:15:25 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: yes
+[27-Sep-2025 15:15:25 Europe/Berlin] User lookup: found user
+[27-Sep-2025 15:15:25 Europe/Berlin] Email verified: yes
+[27-Sep-2025 15:15:25 Europe/Berlin] Login attempt - User: anitastrobl04@gmail.com, Password match: yes
+[27-Sep-2025 15:15:25 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 15:15:25 Europe/Berlin] Session variables set for user_id 25
+[27-Sep-2025 15:45:22 Europe/Berlin] ============================================================
+[27-Sep-2025 15:45:22 Europe/Berlin] Login attempt at 2025-09-27 15:45:22
+[27-Sep-2025 15:45:22 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 15:45:22 Europe/Berlin] User lookup: found user
+[27-Sep-2025 15:45:22 Europe/Berlin] Email verified: yes
+[27-Sep-2025 15:45:22 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[27-Sep-2025 15:45:22 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 15:45:22 Europe/Berlin] Session variables set for user_id 16
+[27-Sep-2025 15:51:14 Europe/Berlin] ============================================================
+[27-Sep-2025 15:51:14 Europe/Berlin] Login attempt at 2025-09-27 15:51:14
+[27-Sep-2025 15:51:14 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 15:51:14 Europe/Berlin] User lookup: found user
+[27-Sep-2025 15:51:14 Europe/Berlin] Email verified: yes
+[27-Sep-2025 15:51:14 Europe/Berlin] Login attempt - User: anitastrobl04@gmail.com, Password match: yes
+[27-Sep-2025 15:51:14 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 15:51:14 Europe/Berlin] Session variables set for user_id 25
+[27-Sep-2025 15:52:17 Europe/Berlin] ============================================================
+[27-Sep-2025 15:52:17 Europe/Berlin] Login attempt at 2025-09-27 15:52:17
+[27-Sep-2025 15:52:17 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 15:52:17 Europe/Berlin] User lookup: found user
+[27-Sep-2025 15:52:17 Europe/Berlin] Email verified: yes
+[27-Sep-2025 15:52:18 Europe/Berlin] Login attempt - User: random.koalaa497@passinbox.com, Password match: yes
+[27-Sep-2025 15:52:18 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 15:52:18 Europe/Berlin] Session variables set for user_id 21
+[27-Sep-2025 15:53:21 Europe/Berlin] ============================================================
+[27-Sep-2025 15:53:21 Europe/Berlin] Login attempt at 2025-09-27 15:53:21
+[27-Sep-2025 15:53:21 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 15:53:21 Europe/Berlin] User lookup: found user
+[27-Sep-2025 15:53:21 Europe/Berlin] Email verified: yes
+[27-Sep-2025 15:53:22 Europe/Berlin] Login attempt - User: random.koalaa497@passinbox.com, Password match: yes
+[27-Sep-2025 15:53:22 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 15:53:22 Europe/Berlin] Session variables set for user_id 21
+[27-Sep-2025 16:02:55 Europe/Berlin] ============================================================
+[27-Sep-2025 16:02:55 Europe/Berlin] Login attempt at 2025-09-27 16:02:55
+[27-Sep-2025 16:02:55 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 16:02:55 Europe/Berlin] User lookup: found user
+[27-Sep-2025 16:02:55 Europe/Berlin] Email verified: yes
+[27-Sep-2025 16:02:56 Europe/Berlin] Login attempt - User: farkasgabor1024@gmail.com, Password match: yes
+[27-Sep-2025 16:02:56 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 16:02:56 Europe/Berlin] Session variables set for user_id 16
+[27-Sep-2025 16:32:35 Europe/Berlin] ============================================================
+[27-Sep-2025 16:32:35 Europe/Berlin] Login attempt at 2025-09-27 16:32:35
+[27-Sep-2025 16:32:35 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 16:32:35 Europe/Berlin] User lookup: found user
+[27-Sep-2025 16:32:35 Europe/Berlin] Email verified: yes
+[27-Sep-2025 16:32:35 Europe/Berlin] Login attempt - User: anitastrobl04@gmail.com, Password match: no
+[27-Sep-2025 16:32:35 Europe/Berlin] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[2025-09-27 16:32:35] Login error: Incorrect password. Please try again. [Code: invalid_password]
+[27-Sep-2025 16:32:54 Europe/Berlin] ============================================================
+[27-Sep-2025 16:32:54 Europe/Berlin] Login attempt at 2025-09-27 16:32:54
+[27-Sep-2025 16:32:54 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 16:32:54 Europe/Berlin] User lookup: found user
+[27-Sep-2025 16:32:54 Europe/Berlin] Email verified: yes
+[27-Sep-2025 16:32:54 Europe/Berlin] Login attempt - User: anitastrobl04@gmail.com, Password match: yes
+[27-Sep-2025 16:32:54 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 16:32:54 Europe/Berlin] Session variables set for user_id 25
+[27-Sep-2025 16:36:04 Europe/Berlin] ============================================================
+[27-Sep-2025 16:36:04 Europe/Berlin] Login attempt at 2025-09-27 16:36:04
+[27-Sep-2025 16:36:04 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 16:36:04 Europe/Berlin] User lookup: found user
+[27-Sep-2025 16:36:04 Europe/Berlin] Email verified: yes
+[27-Sep-2025 16:36:04 Europe/Berlin] Login attempt - User: random.koala497@passinbox.com, Password match: yes
+[27-Sep-2025 16:36:04 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 16:36:04 Europe/Berlin] Session variables set for user_id 18
+[27-Sep-2025 17:01:34 Europe/Berlin] ============================================================
+[27-Sep-2025 17:01:34 Europe/Berlin] Login attempt at 2025-09-27 17:01:34
+[27-Sep-2025 17:01:34 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 17:01:34 Europe/Berlin] User lookup: no user found for valami@email.commmm
+[27-Sep-2025 17:01:34 Europe/Berlin] Login attempt - User not found: valami@email.commmm
+[27-Sep-2025 17:01:34 Europe/Berlin] Login error: No account found with this email. Please check your email or sign up. [Code: user_not_found]
+[2025-09-27 17:01:34] Login error: No account found with this email. Please check your email or sign up. [Code: user_not_found]
+[27-Sep-2025 17:04:52 Europe/Berlin] ============================================================
+[27-Sep-2025 17:04:52 Europe/Berlin] Login attempt at 2025-09-27 17:04:52
+[27-Sep-2025 17:04:52 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 17:04:52 Europe/Berlin] User lookup: found user
+[27-Sep-2025 17:04:52 Europe/Berlin] Email verified: yes
+[27-Sep-2025 17:04:52 Europe/Berlin] Login attempt - User: random.koalaa497@passinbox.com, Password match: yes
+[27-Sep-2025 17:04:52 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 17:04:52 Europe/Berlin] Session variables set for user_id 21
+[27-Sep-2025 17:56:38 Europe/Berlin] ============================================================
+[27-Sep-2025 17:56:38 Europe/Berlin] Login attempt at 2025-09-27 17:56:38
+[27-Sep-2025 17:56:38 Europe/Berlin] Input received -> email valid: yes, password provided: yes, rememberMe: no
+[27-Sep-2025 17:56:38 Europe/Berlin] User lookup: found user
+[27-Sep-2025 17:56:38 Europe/Berlin] Email verified: yes
+[27-Sep-2025 17:56:38 Europe/Berlin] Login attempt - User: random.koalaa497@passinbox.com, Password match: yes
+[27-Sep-2025 17:56:38 Europe/Berlin] Session cookie set: yes
+[27-Sep-2025 17:56:38 Europe/Berlin] Session variables set for user_id 21

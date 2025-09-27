@@ -2874,3 +2874,751 @@
     "huf_factor": 100
 }
 
+{
+    "time": "2025-09-27 15:17:57",
+    "event_id": 63,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 63,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 1000,
+                "quantity": 3,
+                "ticket_type_id": "217"
+            },
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 1490,
+                "quantity": 5,
+                "ticket_type_id": "218"
+            }
+        ]
+    },
+    "requested": {
+        "217": 3,
+        "218": 5
+    },
+    "effective_requested": {
+        "217": 3,
+        "218": 5
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 217,
+            "ticket_type": "regular",
+            "price": 1000,
+            "remaining_tickets": 3
+        },
+        {
+            "ticket_type_id": 218,
+            "ticket_type": "vip",
+            "price": 1490,
+            "remaining_tickets": 5
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 100000
+            },
+            "quantity": 3
+        },
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 149000
+            },
+            "quantity": 5
+        }
+    ],
+    "computed_total_huf": 10450,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 15:17:59",
+    "event_id": 63,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 63,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 1000,
+                "quantity": 3,
+                "ticket_type_id": "217"
+            },
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 1490,
+                "quantity": 5,
+                "ticket_type_id": "218"
+            }
+        ]
+    },
+    "requested": {
+        "217": 3,
+        "218": 5
+    },
+    "effective_requested": {
+        "217": 3,
+        "218": 5
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 217,
+            "ticket_type": "regular",
+            "price": 1000,
+            "remaining_tickets": 3
+        },
+        {
+            "ticket_type_id": 218,
+            "ticket_type": "vip",
+            "price": 1490,
+            "remaining_tickets": 5
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 100000
+            },
+            "quantity": 3
+        },
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 149000
+            },
+            "quantity": 5
+        }
+    ],
+    "computed_total_huf": 10450,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 15:18:02",
+    "event_id": 63,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 63,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 1000,
+                "quantity": 3,
+                "ticket_type_id": "217"
+            },
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 1490,
+                "quantity": 5,
+                "ticket_type_id": "218"
+            }
+        ]
+    },
+    "requested": {
+        "217": 3,
+        "218": 5
+    },
+    "effective_requested": {
+        "217": 3,
+        "218": 5
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 217,
+            "ticket_type": "regular",
+            "price": 1000,
+            "remaining_tickets": 3
+        },
+        {
+            "ticket_type_id": 218,
+            "ticket_type": "vip",
+            "price": 1490,
+            "remaining_tickets": 5
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 100000
+            },
+            "quantity": 3
+        },
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 149000
+            },
+            "quantity": 5
+        }
+    ],
+    "computed_total_huf": 10450,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 15:18:04",
+    "event_id": 63,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 63,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 1000,
+                "quantity": 3,
+                "ticket_type_id": "217"
+            },
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 1490,
+                "quantity": 5,
+                "ticket_type_id": "218"
+            }
+        ]
+    },
+    "requested": {
+        "217": 3,
+        "218": 5
+    },
+    "effective_requested": {
+        "217": 3,
+        "218": 5
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 217,
+            "ticket_type": "regular",
+            "price": 1000,
+            "remaining_tickets": 3
+        },
+        {
+            "ticket_type_id": 218,
+            "ticket_type": "vip",
+            "price": 1490,
+            "remaining_tickets": 5
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 100000
+            },
+            "quantity": 3
+        },
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 149000
+            },
+            "quantity": 5
+        }
+    ],
+    "computed_total_huf": 10450,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 15:32:18",
+    "event_id": 69,
+    "request_body": {
+        "event_id": 69,
+        "items": [
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 15000,
+                "quantity": 2,
+                "ticket_type_id": "220"
+            }
+        ]
+    },
+    "requested": {
+        "220": 2
+    },
+    "effective_requested": {
+        "220": 2
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 220,
+            "ticket_type": "vip",
+            "price": 15000,
+            "remaining_tickets": 30
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 1500000
+            },
+            "quantity": 2
+        }
+    ],
+    "computed_total_huf": 30000,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 16:03:15",
+    "event_id": 69,
+    "request_body": {
+        "event_id": 69,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 10000,
+                "quantity": 1,
+                "ticket_type_id": "219"
+            },
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 15000,
+                "quantity": 3,
+                "ticket_type_id": "220"
+            }
+        ]
+    },
+    "requested": {
+        "219": 1,
+        "220": 3
+    },
+    "effective_requested": {
+        "219": 1,
+        "220": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 219,
+            "ticket_type": "regular",
+            "price": 10000,
+            "remaining_tickets": 100
+        },
+        {
+            "ticket_type_id": 220,
+            "ticket_type": "vip",
+            "price": 15000,
+            "remaining_tickets": 28
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 1000000
+            },
+            "quantity": 1
+        },
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 1500000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 55000,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 16:03:22",
+    "event_id": 69,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 69,
+        "items": [
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 15000,
+                "quantity": 3,
+                "ticket_type_id": "220"
+            }
+        ]
+    },
+    "requested": {
+        "220": 3
+    },
+    "effective_requested": {
+        "220": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 220,
+            "ticket_type": "vip",
+            "price": 15000,
+            "remaining_tickets": 28
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 1500000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 45000,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 16:03:25",
+    "event_id": 69,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 69,
+        "items": [
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 15000,
+                "quantity": 3,
+                "ticket_type_id": "220"
+            }
+        ]
+    },
+    "requested": {
+        "220": 3
+    },
+    "effective_requested": {
+        "220": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 220,
+            "ticket_type": "vip",
+            "price": 15000,
+            "remaining_tickets": 28
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 1500000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 45000,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 16:03:28",
+    "event_id": 69,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 69,
+        "items": [
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 15000,
+                "quantity": 3,
+                "ticket_type_id": "220"
+            }
+        ]
+    },
+    "requested": {
+        "220": 3
+    },
+    "effective_requested": {
+        "220": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 220,
+            "ticket_type": "vip",
+            "price": 15000,
+            "remaining_tickets": 28
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 1500000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 45000,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 16:03:30",
+    "event_id": 69,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 69,
+        "items": [
+            {
+                "name": "VIP TICKET",
+                "unit_amount": 15000,
+                "quantity": 3,
+                "ticket_type_id": "220"
+            }
+        ]
+    },
+    "requested": {
+        "220": 3
+    },
+    "effective_requested": {
+        "220": 3
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 220,
+            "ticket_type": "vip",
+            "price": 15000,
+            "remaining_tickets": 28
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "VIP TICKET"
+                },
+                "unit_amount": 1500000
+            },
+            "quantity": 3
+        }
+    ],
+    "computed_total_huf": 45000,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 16:13:35",
+    "event_id": 69,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 69,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 10000,
+                "quantity": 5,
+                "ticket_type_id": "219"
+            }
+        ]
+    },
+    "requested": {
+        "219": 5
+    },
+    "effective_requested": {
+        "219": 5
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 219,
+            "ticket_type": "regular",
+            "price": 10000,
+            "remaining_tickets": 100
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 1000000
+            },
+            "quantity": 5
+        }
+    ],
+    "computed_total_huf": 50000,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 16:13:37",
+    "event_id": 69,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 69,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 10000,
+                "quantity": 5,
+                "ticket_type_id": "219"
+            }
+        ]
+    },
+    "requested": {
+        "219": 5
+    },
+    "effective_requested": {
+        "219": 5
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 219,
+            "ticket_type": "regular",
+            "price": 10000,
+            "remaining_tickets": 100
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 1000000
+            },
+            "quantity": 5
+        }
+    ],
+    "computed_total_huf": 50000,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 16:13:39",
+    "event_id": 69,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 69,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 10000,
+                "quantity": 5,
+                "ticket_type_id": "219"
+            }
+        ]
+    },
+    "requested": {
+        "219": 5
+    },
+    "effective_requested": {
+        "219": 5
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 219,
+            "ticket_type": "regular",
+            "price": 10000,
+            "remaining_tickets": 100
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 1000000
+            },
+            "quantity": 5
+        }
+    ],
+    "computed_total_huf": 50000,
+    "huf_factor": 100
+}
+
+{
+    "time": "2025-09-27 16:13:40",
+    "event_id": 69,
+    "request_body": {
+        "payment_method": "paypal",
+        "event_id": 69,
+        "items": [
+            {
+                "name": "REGULAR TICKET",
+                "unit_amount": 10000,
+                "quantity": 5,
+                "ticket_type_id": "219"
+            }
+        ]
+    },
+    "requested": {
+        "219": 5
+    },
+    "effective_requested": {
+        "219": 5
+    },
+    "db_tickets": [
+        {
+            "ticket_type_id": 219,
+            "ticket_type": "regular",
+            "price": 10000,
+            "remaining_tickets": 100
+        }
+    ],
+    "line_items": [
+        {
+            "price_data": {
+                "currency": "huf",
+                "product_data": {
+                    "name": "REGULAR TICKET"
+                },
+                "unit_amount": 1000000
+            },
+            "quantity": 5
+        }
+    ],
+    "computed_total_huf": 50000,
+    "huf_factor": 100
+}
+

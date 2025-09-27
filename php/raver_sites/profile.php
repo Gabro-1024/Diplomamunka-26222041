@@ -2,6 +2,16 @@
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../includes/db_connect.php';
 
+/* Debug output function (commented out for production)
+$debugOutput = function($label, $data) {
+    echo "<div class='debug-section' style='background:#f8f9fa;padding:10px;margin:5px 0;border-left:4px solid #007bff;'>";
+    echo "<strong>$label:</strong><br>";
+    echo "<pre style='margin:5px 0 0 10px;'>";
+    var_dump($data);
+    echo "</pre></div>";
+};
+*/
+
 if (!isUserLoggedIn()) {
     header('Location: http://localhost/Diplomamunka-26222041/php/sign-in.php');
     exit;
@@ -117,13 +127,13 @@ if ($avatarRel === null) { $avatarRel = '/assets/images/team/team-img-1.jpg'; }
 // Fetch user's tickets (only unused)
 $userTickets = [];
 try {
-    $stmt = $pdo->prepare(
-        "SELECT t.id, t.qr_code_path, t.event_id, t.is_used, t.price, e.name AS event_name, e.start_date, e.venue_id
-         FROM tickets t
-         INNER JOIN events e ON t.event_id = e.id
-         WHERE t.owner_id = ? AND t.is_used = 0
-         ORDER BY e.start_date DESC, t.id DESC"
-    );
+    $sql = "SELECT t.id, t.qr_code_path, t.event_id, t.is_used, t.price, e.name AS event_name, e.start_date, e.venue_id
+            FROM tickets t
+            INNER JOIN events e ON t.event_id = e.id
+            WHERE t.owner_id = ? AND t.is_used = 0
+            ORDER BY e.start_date DESC, t.id DESC";
+    
+    $stmt = $pdo->prepare($sql);
     $stmt->execute([$userId]);
     $userTickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -141,8 +151,14 @@ try {
         }
     }
 } catch (Throwable $e) {
-    $userTickets = [];
+    // Log the error but don't reset $userTickets if it was successfully set
+    error_log("Error fetching tickets: " . $e->getMessage());
+    if (!isset($userTickets)) {
+        $userTickets = [];
+    }
 }
+
+// Debug output commented out for production
 
 ?>
 <?php 
@@ -377,13 +393,17 @@ include __DIR__ . '/../header.php';
         <h3 class="mb-4 text-primary" data-aos="fade-up" data-aos-delay="100">My tickets</h3>
       </div>
     </div>
-    <div class="row g-4">
-      <?php if (empty($userTickets)): ?>
+    <?php 
+// Debug output commented out for production
+?>
+<div class="row g-4">
+      <?php if (empty($userTickets)):?>
         <div class="col-12">
           <div class="alert alert-info mb-0">You have not purchased any valid (unused) tickets yet.</div>
         </div>
       <?php else: ?>
-        <?php foreach ($userTickets as $ticket):
+        <?php
+          foreach ($userTickets as $ticket):
           $eventDate = date('Y.m.d. H:i', strtotime($ticket['start_date']));
           $venue = $venueNames[$ticket['venue_id']] ?? 'Unknown venue';
           $now = new DateTime();
@@ -400,7 +420,6 @@ include __DIR__ . '/../header.php';
                 <span class="ticket-status <?php echo $status; ?>"><?php echo $statusText; ?></span>
                 <div class="fw-bold"><?php echo htmlspecialchars($ticket['event_name']); ?></div>
                 <div class="text-muted small"><?php echo htmlspecialchars($eventDate); ?></div>
-                <div class="text-muted small"><?php echo htmlspecialchars($venue); ?></div>
               </div>
             </div>
             <div class="d-flex justify-content-between align-items-center">

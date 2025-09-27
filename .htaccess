@@ -1,9 +1,17 @@
 # Enable the rewrite engine
 RewriteEngine On
 
-# If the requested file or directory doesn't exist
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Set the base directory for the project
+RewriteBase /Diplomamunka-26222041/
 
-# Redirect to 404.php
+# Handle 404 errors
 ErrorDocument 404 /Diplomamunka-26222041/php/404.php
+
+# Check if the request is for a file that doesn't exist
+RewriteCond %{REQUEST_FILENAME} !-f
+# Check if the request is for a directory that doesn't exist
+RewriteCond %{REQUEST_FILENAME} !-d
+# Check if the request is not for an actual file (like .php, .css, .js, etc.)
+RewriteCond %{REQUEST_URI} !\.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$ [NC]
+# If all conditions are met, redirect to 404
+RewriteRule ^(.*)$ /Diplomamunka-26222041/php/404.php [L]

@@ -10,8 +10,21 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'worker') {
 
 try {
     $conn = db_connect();
+    
+    // Fetch worker's name from database
+    $stmt = $conn->prepare('SELECT first_name, last_name FROM users WHERE id = ?');
+    $stmt->execute([$_SESSION['user_id']]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($user) {
+        $_SESSION['full_name'] = trim($user['first_name'] . ' ' . $user['last_name']);
+    } else {
+        $_SESSION['full_name'] = 'Worker';
+    }
+    
 } catch (PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
+    error_log("Database error: " . $e->getMessage());
+    $_SESSION['full_name'] = 'Worker';
 }
 
 $message = '';
@@ -33,36 +46,44 @@ try {
 
 // Handle ticket validation if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
-    $ticketData = json_decode(trim($_POST['ticket_code']), true);
+    $ticketCode = trim($_POST['ticket_code']);
+    $ticketData = json_decode($ticketCode, true);
     
-    if (json_last_error() !== JSON_ERROR_NONE || !isset($ticketData['c'])) {
-        $message = "Invalid QR code format. Please scan a valid ticket QR code.";
-        $messageType = 'danger';
-    } else {
+    // Initialize variables
+    $userId = null;
+    $eventId = null;
+    
+    // Handle both JSON and raw ticket code formats
+    if (json_last_error() === JSON_ERROR_NONE && isset($ticketData['c'])) {
+        // JSON format: {"c":"ticket_code", "uid":1, "eid":1}
         $ticketCode = $ticketData['c'];
         $userId = $ticketData['uid'] ?? null;
         $eventId = $ticketData['eid'] ?? null;
-        
-        // Validate ticket in database by matching the code in qr_code_path
-        $searchPattern = '%' . $ticketCode . '%';
-        $sql = "SELECT t.*, e.name AS event_name, 'Standard' AS type_name 
-                FROM tickets t 
-                JOIN events e ON t.event_id = e.id
-                WHERE t.qr_code_path LIKE :searchPattern 
-                AND t.is_used != 1";
-        
-        $params = [':searchPattern' => $searchPattern];
-        
-        if ($userId !== null) {
-            $sql .= " AND t.owner_id = :userId";
-            $params[':userId'] = $userId;
-        }
-        
-        if ($eventId !== null) {
-            $sql .= " AND t.event_id = :eventId";
-            $params[':eventId'] = $eventId;
-        }
-        
+    }
+    
+    // Build the SQL query to find the ticket
+    $searchPattern = '%' . $ticketCode . '%';
+    $sql = "SELECT t.*, e.name AS event_name, 'Standard' AS type_name 
+            FROM tickets t 
+            JOIN events e ON t.event_id = e.id 
+            WHERE t.qr_code_path LIKE :searchPattern 
+            AND t.is_used != 1";
+    
+    $params = [':searchPattern' => $searchPattern];
+    
+    // Add user ID filter if provided
+    if ($userId !== null) {
+        $sql .= " AND t.owner_id = :userId";
+        $params[':userId'] = $userId;
+    }
+    
+    // Add event ID filter if provided
+    if ($eventId !== null) {
+        $sql .= " AND t.event_id = :eventId";
+        $params[':eventId'] = $eventId;
+    }
+
+    try {
         $stmt = $conn->prepare($sql);
         $stmt->execute($params);
         
@@ -74,9 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
             $updateStmt->bindParam(':ticketId', $ticket['id'], PDO::PARAM_INT);
             $updateStmt->execute();
             
-            // Ticket is already updated in the database with is_used = 1
-            // The next page load will show it in recent scans
-            
             $message = "Ticket validated successfully! - " . htmlspecialchars($ticket['type_name']) . " for " . htmlspecialchars($ticket['event_name']);
             $messageType = 'success';
         } else {
@@ -86,6 +104,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
         
         // Close the cursor to free up the connection
         $stmt->closeCursor();
+        
+    } catch (PDOException $e) {
+        $message = "Error validating ticket: " . $e->getMessage();
+        $messageType = 'danger';
+        error_log("Ticket validation error: " . $e->getMessage());
     }
 }
 ?>
@@ -101,18 +124,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
     <style>
         body {
             background-color: #f8f9fa;
+            padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .scanner-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            padding: 1rem 0;
         }
         .scanner-container {
-            max-width: 600px;
+            width: 80vmin;
+            height: 80vmin;
+            max-width: 500px;
+            max-height: 500px;
             margin: 0 auto;
-            border: 3px solid #2210FF;
-            border-radius: 10px;
+            position: relative;
             overflow: hidden;
-            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         #reader {
             width: 100%;
-            height: auto;
+            height: 100%;
+            position: relative;
+        }
+        #reader video {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover;
+        }
+        #reader__dashboard_section_csr {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            display: flex;
+            justify-content: center;
         }
         .btn-accent-blue {
             background-color: #2210FF;
@@ -156,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
           </li>
         </ul>
         <div class="d-flex align-items-center">
-          <span class="text-light me-3">Welcome, <?php echo htmlspecialchars($_SESSION['username'] ?? 'Worker'); ?></span>
+          <span class="text-light me-3">Welcome, <?php echo htmlspecialchars($_SESSION['full_name'] ?? 'Worker'); ?></span>
           <a href="../logout.php" class="btn btn-outline-light btn-sm">
             <i class="fas fa-sign-out-alt me-1"></i> Logout
           </a>
@@ -180,8 +233,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
           <div class="card-header bg-dark text-white">
             <h5 class="mb-0"><i class="fas fa-qrcode me-2"></i>Scan Ticket</h5>
           </div>
-          <div class="card-body text-center p-4">
-            <div id="reader" class="scanner-container mb-4"></div>
+          <div class="card-body text-center p-0">
+            <div class="scanner-container">
+              <div id="reader" style="width: 100%; height: 100%;"></div>
+            </div>
             <p class="text-muted mb-3">- OR -</p>
             <form method="POST" class="mb-0">
               <div class="input-group">
@@ -241,6 +296,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
     </div>
   </footer>
 
+  <!-- Debug Section -->
+<!--  <div class="container mt-5">-->
+<!--    <div class="card">-->
+<!--      <div class="card-header bg-dark text-white">-->
+<!--        <h5>Debug Information</h5>-->
+<!--      </div>-->
+<!--      <div class="card-body">-->
+<!--        <h6>POST Data:</h6>-->
+<!--        <pre>--><?php //var_dump($_POST); ?><!--</pre>-->
+<!--        -->
+<!--        --><?php //if (isset($_POST['ticket_code'])): ?>
+<!--          <h6>Decoded Ticket Data:</h6>-->
+<!--          <pre>Input: --><?php //echo htmlspecialchars(print_r($ticketData ?? 'N/A', true)); ?><!--</pre>-->
+<!--          -->
+<!--          <h6>SQL Query:</h6>-->
+<!--          <pre>Query: --><?php //echo isset($sql) ? htmlspecialchars($sql) : 'N/A'; ?><!--</pre>-->
+<!--          -->
+<!--          <h6>Query Parameters:</h6>-->
+<!--          <pre>--><?php //echo isset($params) ? htmlspecialchars(print_r($params, true)) : 'N/A'; ?><!--</pre>-->
+<!--          -->
+<!--          <h6>Found Ticket:</h6>-->
+<!--          <pre>--><?php //echo isset($ticket) ? htmlspecialchars(print_r($ticket, true)) : 'No ticket found'; ?><!--</pre>-->
+<!--        --><?php //endif; ?>
+<!--        -->
+<!--        <h6>Recent Scans (First 2 for reference):</h6>-->
+<!--        <pre>--><?php //echo htmlspecialchars(print_r(array_slice($recentScans, 0, 2), true)); ?><!--</pre>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
   <!-- Required Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/html5-qrcode@2.3.4/html5-qrcode.min.js"></script>
@@ -255,7 +340,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
           // Handle error, if any
           console.error('Error stopping scanner:', err);
         });
-        
+
         // Show loading state
         const scanHistory = document.getElementById('scan-history');
         scanHistory.innerHTML = `
@@ -274,17 +359,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
             </div>
           </div>
         `;
-        
+
         // Submit the form with the scanned code
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '';
-        
+
         const input = document.createElement('input');
         input.type = 'hidden';
         input.name = 'ticket_code';
         input.value = decodedText;
-        
+
         form.appendChild(input);
         document.body.appendChild(form);
         form.submit();
@@ -298,25 +383,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
       // Initialize the QR code scanner
       let html5QrCode;
       const scannerElement = document.getElementById('reader');
-      
-      if (scannerElement) {
-        html5QrCode = new Html5Qrcode("reader");
-        const config = { 
-          fps: 10, 
-          qrbox: { width: 250, height: 250 },
-          aspectRatio: 1.0
-        };
 
-        // Start the scanner
+      if (scannerElement) {
+        html5QrCode = new Html5Qrcode("reader", {
+          formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+          experimentalFeatures: {
+            useBarCodeDetectorIfSupported: true
+          },
+          verbose: true
+        });
+
+        // Remove any existing border or overlay
+        const qrBoxStyle = document.createElement('style');
+        qrBoxStyle.textContent = `
+          #reader video {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover;
+          }
+          #reader {
+            width: 100% !important;
+            height: 100% !important;
+          }
+          #reader > div:first-child {
+            border: none !important;
+          }
+          #reader > div:first-child > div:first-child {
+            display: none !important;
+          }
+        `;
+        document.head.appendChild(qrBoxStyle);
+
+        // Start the scanner with full view scanning
         html5QrCode.start(
           { facingMode: "environment" },
-          config,
+          {
+            fps: 10,
+            qrbox: undefined, // Remove the box to scan the entire view
+            aspectRatio: 1.0,
+            disableFlip: false
+          },
           onScanSuccess,
           onScanFailure
-        ).catch(err => {
+        ).then(() => {
+          console.log('Scanner started successfully');
+          // Hide the manual entry form by default
+          const manualForm = document.getElementById('manual-entry-form');
+          if (manualForm) manualForm.classList.add('d-none');
+        }).catch(err => {
           console.error('Error starting scanner:', err);
-          // Fallback to file input if camera access is denied
-          document.getElementById('manual-entry-form').classList.remove('d-none');
+          // Show manual entry form if camera access fails
+          const manualForm = document.getElementById('manual-entry-form');
+          if (manualForm) manualForm.classList.remove('d-none');
         });
       }
 
@@ -330,7 +448,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_code'])) {
       // Toggle manual entry form
       const manualEntryBtn = document.getElementById('manual-entry-btn');
       const manualEntryForm = document.getElementById('manual-entry-form');
-      
+
       if (manualEntryBtn && manualEntryForm) {
         manualEntryBtn.addEventListener('click', function() {
           manualEntryForm.classList.toggle('d-none');
