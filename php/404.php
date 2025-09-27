@@ -1,5 +1,14 @@
 <?php
-//Ez az oldal jelenik meg a nm létező oldalak helyett
+// Debug information
+//var_dump([
+//    'SERVER_PROTOCOL' => $_SERVER['SERVER_PROTOCOL'] ?? 'Not set',
+//    'REQUEST_METHOD' => $_SERVER['REQUEST_METHOD'] ?? 'Not set',
+//    'REQUEST_URI' => $_SERVER['REQUEST_URI'] ?? 'Not set',
+//    'DOCUMENT_ROOT' => $_SERVER['DOCUMENT_ROOT'] ?? 'Not set',
+//    'SCRIPT_FILENAME' => $_SERVER['SCRIPT_FILENAME'] ?? 'Not set',
+//    'REDIRECT_STATUS' => $_SERVER['REDIRECT_STATUS'] ?? 'Not set',
+//    'HTTP_REFERER' => $_SERVER['HTTP_REFERER'] ?? 'Not set'
+//]);
 ?>
 
 <!doctype html>
@@ -8,11 +17,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Studiova</title>
-  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/libs/aos-master/dist/aos.css">
-  <link rel="stylesheet" href="http://localhost:63342/Diplomamunka-26222041/assets/css/styles.css" />
+  <title>Page not found</title>
+  <base href="/Diplomamunka-26222041/">
+  <link rel="shortcut icon" type="image/png" href="assets/images/logos/favicon.svg" />
+  <link rel="stylesheet" href="assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="assets/libs/aos-master/dist/aos.css">
+  <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 
 <body>
@@ -25,11 +35,11 @@
       class="bg-light-gray border-top border-primary border-4 d-flex align-items-center justify-content-center min-vh-100">
       <div class="container py-3">
         <div class="d-flex flex-column justify-content-center gap-8">
-          <img src="../assets/images/backgrounds/404.svg" alt="404" width="550" class="img-fluid mx-auto"
+          <img src="assets/images/backgrounds/404.svg" alt="404" width="550" class="img-fluid mx-auto"
             data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">
           <h2 class="mb-0 text-center" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">Oops! Page Not
             Found</h2>
-          <a href="http://localhost:63342/Diplomamunka-26222041/php/index.php" class="btn mx-auto" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
+          <a href="php/index.php" class="btn mx-auto" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
             <span class="btn-text">Back to Home</span>
             <iconify-icon icon="lucide:arrow-up-right"
               class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
@@ -48,11 +58,11 @@
   </div>
 
 
-  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/libs/owl.carousel/dist/owl.carousel.min.js"></script>
-  <script src="../assets/libs/aos-master/dist/aos.js"></script>
-  <script src="../assets/js/custom.js"></script>
+  <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/libs/owl.carousel/dist/owl.carousel.min.js"></script>
+  <script src="assets/libs/aos-master/dist/aos.js"></script>
+  <script src="assets/js/custom.js"></script>
   <!-- solar icons -->
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 </body>
